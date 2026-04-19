@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스타일 디테일</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f5efe8; padding: 32px 16px 80px; }
+  h2 { text-align: center; font-size: 20px; margin-bottom: 6px; color: #4a3728; }
+  .subtitle { text-align: center; font-size: 14px; color: #9e7f68; margin-bottom: 32px; }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 800px; margin: 0 auto; }
+
+  .mock-wrap {
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+    box-shadow: 0 3px 16px rgba(100,70,50,0.1);
+  }
+  .mock-wrap:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(100,70,50,0.15); }
+  .mock-wrap.selected { border-color: #c8956c; box-shadow: 0 0 0 4px rgba(200,149,108,0.25); }
+
+  /* ── A: 따뜻한 일기 감성 ── */
+  .style-a .mock-screen {
+    background: #fdf8f3;
+    padding: 20px 18px;
+    min-height: 320px;
+  }
+  .style-a .s-header {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #5c3d2e;
+    margin-bottom: 2px;
+  }
+  .style-a .s-sub { font-size: 11px; color: #c8956c; margin-bottom: 16px; letter-spacing: 0.5px; }
+  .style-a .s-cal {
+    display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin-bottom: 16px;
+  }
+  .style-a .s-cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; border-radius: 50%; color: #8c6550;
+  }
+  .style-a .s-cal-day.has { background: #f0d9c8; font-weight: 700; color: #7c5c3e; }
+  .style-a .s-cal-day.today { background: #c8956c; color: #fff; font-weight: 700; }
+  .style-a .s-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 14px 16px;
+    border: 1px solid #f0ddd0;
+    margin-bottom: 10px;
+  }
+  .style-a .s-badge {
+    font-size: 10px; background: #fdf0e8; color: #a0694a;
+    padding: 2px 10px; border-radius: 20px; font-weight: 600; margin-bottom: 8px; display: inline-block;
+  }
+  .style-a .s-title { font-family: Georgia, serif; font-size: 14px; color: #5c3d2e; margin-bottom: 4px; }
+  .style-a .s-meta { font-size: 11px; color: #b08060; }
+  .style-a .s-btn {
+    display: block; width: 100%; margin-top: 12px;
+    background: #c8956c; color: #fff; border: none;
+    border-radius: 24px; padding: 10px; font-size: 12px; font-weight: 700;
+    font-family: Georgia, serif; letter-spacing: 0.3px;
+  }
+
+  /* ── B: 깔끔한 웰니스 앱 ── */
+  .style-b .mock-screen {
+    background: #fdf8f3;
+    padding: 20px 18px;
+    min-height: 320px;
+  }
+  .style-b .s-header {
+    font-size: 18px;
+    font-weight: 800;
+    color: #3d2b1f;
+    margin-bottom: 2px;
+    letter-spacing: -0.5px;
+  }
+  .style-b .s-sub { font-size: 11px; color: #b08060; margin-bottom: 16px; }
+  .style-b .s-cal {
+    display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin-bottom: 16px;
+  }
+  .style-b .s-cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; border-radius: 8px; color: #8c6550;
+  }
+  .style-b .s-cal-day.has { background: #e8d5c4; font-weight: 700; color: #7c5c3e; }
+  .style-b .s-cal-day.today { background: #7c5c3e; color: #fff; font-weight: 700; border-radius: 8px; }
+  .style-b .s-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid #ecddd3;
+    margin-bottom: 10px;
+    border-left: 3px solid #c8956c;
+  }
+  .style-b .s-badge {
+    font-size: 10px; background: #f5ede1; color: #7c5c3e;
+    padding: 2px 10px; border-radius: 6px; font-weight: 700; margin-bottom: 8px; display: inline-block;
+  }
+  .style-b .s-title { font-size: 13px; font-weight: 700; color: #3d2b1f; margin-bottom: 4px; }
+  .style-b .s-meta { font-size: 11px; color: #b08060; }
+  .style-b .s-btn {
+    display: block; width: 100%; margin-top: 12px;
+    background: #3d2b1f; color: #fff; border: none;
+    border-radius: 10px; padding: 10px; font-size: 12px; font-weight: 700;
+  }
+
+  .mock-label {
+    background: #fff;
+    padding: 14px 18px;
+  }
+  .label-name { font-size: 14px; font-weight: 700; color: #3d2b1f; margin-bottom: 3px; }
+  .label-desc { font-size: 11px; color: #9e7f68; line-height: 1.6; }
+
+  #selection-bar {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: #c8956c; color: #fff; text-align: center;
+    padding: 16px; font-size: 15px; font-weight: 700;
+  }
+  #selection-bar.visible { display: block; }
+  .mock-wrap { position: relative; }
+  .mock-wrap.selected::after {
+    content: '✓'; position: absolute; top: 12px; right: 12px;
+    width: 26px; height: 26px; background: #c8956c; color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<h2>B 안에서 어떤 느낌?</h2>
+<p class="subtitle">같은 베이지/테라코타 톤인데 분위기가 달라</p>
+
+<div class="split">
+
+  <!-- A: 일기 감성 -->
+  <div class="mock-wrap style-a" data-choice="a" onclick="select(this)">
+    <div class="mock-screen">
+      <div class="s-header">운동 일기</div>
+      <div class="s-sub">오늘도 수고했어요</div>
+      <div class="s-cal">
+        <div class="s-cal-day">일</div><div class="s-cal-day">월</div><div class="s-cal-day">화</div><div class="s-cal-day">수</div><div class="s-cal-day">목</div><div class="s-cal-day">금</div><div class="s-cal-day">토</div>
+        <div class="s-cal-day"></div><div class="s-cal-day has">7</div><div class="s-cal-day">8</div><div class="s-cal-day has">9</div><div class="s-cal-day">10</div><div class="s-cal-day has">11</div><div class="s-cal-day">12</div>
+        <div class="s-cal-day has">13</div><div class="s-cal-day">14</div><div class="s-cal-day has">15</div><div class="s-cal-day">16</div><div class="s-cal-day">17</div><div class="s-cal-day today">18</div><div class="s-cal-day">19</div>
+      </div>
+      <div class="s-card">
+        <div class="s-badge">🏃 러닝</div>
+        <div class="s-title">오늘 한강 러닝</div>
+        <div class="s-meta">5.2km · 32분 · 한강공원</div>
+      </div>
+      <button class="s-btn">+ 기록 추가</button>
+    </div>
+    <div class="mock-label">
+      <div class="label-name">A · 감성 다이어리</div>
+      <div class="label-desc">세리프 폰트, 둥근 버튼.<br>따뜻하고 손으로 쓴 느낌</div>
+    </div>
+  </div>
+
+  <!-- B: 웰니스 앱 -->
+  <div class="mock-wrap style-b" data-choice="b" onclick="select(this)">
+    <div class="mock-screen">
+      <div class="s-header">운동 일기</div>
+      <div class="s-sub">오늘도 수고했어요</div>
+      <div class="s-cal">
+        <div class="s-cal-day">일</div><div class="s-cal-day">월</div><div class="s-cal-day">화</div><div class="s-cal-day">수</div><div class="s-cal-day">목</div><div class="s-cal-day">금</div><div class="s-cal-day">토</div>
+        <div class="s-cal-day"></div><div class="s-cal-day has">7</div><div class="s-cal-day">8</div><div class="s-cal-day has">9</div><div class="s-cal-day">10</div><div class="s-cal-day has">11</div><div class="s-cal-day">12</div>
+        <div class="s-cal-day has">13</div><div class="s-cal-day">14</div><div class="s-cal-day has">15</div><div class="s-cal-day">16</div><div class="s-cal-day">17</div><div class="s-cal-day today">18</div><div class="s-cal-day">19</div>
+      </div>
+      <div class="s-card">
+        <div class="s-badge">🏃 러닝</div>
+        <div class="s-title">오늘 한강 러닝</div>
+        <div class="s-meta">5.2km · 32분 · 한강공원</div>
+      </div>
+      <button class="s-btn">+ 기록 추가</button>
+    </div>
+    <div class="mock-label">
+      <div class="label-name">B · 클린 웰니스</div>
+      <div class="label-desc">굵은 고딕, 각진 버튼.<br>세련되고 앱 같은 느낌</div>
+    </div>
+  </div>
+
+</div>
+
+<div id="selection-bar"></div>
+<script>
+  let selected = null;
+  function select(el) {
+    if (selected) selected.classList.remove('selected');
+    el.classList.add('selected');
+    selected = el;
+    const name = el.querySelector('.label-name').textContent;
+    const bar = document.getElementById('selection-bar');
+    bar.textContent = name + ' 선택 — 터미널에서 계속해봐!';
+    bar.classList.add('visible');
+    try {
+      fetch('/__select', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({type:'click', choice: el.dataset.choice, text: name}) });
+    } catch(e) {}
+  }
+</script>
+</body>
+</html>

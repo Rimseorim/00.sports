@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>최종 디자인 목업</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: #ede8e3;
+    padding: 24px 16px 60px;
+    color: #2c1f14;
+  }
+
+  .page-title { text-align: center; font-size: 16px; font-weight: 700; color: #7c5c3e; margin-bottom: 4px; }
+  .page-sub { text-align: center; font-size: 12px; color: #b08060; margin-bottom: 24px; }
+
+  /* 폰 프레임 */
+  .phone {
+    max-width: 390px;
+    margin: 0 auto;
+    background: #faf6f2;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(80,50,30,0.18);
+  }
+
+  /* 헤더 */
+  .header {
+    background: #faf6f2;
+    padding: 24px 20px 0;
+    border-bottom: 1px solid #ecddd3;
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .app-title { font-size: 22px; font-weight: 800; color: #2c1f14; letter-spacing: -0.5px; }
+  .header-icons { display: flex; gap: 10px; }
+  .header-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: #f0e6dc; display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .header-quote { font-size: 11px; color: #b08060; margin-bottom: 14px; line-height: 1.5; }
+  .tabs { display: flex; gap: 0; }
+  .tab {
+    padding: 10px 24px; border: none; background: none;
+    font-size: 13px; font-weight: 700; color: #c4a48a; border-bottom: 2px solid transparent;
+    cursor: pointer;
+  }
+  .tab.active { color: #2c1f14; border-bottom-color: #c8956c; }
+
+  .body { padding: 20px 16px; }
+
+  /* 통계 카드 */
+  .stats-card {
+    background: #7c5c3e;
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    color: #fff;
+    display: flex;
+    gap: 0;
+  }
+  .stat-item { flex: 1; text-align: center; }
+  .stat-item + .stat-item { border-left: 1px solid rgba(255,255,255,0.15); }
+  .stat-label { font-size: 10px; color: rgba(255,255,255,0.65); margin-bottom: 4px; letter-spacing: 0.3px; }
+  .stat-value { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+  .stat-unit { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 2px; }
+
+  /* 달력 */
+  .cal-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 20px;
+    border: 1px solid #ecddd3;
+  }
+  .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .cal-month { font-size: 15px; font-weight: 800; color: #2c1f14; }
+  .cal-arrow {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: #f5ede3; border: none; font-size: 14px; color: #7c5c3e; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+  .cal-dow { text-align: center; font-size: 10px; font-weight: 700; color: #c4a48a; padding: 4px 0 8px; }
+  .cal-dow:first-child { color: #e07050; }
+  .cal-dow:last-child { color: #7090d0; }
+  .cal-day {
+    aspect-ratio: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    border-radius: 10px; font-size: 12px; color: #5a3e2b; gap: 2px;
+  }
+  .cal-day.has-run { background: #f0e6dc; }
+  .cal-day.has-cf { background: #fce8e0; }
+  .cal-day.today { background: #7c5c3e; color: #fff; font-weight: 800; }
+  .cal-day.empty { color: transparent; }
+  .dot-row { display: flex; gap: 2px; }
+  .cdot { width: 4px; height: 4px; border-radius: 50%; }
+  .cdot.run { background: #c8956c; }
+  .cdot.cf { background: #d0604a; }
+  .cal-day.today .cdot.run { background: rgba(255,255,255,0.8); }
+
+  /* 섹션 헤더 */
+  .sec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .sec-title { font-size: 14px; font-weight: 800; color: #2c1f14; }
+  .add-btn {
+    background: #7c5c3e; color: #fff; border: none;
+    border-radius: 10px; padding: 8px 16px; font-size: 12px; font-weight: 700; cursor: pointer;
+  }
+  .outline-btn {
+    background: #fff; color: #7c5c3e; border: 1.5px solid #c8956c;
+    border-radius: 10px; padding: 7px 12px; font-size: 12px; font-weight: 700; cursor: pointer;
+  }
+  .btn-group { display: flex; gap: 8px; }
+
+  /* 기록 카드 */
+  .log-item {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 18px;
+    border: 1px solid #ecddd3;
+    border-left: 3px solid #c8956c;
+    margin-bottom: 10px;
+  }
+  .log-item.cf { border-left-color: #d0604a; }
+  .log-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .log-badge {
+    font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 6px;
+    background: #f5ede3; color: #7c5c3e;
+  }
+  .log-badge.cf { background: #fce8e0; color: #b04030; }
+  .log-date { font-size: 11px; color: #b08060; }
+  .log-title { font-size: 14px; font-weight: 700; color: #2c1f14; margin-bottom: 4px; }
+  .log-meta { font-size: 12px; color: #a07858; }
+  .log-diary { font-size: 12px; color: #7a5c44; line-height: 1.6; border-top: 1px solid #f0e6dc; padding-top: 8px; margin-top: 8px; }
+
+  /* 범례 */
+  .legend { display: flex; gap: 14px; justify-content: flex-end; margin-top: 10px; }
+  .leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #a07858; }
+  .leg-dot { width: 8px; height: 8px; border-radius: 3px; }
+  .leg-dot.run { background: #c8956c; }
+  .leg-dot.cf { background: #d0604a; }
+</style>
+</head>
+<body>
+
+<div class="page-title">최종 목업 미리보기</div>
+<div class="page-sub">이렇게 바뀌어요 — 마음에 들면 터미널에서 확인해줘!</div>
+
+<div class="phone">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="header-top">
+      <div class="app-title">운동 일기</div>
+      <div class="header-icons">
+        <div class="header-icon">💾</div>
+        <div class="header-icon">📂</div>
+      </div>
+    </div>
+    <div class="header-quote">"훈련은 배신하지 않는다." — 하일레 게브르셀라시에</div>
+    <div class="tabs">
+      <button class="tab active">일기</button>
+      <button class="tab">PR / 1RM</button>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- 통계 카드 (신규) -->
+    <div class="stats-card">
+      <div class="stat-item">
+        <div class="stat-label">이번달 운동</div>
+        <div class="stat-value">12<span class="stat-unit">회</span></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">총 러닝</div>
+        <div class="stat-value">48<span class="stat-unit">km</span></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">크로스핏</div>
+        <div class="stat-value">7<span class="stat-unit">회</span></div>
+      </div>
+    </div>
+
+    <!-- 달력 -->
+    <div class="cal-card">
+      <div class="cal-nav">
+        <button class="cal-arrow">‹</button>
+        <div class="cal-month">2026년 4월</div>
+        <button class="cal-arrow">›</button>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-dow">일</div><div class="cal-dow">월</div><div class="cal-dow">화</div><div class="cal-dow">수</div><div class="cal-dow">목</div><div class="cal-dow">금</div><div class="cal-dow">토</div>
+        <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day">1</div><div class="cal-day has-run">2<div class="dot-row"><div class="cdot run"></div></div></div><div class="cal-day">3</div><div class="cal-day has-cf">4<div class="dot-row"><div class="cdot cf"></div></div></div><div class="cal-day">5</div>
+        <div class="cal-day">6</div><div class="cal-day has-run">7<div class="dot-row"><div class="cdot run"></div></div></div><div class="cal-day">8</div><div class="cal-day has-cf">9<div class="dot-row"><div class="cdot cf"></div></div></div><div class="cal-day">10</div><div class="cal-day has-run">11<div class="dot-row"><div class="cdot run"></div></div></div><div class="cal-day">12</div>
+        <div class="cal-day has-cf">13<div class="dot-row"><div class="cdot cf"></div></div></div><div class="cal-day">14</div><div class="cal-day has-run">15<div class="dot-row"><div class="cdot run"></div></div></div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day today">18<div class="dot-row"><div class="cdot run"></div></div></div><div class="cal-day">19</div>
+      </div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot run"></div> 러닝</div>
+        <div class="leg-item"><div class="leg-dot cf"></div> 크로스핏</div>
+      </div>
+    </div>
+
+    <!-- 기록 목록 -->
+    <div class="sec-header">
+      <div class="sec-title">전체 기록</div>
+      <div class="btn-group">
+        <button class="outline-btn">무게 추이</button>
+        <button class="add-btn">+ 기록 추가</button>
+      </div>
+    </div>
+
+    <div class="log-item">
+      <div class="log-header">
+        <div class="log-badge">🏃 러닝</div>
+        <div class="log-date">2026년 4월 18일</div>
+      </div>
+      <div class="log-title">오늘 한강 러닝</div>
+      <div class="log-meta">5.2km · 32분 · 한강공원</div>
+      <div class="log-diary">날씨가 너무 좋아서 평소보다 1km 더 뛰었다. 기분 최고!</div>
+    </div>
+
+    <div class="log-item cf">
+      <div class="log-header">
+        <div class="log-badge cf">🏋️ 크로스핏</div>
+        <div class="log-date">2026년 4월 15일</div>
+      </div>
+      <div class="log-title">CrossFit — Grace</div>
+      <div class="log-meta">Clean & Jerk 43kg × 30회</div>
+      <div class="log-diary">PR 달성! 드디어 43kg로 완주했다.</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
