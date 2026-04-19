@@ -913,158 +913,469 @@
 
     /* 프린트 */
     @media print {
-      header .view-tabs, .backup-bar, .header-btns,
-      .modal-bg, .add-btn, .delete-btn, .close-btn,
-      .nav-btn, .legend { display: none !important; }
-      body { background: #fff; color: #000; }
-      .container { max-width: 100%; padding: 0; }
+      .sidebar, .main-header, .tabs, .profile-wrap, .quote-strip,
+      .header-btns, .modal-bg, .add-btn, .delete-btn, .close-btn,
+      .nav-btn, .legend, .drawer-open, .drawer-close,
+      .editor-actions { display: none !important; }
+      body { background: #fff; color: #000; overflow: visible; }
+      .app-grid { display: block; height: auto; }
+      .main { overflow: visible; }
+      .view { padding: 0; max-width: 100%; }
       .log-item, .calendar-card, .stats-card, .pr-card {
         break-inside: avoid;
         box-shadow: none;
         border: 1px solid #ddd;
       }
     }
+
+    /* ══════════════════════════════
+       신규 레이아웃: 사이드패널 + 메인
+       ══════════════════════════════ */
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body { overflow: hidden; }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      height: 100vh;
+      background: #ede8e3;
+    }
+
+    /* 사이드패널 */
+    .sidebar {
+      background: #faf6f2;
+      border-right: 1px solid #ecddd3;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 20px 16px 28px;
+    }
+    .sidebar-title { position: relative; padding: 0 4px; }
+    .sidebar-title h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2c1f14;
+      letter-spacing: -0.5px;
+    }
+    .sidebar-title .greeting {
+      font-size: 12px;
+      color: #b08060;
+      margin-top: 3px;
+    }
+    .sidebar-calendar {
+      background: #fff;
+      border: 1px solid #ecddd3;
+      border-radius: 16px;
+      padding: 14px 12px;
+    }
+    .sidebar-calendar .cal-nav { margin-bottom: 10px; }
+    .sidebar-calendar .cal-nav h2 { font-size: 13px; }
+    .sidebar-calendar .cal-day { font-size: 12px; border-radius: 8px; }
+    .sidebar-calendar .day-num-wrap { font-size: 12px; }
+    .sidebar-calendar .cal-day.today .day-num {
+      width: 22px; height: 22px; border-radius: 6px;
+    }
+    .sidebar-calendar .dot { width: 4px; height: 4px; }
+    .sidebar-calendar .cal-dow { font-size: 10px; padding: 2px 0 6px; }
+    .sidebar-calendar .legend { margin-top: 10px; font-size: 11px; gap: 12px; }
+    .sidebar-daylist { padding: 0 4px; }
+    .sidebar-daylist .section-header h2 { font-size: 13px; }
+    .sidebar-daylist .log-item {
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+    .sidebar-daylist .log-diary { display: none; }
+    .sidebar-daylist .log-weights, .sidebar-daylist .log-wod-block { display: none; }
+
+    /* 메인 */
+    .main {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      background: #ede8e3;
+    }
+    .main-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #faf6f2;
+      border-bottom: 1px solid #ecddd3;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .drawer-open, .drawer-close {
+      background: none; border: none;
+      font-size: 20px; font-weight: 700;
+      color: #2c1f14; cursor: pointer;
+      padding: 6px 10px;
+      display: none;
+    }
+
+    /* 메인 탭 */
+    .tabs { display: flex; gap: 0; }
+    .tab {
+      padding: 14px 16px;
+      border: none;
+      background: none;
+      font-size: 13px;
+      font-weight: 700;
+      color: #c4a48a;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -11px;
+    }
+    .tab.active {
+      color: #2c1f14;
+      border-bottom-color: #c8956c;
+    }
+    .tab:hover { color: #7c5c3e; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .quote-strip {
+      font-size: 12px;
+      color: #b08060;
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .quote-strip:hover { color: #7c5c3e; }
+    .quote-strip.collapsed { /* default = 1-line */ }
+    .quote-strip:not(.collapsed) {
+      position: absolute;
+      right: 24px; top: 56px;
+      background: #fff;
+      border: 1px solid #ecddd3;
+      border-radius: 12px;
+      padding: 14px 16px;
+      max-width: 380px;
+      white-space: normal;
+      z-index: 20;
+      box-shadow: 0 10px 30px -10px rgba(44,31,20,0.2);
+    }
+
+    /* 프로필 */
+    .profile-wrap { position: relative; }
+    .profile-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #7c5c3e;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-btn:hover { background: #6a4e34; }
+    .profile-menu {
+      position: absolute;
+      right: 0; top: calc(100% + 8px);
+      background: #fff;
+      border: 1px solid #ecddd3;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px -10px rgba(44,31,20,0.2);
+      min-width: 220px;
+      padding: 6px;
+      z-index: 50;
+    }
+    .profile-menu.hidden { display: none; }
+    .menu-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #2c1f14;
+      cursor: pointer;
+      border-radius: 8px;
+      font-weight: 400;
+    }
+    .menu-item:hover { background: #faf0e6; color: #7c5c3e; }
+    .menu-divider { height: 1px; background: #ecddd3; margin: 6px 4px; }
+    .menu-hint {
+      font-size: 11px;
+      color: #b08060;
+      padding: 4px 12px 8px;
+    }
+
+    /* 뷰 */
+    .main-body { flex: 1; }
+    .view {
+      padding: 28px 32px;
+      max-width: 880px;
+    }
+    .view-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .view-title h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2c1f14;
+    }
+    .view-title.second { margin-top: 32px; }
+
+    /* 대시보드 */
+    .dash-stats {
+      background: #7c5c3e;
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      color: #fff;
+      display: flex;
+    }
+    .dash-stats .stat-item { flex: 1; text-align: center; }
+    .dash-stats .stat-item + .stat-item { border-left: 1px solid rgba(255,255,255,0.15); }
+    .dash-stats .stat-label { font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 6px; letter-spacing: 0.3px; }
+    .dash-stats .stat-value { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    .dash-stats .stat-unit { font-size: 13px; color: rgba(255,255,255,0.75); margin-left: 3px; font-weight: 400; }
+
+    /* 인라인 에디터 */
+    .editor-card {
+      background: #fff;
+      border: 1px solid #ecddd3;
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .editor-card .save-btn {
+      position: static;
+      box-shadow: none;
+      width: auto;
+      padding: 12px 28px;
+    }
+    .editor-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 16px;
+      align-items: center;
+    }
+    .edit-mode-badge {
+      font-size: 12px;
+      color: #b08060;
+      margin-right: auto;
+      font-weight: 700;
+    }
+    .edit-mode-badge.hidden { display: none; }
+
+    /* 모바일 */
+    @media (max-width: 880px) {
+      .app-grid { grid-template-columns: 1fr; }
+      .sidebar {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        width: 320px;
+        z-index: 100;
+        transform: translateX(-100%);
+        transition: transform 200ms ease;
+        box-shadow: 0 10px 30px -10px rgba(44,31,20,0.25);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .drawer-open { display: inline-block; }
+      .drawer-close { display: inline-block; position: absolute; right: 8px; top: 8px; }
+      .view { padding: 20px; }
+      .tabs { overflow-x: auto; flex-wrap: nowrap; }
+      .tab { padding: 14px 12px; font-size: 12px; white-space: nowrap; }
+      .quote-strip { display: none; }
+      .main-header { padding: 10px 16px; }
+    }
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,31,20,0.4);
+      z-index: 90;
+    }
+    .drawer-overlay.show { display: block; }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>운동 일기</h1>
-  <p>오늘도 수고했어요</p>
-  <p class="daily-quote collapsed" id="daily-quote" onclick="this.classList.toggle('collapsed')" title="클릭하여 펼치기"></p>
-  <div class="view-tabs">
-    <button class="view-tab active" id="tab-diary" onclick="showView('diary')">일기</button>
-    <button class="view-tab" id="tab-pr" onclick="showView('pr')">PR / 1RM</button>
-  </div>
-</header>
-
 <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleSidebar()"></div>
 
-<div class="backup-bar">
-  <button class="backup-btn restore" onclick="restoreBackup()" aria-label="백업 파일 불러오기">불러오기</button>
-  <button class="backup-btn" onclick="exportBackup()" aria-label="백업 파일 내보내기">백업</button>
-  <span id="backup-reminder" class="backup-reminder hidden" aria-live="polite"></span>
-</div>
+<div class="app-grid">
 
-<div class="container">
+  <!-- ═════ 사이드패널 ═════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">
+      <button class="drawer-close" onclick="toggleSidebar()" aria-label="사이드바 닫기">✕</button>
+      <h1>운동 일기</h1>
+      <p class="greeting">오늘도 수고했어요</p>
+    </div>
 
-  <!-- ───── 일기 뷰 ───── -->
-  <div id="view-diary">
-    <div class="diary-left">
-      <div class="stats-card" id="stats-card">
-        <div class="stat-item">
-          <div class="stat-label">이번달 운동</div>
-          <div class="stat-value" id="stats-total">0<span class="stat-unit">회</span></div>
+    <div class="sidebar-calendar">
+      <div class="cal-nav">
+        <button class="nav-btn" onclick="changeMonth(-1)" aria-label="이전 달">&#8249;</button>
+        <div class="cal-title-wrap">
+          <h2 id="cal-title"></h2>
+          <button class="today-pill hidden" id="today-pill" onclick="goToday()" aria-label="오늘로 이동">오늘</button>
         </div>
-        <div class="stat-item">
-          <div class="stat-label">총 러닝</div>
-          <div class="stat-value" id="stats-running">0<span class="stat-unit">km</span></div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-label">크로스핏</div>
-          <div class="stat-value" id="stats-crossfit">0<span class="stat-unit">회</span></div>
-        </div>
+        <button class="nav-btn" onclick="changeMonth(1)" aria-label="다음 달">&#8250;</button>
       </div>
-
-      <div class="calendar-card">
-        <div class="cal-nav">
-          <button class="nav-btn" onclick="changeMonth(-1)" aria-label="이전 달">&#8249;</button>
-          <div class="cal-title-wrap">
-            <h2 id="cal-title"></h2>
-            <button class="today-pill hidden" id="today-pill" onclick="goToday()" aria-label="오늘로 이동">오늘</button>
-          </div>
-          <button class="nav-btn" onclick="changeMonth(1)" aria-label="다음 달">&#8250;</button>
-        </div>
-        <div class="cal-grid" id="cal-grid"></div>
-        <div class="legend">
-          <div class="legend-item"><div class="dot running"></div> 러닝</div>
-          <div class="legend-item"><div class="dot crossfit"></div> 크로스핏</div>
-        </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="legend">
+        <div class="legend-item"><div class="dot running"></div> 러닝</div>
+        <div class="legend-item"><div class="dot crossfit"></div> 크로스핏</div>
       </div>
     </div>
 
-    <div class="diary-right">
+    <div class="sidebar-daylist">
       <div class="section-header">
-        <h2 id="log-title">전체 기록</h2>
-        <div class="header-btns">
-          <button class="outline-btn" onclick="openTrendModal()">무게 추이</button>
-          <button class="add-btn" onclick="openModal(selectedDate)">+ 기록 추가</button>
-        </div>
+        <h2 id="log-title">오늘 기록</h2>
       </div>
       <div class="log-list" id="log-list"></div>
     </div>
-  </div>
+  </aside>
 
-  <!-- ───── PR / 1RM 뷰 ───── -->
-  <div id="view-pr" class="hidden">
-    <div class="section-header">
-      <h2>PR / 1RM</h2>
-      <button class="add-btn" onclick="openAddMovementModal()">+ 종목 추가</button>
-    </div>
-    <div class="pr-list" id="pr-list"></div>
-  </div>
-
-</div>
-
-<!-- 기록 추가/수정 모달 -->
-<div class="modal-bg" id="modal-bg" onclick="closeModalBg(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 id="modal-header-title">운동 기록 추가</h2>
-      <button class="close-btn" onclick="closeModal()" aria-label="모달 닫기">✕</button>
-    </div>
-    <div class="field" style="margin-bottom:20px;">
-      <label>운동 유형</label>
-      <select id="type-select" onchange="switchTab(this.value)" style="font-size:15px;font-weight:700;cursor:pointer;">
-        <option value="running">러닝</option>
-        <option value="crossfit">크로스핏</option>
-      </select>
-    </div>
-
-    <div id="form-running">
-      <div class="field">
-        <label>날짜</label>
-        <input type="date" id="run-date">
+  <!-- ═════ 메인 ═════ -->
+  <main class="main">
+    <header class="main-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="drawer-open" onclick="toggleSidebar()" aria-label="사이드바 열기">&#9776;</button>
+        <nav class="tabs" role="tablist">
+          <button class="tab active" data-view="dashboard" onclick="showView('dashboard')" role="tab">대시보드</button>
+          <button class="tab" data-view="running" onclick="showView('running')" role="tab">러닝 쓰기</button>
+          <button class="tab" data-view="crossfit" onclick="showView('crossfit')" role="tab">크로스핏 쓰기</button>
+          <button class="tab" data-view="pr" onclick="showView('pr')" role="tab">PR / 1RM</button>
+        </nav>
       </div>
-      <div class="field row-2">
-        <div>
-          <label>거리 (km)</label>
-          <input type="number" id="run-distance" placeholder="예: 5.3" step="0.1" min="0">
-        </div>
-        <div>
-          <label>시간 (분)</label>
-          <input type="number" id="run-time" placeholder="예: 32" min="0">
+      <div class="header-right">
+        <span class="quote-strip collapsed" id="daily-quote" title="클릭하여 펼치기" onclick="this.classList.toggle('collapsed')"></span>
+        <div class="profile-wrap">
+          <button class="profile-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정 메뉴" aria-haspopup="true">P</button>
+          <div class="profile-menu hidden" id="profile-menu" role="menu">
+            <button class="menu-item" onclick="exportBackup(); closeProfileMenu();" role="menuitem">백업 내보내기</button>
+            <button class="menu-item" onclick="restoreBackup(); closeProfileMenu();" role="menuitem">백업 불러오기</button>
+            <button class="menu-item" onclick="openTrendModal(); closeProfileMenu();" role="menuitem">무게 추이 보기</button>
+            <div class="menu-divider"></div>
+            <div class="menu-hint" id="backup-reminder-menu">백업 정보 없음</div>
+          </div>
         </div>
       </div>
-      <div class="field">
-        <label>장소</label>
-        <input type="text" id="run-place" placeholder="예: 한강공원">
-      </div>
-      <div class="field">
-        <label>일기</label>
-        <textarea id="run-diary" placeholder="오늘 러닝은 어땠나요?"></textarea>
-      </div>
-      <button class="save-btn running" onclick="save('running')">저장하기</button>
-    </div>
+    </header>
 
-    <div id="form-crossfit" class="hidden">
-      <div class="field">
-        <label>날짜</label>
-        <input type="date" id="cf-date">
-      </div>
-      <div class="field">
-        <label>운동 종류</label>
-        <input type="text" id="cf-title" placeholder="예: CrossFit, Hyrox, 올림픽리프팅">
-      </div>
-      <div id="wod-list"></div>
-      <button type="button" class="add-wod-btn" onclick="addWod()">+ WOD 추가</button>
-      <div class="field">
-        <label>일기</label>
-        <textarea id="cf-diary" placeholder="오늘 운동은 어땠나요?"></textarea>
-      </div>
-      <button class="save-btn crossfit" onclick="save('crossfit')">저장하기</button>
+    <div class="main-body">
+
+      <!-- ── 대시보드 ── -->
+      <section id="view-dashboard" class="view">
+        <div class="view-title">
+          <h2 id="dashboard-title">이번달 요약</h2>
+        </div>
+        <div class="dash-stats" id="stats-card">
+          <div class="stat-item">
+            <div class="stat-label">이번달 운동</div>
+            <div class="stat-value" id="stats-total">0<span class="stat-unit">회</span></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">총 러닝</div>
+            <div class="stat-value" id="stats-running">0<span class="stat-unit">km</span></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">크로스핏</div>
+            <div class="stat-value" id="stats-crossfit">0<span class="stat-unit">회</span></div>
+          </div>
+        </div>
+
+        <div class="view-title second"><h2>최근 기록</h2></div>
+        <div class="log-list" id="recent-list"></div>
+      </section>
+
+      <!-- ── 러닝 쓰기 ── -->
+      <section id="view-running" class="view hidden">
+        <div class="view-title">
+          <h2 id="running-editor-title">러닝 기록 쓰기</h2>
+        </div>
+        <div class="editor-card">
+          <div class="field">
+            <label>날짜</label>
+            <input type="date" id="run-date">
+          </div>
+          <div class="field row-2">
+            <div>
+              <label>거리 (km)</label>
+              <input type="number" id="run-distance" placeholder="예: 5.3" step="0.1" min="0">
+            </div>
+            <div>
+              <label>시간 (분)</label>
+              <input type="number" id="run-time" placeholder="예: 32" min="0">
+            </div>
+          </div>
+          <div class="field">
+            <label>장소</label>
+            <input type="text" id="run-place" placeholder="예: 한강공원">
+          </div>
+          <div class="field">
+            <label>일기</label>
+            <textarea id="run-diary" placeholder="오늘 러닝은 어땠나요?"></textarea>
+          </div>
+          <div class="editor-actions">
+            <span class="edit-mode-badge hidden" id="running-edit-badge">수정 중</span>
+            <button class="outline-btn" onclick="resetRunningForm(); showToast('새로 작성')">새로 쓰기</button>
+            <button class="save-btn running" onclick="save('running')">저장하기</button>
+          </div>
+        </div>
+        <div class="view-title second"><h2>최근 러닝</h2></div>
+        <div class="log-list" id="running-recent"></div>
+      </section>
+
+      <!-- ── 크로스핏 쓰기 ── -->
+      <section id="view-crossfit" class="view hidden">
+        <div class="view-title">
+          <h2 id="crossfit-editor-title">크로스핏 기록 쓰기</h2>
+        </div>
+        <div class="editor-card">
+          <div class="field">
+            <label>날짜</label>
+            <input type="date" id="cf-date">
+          </div>
+          <div class="field">
+            <label>운동 종류</label>
+            <input type="text" id="cf-title" placeholder="예: CrossFit, Hyrox, 올림픽리프팅">
+          </div>
+          <div id="wod-list"></div>
+          <button type="button" class="add-wod-btn" onclick="addWod()">+ WOD 추가</button>
+          <div class="field">
+            <label>일기</label>
+            <textarea id="cf-diary" placeholder="오늘 운동은 어땠나요?"></textarea>
+          </div>
+          <div class="editor-actions">
+            <span class="edit-mode-badge hidden" id="crossfit-edit-badge">수정 중</span>
+            <button class="outline-btn" onclick="resetCrossfitForm(); showToast('새로 작성')">새로 쓰기</button>
+            <button class="save-btn crossfit" onclick="save('crossfit')">저장하기</button>
+          </div>
+        </div>
+        <div class="view-title second"><h2>최근 크로스핏</h2></div>
+        <div class="log-list" id="crossfit-recent"></div>
+      </section>
+
+      <!-- ── PR / 1RM ── -->
+      <section id="view-pr" class="view hidden">
+        <div class="view-title">
+          <h2>PR / 1RM</h2>
+          <button class="add-btn" onclick="openAddMovementModal()">+ 종목 추가</button>
+        </div>
+        <div class="pr-list" id="pr-list"></div>
+      </section>
+
     </div>
-  </div>
+  </main>
 </div>
 
 <!-- 무게 추이 모달 -->
@@ -1391,14 +1702,84 @@
   }
 
   // ══════════════════════════════
-  //  뷰 전환
+  //  뷰 전환 (신규: dashboard/running/crossfit/pr)
   // ══════════════════════════════
+  const VIEWS = ['dashboard', 'running', 'crossfit', 'pr'];
+
   function showView(view) {
-    document.getElementById('view-diary').classList.toggle('hidden', view !== 'diary');
-    document.getElementById('view-pr').classList.toggle('hidden', view !== 'pr');
-    document.getElementById('tab-diary').classList.toggle('active', view === 'diary');
-    document.getElementById('tab-pr').classList.toggle('active', view === 'pr');
+    if (!VIEWS.includes(view)) view = 'dashboard';
+
+    // 편집 중인 로그의 타입과 다른 작성 탭으로 이동하면 편집 취소
+    if ((view === 'running' || view === 'crossfit') && editingId) {
+      const log = getLogs().find(l => l.id === editingId);
+      if (log && log.type !== view) editingId = null;
+    }
+
+    VIEWS.forEach(v => {
+      const el = document.getElementById('view-' + v);
+      if (el) el.classList.toggle('hidden', v !== view);
+    });
+    document.querySelectorAll('.tab').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === view);
+    });
+
     if (view === 'pr') renderPRView();
+    if (view === 'dashboard') { renderStats(); renderRecentList(); }
+    if (view === 'running') { renderRecent('running'); updateEditBadge('running'); }
+    if (view === 'crossfit') { renderRecent('crossfit'); updateEditBadge('crossfit'); }
+
+    document.querySelector('.main').scrollTop = 0;
+    closeProfileMenu();
+  }
+
+  function updateEditBadge(type) {
+    const badge = document.getElementById(type + '-edit-badge');
+    if (!badge) return;
+    const isEditing = editingId !== null && getLogs().find(l => l.id === editingId && l.type === type);
+    badge.classList.toggle('hidden', !isEditing);
+  }
+
+  // 폼 초기화
+  function resetRunningForm() {
+    editingId = null;
+    document.getElementById('run-date').value = selectedDate || todayStr;
+    document.getElementById('run-distance').value = '';
+    document.getElementById('run-time').value = '';
+    document.getElementById('run-place').value = '';
+    document.getElementById('run-diary').value = '';
+    updateEditBadge('running');
+  }
+  function resetCrossfitForm() {
+    editingId = null;
+    document.getElementById('cf-date').value = selectedDate || todayStr;
+    document.getElementById('cf-title').value = '';
+    document.getElementById('cf-diary').value = '';
+    renderWodBlocks([]);
+    updateEditBadge('crossfit');
+  }
+
+  // 프로필 드롭다운
+  function toggleProfileMenu() {
+    const m = document.getElementById('profile-menu');
+    if (!m) return;
+    m.classList.toggle('hidden');
+  }
+  function closeProfileMenu() {
+    const m = document.getElementById('profile-menu');
+    if (m) m.classList.add('hidden');
+  }
+  document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.profile-wrap');
+    if (wrap && !wrap.contains(e.target)) closeProfileMenu();
+  });
+
+  // 사이드바 드로어
+  function toggleSidebar() {
+    const s = document.getElementById('sidebar');
+    const o = document.getElementById('drawer-overlay');
+    if (!s || !o) return;
+    const isOpen = s.classList.toggle('open');
+    o.classList.toggle('show', isOpen);
   }
 
   // ══════════════════════════════
@@ -1612,67 +1993,32 @@
     return results.filter(w => w.content || w.record || w.weights.length);
   }
 
-  function openModal(dateStr) {
-    editingId = null;
-    document.getElementById('modal-header-title').textContent = '운동 기록 추가';
-    const d = dateStr || todayStr;
-    document.getElementById('run-date').value = d;
-    document.getElementById('cf-date').value = d;
-    document.getElementById('run-distance').value = '';
-    document.getElementById('run-time').value = '';
-    document.getElementById('run-place').value = '';
-    document.getElementById('run-diary').value = '';
-    renderWodBlocks([]);
-    document.getElementById('cf-title').value = '';
-    document.getElementById('cf-diary').value = '';
-    switchTab('running');
-    const modal = document.querySelector('#modal-bg .modal');
-    modal.style.height = '';
-    document.getElementById('modal-bg').classList.add('open');
-    setTimeout(() => { modal.style.height = modal.offsetHeight + 'px'; }, 0);
-  }
-
-  function openEditModal(id) {
+  // 로그 클릭 시 인라인 에디터로 진입
+  function openEditor(id) {
     const log = getLogs().find(l => l.id === id);
     if (!log) return;
     editingId = id;
-    document.getElementById('modal-header-title').textContent = '운동 기록 수정';
-    switchTab('running');
-    const modal = document.querySelector('#modal-bg .modal');
-    modal.style.height = '';
-    document.getElementById('modal-bg').classList.add('open');
-    setTimeout(() => {
-      modal.style.height = modal.offsetHeight + 'px';
-      switchTab(log.type);
-      if (log.type === 'running') {
-        document.getElementById('run-date').value = log.date;
-        document.getElementById('run-distance').value = log.distance || '';
-        document.getElementById('run-time').value = log.time || '';
-        document.getElementById('run-place').value = log.place || '';
-        document.getElementById('run-diary').value = log.diary || '';
-      } else {
-        document.getElementById('cf-date').value = log.date;
-        document.getElementById('cf-title').value = log.title || '';
-        renderWodBlocks(log.wods || (log.wod ? [log.wod] : []));
-        document.getElementById('cf-diary').value = log.diary || '';
-      }
-    }, 0);
+    if (log.type === 'running') {
+      document.getElementById('run-date').value = log.date;
+      document.getElementById('run-distance').value = log.distance || '';
+      document.getElementById('run-time').value = log.time || '';
+      document.getElementById('run-place').value = log.place || '';
+      document.getElementById('run-diary').value = log.diary || '';
+      showView('running');
+    } else {
+      document.getElementById('cf-date').value = log.date;
+      document.getElementById('cf-title').value = log.title || '';
+      renderWodBlocks(log.wods || (log.wod ? [log.wod] : []));
+      document.getElementById('cf-diary').value = log.diary || '';
+      showView('crossfit');
+    }
+    updateEditBadge(log.type);
+    // 모바일이면 사이드바 닫기
+    const s = document.getElementById('sidebar');
+    if (s && s.classList.contains('open')) toggleSidebar();
   }
-
-  function closeModal() {
-    document.getElementById('modal-bg').classList.remove('open');
-    document.querySelector('#modal-bg .modal').style.height = '';
-    editingId = null;
-  }
-  function closeModalBg(e) { if (e.target === document.getElementById('modal-bg')) closeModal(); }
-
-  function switchTab(type) {
-    currentTab = type;
-    document.getElementById('form-running').classList.toggle('hidden', type !== 'running');
-    document.getElementById('form-crossfit').classList.toggle('hidden', type !== 'crossfit');
-    const sel = document.getElementById('type-select');
-    if (sel) sel.value = type;
-  }
+  // 기존 호환
+  const openEditModal = openEditor;
 
   // ══════════════════════════════
   //  백업 / 복원
@@ -1754,24 +2100,33 @@
     input.click();
   }
 
-  // 마지막 백업이 14일 이상 경과하면 상단에 경고 표시
+  // 마지막 백업 상태 표시 (프로필 메뉴 힌트 + 레거시 상단 배너)
   function updateBackupReminder() {
     const el = document.getElementById('backup-reminder');
-    if (!el) return;
+    const menu = document.getElementById('backup-reminder-menu');
     const last = localStorage.getItem('lastBackupAt');
     const logs = JSON.parse(localStorage.getItem('sportslogs') || '[]');
-    if (logs.length === 0) { el.classList.add('hidden'); return; }
-    if (!last) {
-      el.textContent = '아직 백업한 적 없어요. 백업 권장';
-      el.classList.remove('hidden');
-      return;
-    }
-    const days = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
-    if (days >= BACKUP_REMIND_DAYS) {
-      el.textContent = `마지막 백업 ${days}일 전. 백업 권장`;
-      el.classList.remove('hidden');
+
+    let text = '', warn = false;
+    if (logs.length === 0) {
+      text = '기록 없음';
+    } else if (!last) {
+      text = '백업한 적 없어요';
+      warn = true;
     } else {
-      el.classList.add('hidden');
+      const days = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+      if (days === 0) text = '오늘 백업함';
+      else if (days >= BACKUP_REMIND_DAYS) { text = `마지막 백업 ${days}일 전 · 백업 권장`; warn = true; }
+      else text = `마지막 백업 ${days}일 전`;
+    }
+
+    if (el) {
+      el.textContent = text;
+      el.classList.toggle('hidden', !warn);
+    }
+    if (menu) {
+      menu.textContent = text;
+      menu.style.color = warn ? '#b84a30' : '#b08060';
     }
   }
 
@@ -1809,9 +2164,13 @@
     logs = isEdit ? logs.map(l => l.id === editingId ? entry : l) : [entry, ...logs];
     snapshotBeforeWrite('sportslogs');
     if (!safeSetItem('sportslogs', JSON.stringify(logs))) return;
-    closeModal();
+    editingId = null;
+    if (type === 'running') resetRunningForm(); else resetCrossfitForm();
     renderCalendar();
     renderLogs();
+    renderRecent('running');
+    renderRecent('crossfit');
+    renderRecentList();
     updateBackupReminder();
     showToast(isEdit ? '기록을 수정했어요' : '기록을 저장했어요');
   }
@@ -1843,16 +2202,41 @@
 
     const activeDate = selectedDate || todayStr;
     logs = logs.filter(l => l.date === activeDate);
-    titleEl.textContent = `${formatDate(activeDate)} 기록`;
+    if (titleEl) titleEl.textContent = `${formatDate(activeDate)} 기록`;
 
     const list = document.getElementById('log-list');
+    if (!list) return;
     if (logs.length === 0) {
-      list.innerHTML = '<div class="empty">이 날은 기록이 없어요.<br>오른쪽 위 <strong>+ 기록 추가</strong> 버튼을 눌러보세요.</div>';
+      list.innerHTML = '<div class="empty">이 날은 기록이 없어요.<br>위 탭에서 바로 작성해보세요.</div>';
       return;
     }
+    list.innerHTML = logs.map(logToHtml).join('');
+  }
 
-    list.innerHTML = logs.map(log => {
-      if (log.type === 'running') {
+  function renderRecent(type) {
+    const el = document.getElementById(type + '-recent');
+    if (!el) return;
+    const logs = getLogs().filter(l => l.type === type).slice(0, 5);
+    if (logs.length === 0) {
+      el.innerHTML = '<div class="empty">아직 기록이 없어요.</div>';
+      return;
+    }
+    el.innerHTML = logs.map(logToHtml).join('');
+  }
+
+  function renderRecentList() {
+    const el = document.getElementById('recent-list');
+    if (!el) return;
+    const logs = getLogs().slice(0, 8);
+    if (logs.length === 0) {
+      el.innerHTML = '<div class="empty">아직 기록이 없어요.<br>위 탭에서 바로 작성해보세요.</div>';
+      return;
+    }
+    el.innerHTML = logs.map(logToHtml).join('');
+  }
+
+  function logToHtml(log) {
+    if (log.type === 'running') {
         const stats = [];
         if (log.distance) stats.push(`거리 <span>${escapeHtml(log.distance)}km</span>`);
         if (log.time) stats.push(`시간 <span>${escapeHtml(log.time)}분</span>`);
@@ -1899,8 +2283,7 @@
             ${wodsHtml}
             ${log.diary ? `<div class="log-diary">${escapeHtml(log.diary).replace(/\n/g,'<br>')}</div>` : ''}
           </div>`;
-      }
-    }).join('');
+    }
   }
 
   // ══════════════════════════════
@@ -2366,22 +2749,31 @@
   //  전역 키보드 / 초기화
   // ══════════════════════════════
   function closeAllOpenModals() {
-    ['modal-bg', 'trend-modal-bg', 'pr-movement-modal-bg', 'pr-record-modal-bg'].forEach(id => {
+    ['trend-modal-bg', 'pr-movement-modal-bg', 'pr-record-modal-bg'].forEach(id => {
       const el = document.getElementById(id);
       if (el && el.classList.contains('open')) el.classList.remove('open');
     });
-    const modal = document.querySelector('#modal-bg .modal');
-    if (modal) modal.style.height = '';
-    editingId = null;
+    closeProfileMenu();
+    const s = document.getElementById('sidebar');
+    const o = document.getElementById('drawer-overlay');
+    if (s && s.classList.contains('open')) { s.classList.remove('open'); o && o.classList.remove('show'); }
   }
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeAllOpenModals();
   });
 
+  // 초기 인라인 에디터 상태
+  resetRunningForm();
+  resetCrossfitForm();
+
   renderCalendar();
   renderLogs();
+  renderRecentList();
+  renderRecent('running');
+  renderRecent('crossfit');
   updateBackupReminder();
+  showView('dashboard');
 
   window.addEventListener('resize', renderCalendar);
 </script>
