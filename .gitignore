@@ -1,0 +1,19 @@
+# Runtime / state
+.superpowers/brainstorm/*/state/
+*.pid
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Temp
+*.tmp
+*.bak
