@@ -5260,11 +5260,113 @@
     const shield = document.getElementById('login-shield');
     if (shield) shield.classList.remove('show');
   }
+  // ── 데모 시드 (빠른 선택 user1/user2/user3에만 적용, 빈 데이터 한정) ──
+  function seedDemoForUser(uname) {
+    const _set = window.__rawLS.set;
+    const _get = window.__rawLS.get;
+    if (_get(`sportslogs:${uname}`)) return; // 이미 데이터 있으면 건드리지 않음
+    const presets = {
+      user1: { // 마라톤 러너 — 6개월 우상향
+        months: [
+          { y: 2025, m: 11, runs: 8, km: 6, cfs: 2 },
+          { y: 2025, m: 12, runs: 10, km: 7, cfs: 2 },
+          { y: 2026, m: 1,  runs: 12, km: 8, cfs: 3 },
+          { y: 2026, m: 2,  runs: 14, km: 9, cfs: 3 },
+          { y: 2026, m: 3,  runs: 16, km: 10, cfs: 4 },
+          { y: 2026, m: 4,  runs: 18, km: 11, cfs: 4 }
+        ],
+        runType: ['easy','tempo','interval','lsd','recovery'],
+        place: '한강공원', shoes: '나이키 알파플라이', cfTitle: '근력 보강',
+        pace: 4.8,
+        prMovs: [
+          { name: 'Back Squat', records: [
+            { date: '2025-11-15', weight: 110 }, { date: '2026-02-10', weight: 125 }, { date: '2026-04-15', weight: 140, note: '신기록' }
+          ]},
+          { name: 'Deadlift', records: [
+            { date: '2025-12-01', weight: 140 }, { date: '2026-04-05', weight: 165 }
+          ]}
+        ],
+        settings: { goalKm: 200, goalWeeklyCount: 6, goalMonthlyCf: 4, goalTop1RM: 150, goalPace: '4:30', bw: 68, sex: 'male' }
+      },
+      user2: { // 크로스핏 입문 3개월차
+        months: [
+          { y: 2026, m: 2, runs: 1, km: 3, cfs: 4 },
+          { y: 2026, m: 3, runs: 2, km: 3.5, cfs: 6 },
+          { y: 2026, m: 4, runs: 3, km: 4, cfs: 8 }
+        ],
+        runType: ['easy'], place: '동네 공원', cfTitle: '코어 운동',
+        pace: 6.5,
+        prMovs: [
+          { name: '데드리프트', records: [
+            { date: '2026-02-20', weight: 40 }, { date: '2026-04-10', weight: 55 }
+          ]}
+        ],
+        settings: { goalKm: 20, goalWeeklyCount: 3, goalMonthlyCf: 10, goalTop1RM: 70, goalPace: '6:30', bw: 60, sex: 'female' }
+      },
+      user3: { // CrossFit 엘리트
+        months: [
+          { y: 2025, m: 11, runs: 2, km: 5, cfs: 18 },
+          { y: 2025, m: 12, runs: 2, km: 5, cfs: 20 },
+          { y: 2026, m: 1,  runs: 3, km: 6, cfs: 22 },
+          { y: 2026, m: 2,  runs: 3, km: 6, cfs: 22 },
+          { y: 2026, m: 3,  runs: 4, km: 7, cfs: 24 },
+          { y: 2026, m: 4,  runs: 4, km: 7, cfs: 24 }
+        ],
+        runType: ['interval'], place: '트랙', cfTitle: 'Olympic',
+        pace: 4.2,
+        prMovs: [
+          { name: 'Snatch', records: [
+            { date: '2025-11-10', weight: 90 }, { date: '2026-01-15', weight: 100 },
+            { date: '2026-03-20', weight: 110 }, { date: '2026-04-25', weight: 115, note: 'PR' }
+          ]},
+          { name: 'Clean & Jerk', records: [
+            { date: '2025-11-12', weight: 120 }, { date: '2026-02-05', weight: 135 }, { date: '2026-04-18', weight: 145 }
+          ]},
+          { name: 'Back Squat', records: [
+            { date: '2025-11-20', weight: 170 }, { date: '2026-03-10', weight: 185 }, { date: '2026-04-22', weight: 200 }
+          ]}
+        ],
+        settings: { goalKm: 30, goalWeeklyCount: 7, goalMonthlyCf: 25, goalTop1RM: 220, goalPace: '4:00', bw: 82, sex: 'male' }
+      }
+    };
+    const p = presets[uname];
+    if (!p) return;
+    const logs = [];
+    let id = uname.charCodeAt(4) * 1000;
+    p.months.forEach(({ y, m, runs, km, cfs }) => {
+      for (let i = 0; i < runs; i++) {
+        const day = Math.min(28, 1 + Math.floor((i / runs) * 28));
+        const date = `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const dist = +(km + (Math.random() - 0.5) * 2).toFixed(1);
+        const min = Math.floor(dist * (p.pace + Math.random() * 0.4));
+        const sec = Math.floor(Math.random() * 60);
+        logs.push({ id: id++, type: 'running', date, distance: dist, time: min + sec/60, timeMin: min, timeSec: sec, place: p.place, runType: p.runType[i % p.runType.length], shoes: p.shoes || '', diary: '' });
+      }
+      for (let i = 0; i < cfs; i++) {
+        const day = Math.min(28, 2 + Math.floor((i / cfs) * 26));
+        const date = `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        logs.push({ id: id++, type: 'crossfit', date, title: p.cfTitle, wods: [{ content: 'WOD\nBack Squat 5x5', record: '', weights: [] }], diary: '' });
+      }
+    });
+    _set(`sportslogs:${uname}`, JSON.stringify(logs));
+    const movs = p.prMovs.map((m, idx) => ({
+      id: id + 1000 + idx,
+      name: m.name,
+      records: m.records.map((r, ri) => ({ id: id + 2000 + idx * 100 + ri, date: r.date, weight: r.weight, unit: 'kg', type: '1RM', note: r.note || '' }))
+    }));
+    _set(`prdata:${uname}`, JSON.stringify({ movements: movs }));
+    _set(`profileSettings:${uname}`, JSON.stringify(p.settings));
+  }
+
   function doLogin(name) {
     clearFormError('login-error');
     if (!setCurrentUser(name)) {
       showFormError('login-error', '이름은 1~30자, 한글·영문·숫자·_·-·공백만 가능해요.');
       return;
+    }
+    // 빠른 선택 user1/2/3은 빈 데이터면 자동 시드
+    if (['user1','user2','user3'].includes(name)) {
+      seedDemoForUser(name);
     }
     hideLoginShield();
     location.reload();
