@@ -439,8 +439,25 @@
     .sidebar-daylist .empty-cta { padding: 5px 10px; font-size: 11px; min-height: 26px; }
 
     /* 사이드바 하단 + 명언 컴팩트 */
-    .sidebar-bottom { margin: 4px 14px 0; padding-top: 6px; }
+    .sidebar-bottom { margin: 4px 14px 0; padding-top: 6px; position: relative; }
+    .sidebar-bottom-row { display: flex; gap: 6px; align-items: center; }
     .side-settings-btn { padding: 6px; font-size: 11px; }
+    .side-logout-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      color: var(--c-acc-cf-h);
+      cursor: pointer;
+      flex-shrink: 0;
+      letter-spacing: -0.1px;
+    }
+    .side-logout-btn:hover {
+      background: var(--c-acc-cf-soft);
+      border-color: var(--c-acc-cf);
+    }
     .sidebar-quote { padding: 8px 14px 10px; font-size: 11px; line-height: 1.45; margin: 6px 0 0; padding-top: 8px; }
     .sidebar-quote em { font-size: 10px; margin-top: 2px; }
 
@@ -2323,7 +2340,6 @@
     </div>
     <div class="sidebar-user" id="sidebar-user-row">
       <span class="user-chip" id="user-chip" title="현재 로그인 사용자">user</span>
-      <button type="button" class="user-switch-btn" onclick="logoutUser()" aria-label="다른 사용자로 전환">전환</button>
     </div>
     <button type="button" class="sidebar-goal-btn" onclick="openMonthlyGoalModal()" aria-label="월간 목표·체중 설정">
       목표 5종 · 체중 설정 &rsaquo;
@@ -2369,7 +2385,8 @@
     </div>
 
     <div class="sidebar-bottom">
-      <button class="side-settings-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정과 백업 메뉴 열기" aria-haspopup="true" title="설정 · 백업">
+      <div class="sidebar-bottom-row">
+        <button class="side-settings-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정과 백업 메뉴 열기" aria-haspopup="true" title="설정 · 백업" style="flex:1;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span>설정 · 백업</span>
       </button>
@@ -2382,6 +2399,8 @@
         <div class="menu-divider"></div>
         <div class="menu-hint" style="font-size:11px;color:var(--c-muted);line-height:1.4;padding:6px 12px;">기록은 이 브라우저에만 저장돼요.<br>정기 백업을 권장드려요.</div>
         <div class="menu-hint" id="backup-reminder-menu">백업 정보 없음</div>
+      </div>
+        <button type="button" class="side-logout-btn" onclick="logoutUser()" aria-label="로그아웃 또는 다른 사용자로 전환" title="로그아웃 · 사용자 전환">로그아웃</button>
       </div>
     </div>
 
