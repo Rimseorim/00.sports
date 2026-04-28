@@ -1,0 +1,134 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - generic [ref=e4]:
+      - heading "운동 일기" [level=1] [ref=e5]
+      - paragraph [ref=e6]: 오늘도 수고했어요
+    - status [ref=e7]:
+      - generic [ref=e8]: "0"
+      - generic [ref=e9]:
+        - generic [ref=e10]: 아직 시작 전
+        - generic [ref=e11]: 오늘 한 번 기록하면 시작돼요
+      - generic "이번 주 쉬는 날 카운트" [ref=e12]: REST 1
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - button "이전 달" [ref=e15] [cursor=pointer]: ‹
+        - heading "2026년 4월" [level=2] [ref=e17]
+        - button "다음 달" [ref=e18] [cursor=pointer]: ›
+      - generic [ref=e19]:
+        - generic [ref=e20]: 일
+        - generic [ref=e21]: 월
+        - generic [ref=e22]: 화
+        - generic [ref=e23]: 수
+        - generic [ref=e24]: 목
+        - generic [ref=e25]: 금
+        - generic [ref=e26]: 토
+        - generic [ref=e32] [cursor=pointer]: "1"
+        - generic [ref=e35] [cursor=pointer]: "2"
+        - generic [ref=e38] [cursor=pointer]: "3"
+        - generic [ref=e41] [cursor=pointer]: "4"
+        - generic [ref=e44] [cursor=pointer]: "5"
+        - generic [ref=e47] [cursor=pointer]: "6"
+        - generic [ref=e50] [cursor=pointer]: "7"
+        - generic [ref=e53] [cursor=pointer]: "8"
+        - generic [ref=e56] [cursor=pointer]: "9"
+        - generic [ref=e59] [cursor=pointer]: "10"
+        - generic [ref=e62] [cursor=pointer]: "11"
+        - generic [ref=e65] [cursor=pointer]: "12"
+        - generic [ref=e68] [cursor=pointer]: "13"
+        - generic [ref=e71] [cursor=pointer]: "14"
+        - generic [ref=e74] [cursor=pointer]: "15"
+        - generic [ref=e77] [cursor=pointer]: "16"
+        - generic [ref=e80] [cursor=pointer]: "17"
+        - generic [ref=e83] [cursor=pointer]: "18"
+        - generic [ref=e86] [cursor=pointer]: "19"
+        - generic [ref=e89] [cursor=pointer]: "20"
+        - generic [ref=e92] [cursor=pointer]: "21"
+        - generic [ref=e95] [cursor=pointer]: "22"
+        - generic [ref=e98] [cursor=pointer]: "23"
+        - generic [ref=e101] [cursor=pointer]: "24"
+        - generic [ref=e104] [cursor=pointer]: "25"
+        - generic [ref=e107] [cursor=pointer]: "26"
+        - generic [ref=e110] [cursor=pointer]: "27"
+        - generic [ref=e113] [cursor=pointer]: "28"
+        - generic [ref=e116] [cursor=pointer]: "29"
+        - generic [ref=e119] [cursor=pointer]: "30"
+      - generic [ref=e120]:
+        - generic [ref=e121]: 러닝
+        - generic [ref=e123]: 크로스핏
+    - generic [ref=e125]:
+      - heading "2026년 04월 28일 기록" [level=2] [ref=e127]
+      - generic [ref=e129]:
+        - generic [ref=e130]: 오늘은 아직 비어 있어요
+        - generic [ref=e131]:
+          - button "러닝 쓰기" [ref=e132] [cursor=pointer]
+          - button "크로스핏 쓰기" [ref=e133] [cursor=pointer]
+  - main [ref=e134]:
+    - generic [ref=e135]:
+      - tablist [ref=e137]:
+        - tab "대시보드" [ref=e138] [cursor=pointer]
+        - tab "러닝 쓰기" [ref=e139] [cursor=pointer]
+        - tab "크로스핏 쓰기" [ref=e140] [cursor=pointer]
+        - tab "PR / 1RM" [ref=e141] [cursor=pointer]
+      - generic [ref=e142]:
+        - generic "클릭하여 펼치기" [ref=e143] [cursor=pointer]:
+          - text: "\"나는 자고 싶을 때마다 이렇게 말한다. 쉬어도 된다. 죽으면 영원히 쉴 수 있으니까.\""
+          - emphasis [ref=e144]: — 아놀드 슈워제네거 (올림픽 보디빌딩 챔피언·배우)
+        - button "설정 메뉴" [ref=e146] [cursor=pointer]: P
+    - generic [ref=e148]:
+      - heading "이번달 요약" [level=2] [ref=e150]
+      - generic [ref=e151]:
+        - generic [ref=e152]:
+          - generic [ref=e153]: 이번달 운동
+          - generic [ref=e154]: 0회
+        - generic [ref=e155]:
+          - generic [ref=e156]: 총 러닝
+          - generic [ref=e157]: 0.0km
+        - generic [ref=e158]:
+          - generic [ref=e159]: 크로스핏
+          - generic [ref=e160]: 0회
+      - generic [ref=e161]:
+        - heading "꾸준함 추이" [level=2] [ref=e162]
+        - generic [ref=e163]: 최근 12주 · 최근 6개월
+      - generic [ref=e164]:
+        - generic [ref=e165]:
+          - generic [ref=e167]: 주간 운동 횟수
+          - generic [ref=e168]: 0회
+          - generic [ref=e169]: 아직 주간 데이터가 없어요
+          - generic [ref=e170]:
+            - generic [ref=e171]: 2/9~
+            - generic [ref=e172]: 이번 주
+        - generic [ref=e173]:
+          - generic [ref=e175]: 월간 러닝
+          - generic [ref=e176]: 0.0km
+          - generic [ref=e177]: 러닝 거리를 기록하면 보여요
+          - generic [ref=e178]:
+            - generic [ref=e179]: 11월~
+            - generic [ref=e180]: 이번 달
+        - generic [ref=e181]:
+          - generic [ref=e183]: 월간 크로스핏
+          - generic [ref=e184]: 0회
+          - generic [ref=e185]: 크로스핏을 기록하면 보여요
+          - generic [ref=e186]:
+            - generic [ref=e187]: 11월~
+            - generic [ref=e188]: 이번 달
+        - generic [ref=e189]:
+          - generic [ref=e191]: 평균 1RM
+          - generic [ref=e192]: 0.0kg
+          - generic [ref=e193]: PR 종목과 기록을 추가해보세요
+          - generic [ref=e194]:
+            - generic [ref=e195]: 종목 0개 평균
+            - generic [ref=e196]: 누적 베스트
+        - generic [ref=e197]:
+          - generic [ref=e199]: 주간 평균 페이스
+          - generic [ref=e200]: 0/km
+          - generic [ref=e201]: 러닝 시간·거리를 함께 기록하면 보여요
+          - generic [ref=e202]:
+            - generic [ref=e203]: 2/9~
+            - generic [ref=e204]: 이번 주
+      - heading "최근 기록" [level=2] [ref=e206]
+      - generic [ref=e208]:
+        - generic [ref=e209]: 오늘부터 한 줄씩 쌓아봐요
+        - generic [ref=e210]: 러닝 거리·시간이나 WOD 한 줄이면 충분해요
+        - generic [ref=e211]:
+          - button "러닝 쓰기" [ref=e212] [cursor=pointer]
+          - button "크로스핏 쓰기" [ref=e213] [cursor=pointer]

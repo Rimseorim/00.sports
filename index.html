@@ -9,6 +9,254 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    /* ═══════════════════════════════════════════
+     *  Design tokens — 어시 웰니스 (warm minimal)
+     *  컬러 6 역할 + 변형 / spacing 6 / radius 4
+     *  hex 직접 작성은 이 :root 블록 안에서만.
+     * ═══════════════════════════════════════════ */
+    :root {
+      /* 컬러 (역할) */
+      --c-bg-page: #ede8e3;
+      --c-bg: #faf6f2;
+      --c-card: #ffffff;
+      --c-fg: #2c1f14;
+      --c-muted: #b08060;
+      --c-muted-soft: #c4a48a;
+      --c-border: #ecddd3;
+      /* 컬러 (강조 — 러닝 = 테라코타 / 크로스핏 = 레드) */
+      --c-acc-run: #c8956c;
+      --c-acc-run-soft: #f5ede3;
+      --c-acc-run-day: #f0e6dc;
+      --c-acc-cf: #d0604a;
+      --c-acc-cf-soft: #fce8e0;
+      --c-acc-cf-h: #b04030;
+      /* 컬러 (구조·강조 다크 브라운) */
+      --c-deep: #7c5c3e;
+      --c-warn: #b84a30;
+      /* 일·토 색 */
+      --c-sun: #e07050;
+      --c-sat: #7090d0;
+      /* 오버레이·그림자 (단일 레이어, alpha ≤ 0.10) */
+      --c-overlay: rgba(44, 31, 20, 0.5);
+      --shadow-sm: 0 1px 2px rgba(44, 31, 20, 0.05);
+      --shadow-md: 0 2px 8px rgba(44, 31, 20, 0.08);
+      /* spacing 8pt grid */
+      --sp-1: 8px; --sp-2: 16px; --sp-3: 24px;
+      --sp-4: 32px; --sp-5: 48px; --sp-6: 64px;
+      /* radius */
+      --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 20px;
+      /* focus ring (WCAG 2.2 AA) */
+      --focus-ring: 0 0 0 3px rgba(124, 92, 62, 0.35);
+    }
+
+    /* 키보드 포커스 (outline:none 단독 금지 — :focus-visible 명시 대체) */
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    [role="tab"]:focus-visible,
+    [role="menuitem"]:focus-visible {
+      outline: 2px solid var(--c-deep);
+      outline-offset: 2px;
+    }
+
+    /* 모션 감소 */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* 빈 상태 — CTA 포함 */
+    .empty .empty-headline {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--c-fg);
+      margin-bottom: var(--sp-1);
+    }
+    .empty .empty-sub {
+      font-size: 13px;
+      color: var(--c-muted);
+      margin-bottom: var(--sp-2);
+      line-height: 1.5;
+    }
+    .empty .empty-actions {
+      display: flex;
+      gap: var(--sp-1);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: var(--sp-2);
+    }
+    .empty .empty-cta {
+      min-height: 32px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      background: var(--c-card);
+      color: var(--c-fg);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .empty .empty-cta:hover { background: var(--c-bg); }
+    .empty .empty-cta.run {
+      border-color: var(--c-acc-run);
+      color: var(--c-deep);
+      background: var(--c-acc-run-soft);
+    }
+    .empty .empty-cta.cf {
+      border-color: var(--c-acc-cf);
+      color: var(--c-acc-cf-h);
+      background: var(--c-acc-cf-soft);
+    }
+    .empty .empty-cta.run:hover { filter: brightness(0.97); }
+    .empty .empty-cta.cf:hover { filter: brightness(0.97); }
+
+    /* ═══ Streak 카운터 (사이드바) ═══ */
+    .streak-card {
+      margin: var(--sp-2) 14px 0;
+      padding: 12px 14px;
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .streak-card .streak-num {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--c-deep);
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+    .streak-card .streak-meta {
+      flex: 1;
+      min-width: 0;
+    }
+    .streak-card .streak-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-fg);
+      letter-spacing: -0.2px;
+    }
+    .streak-card .streak-hint {
+      font-size: 11px;
+      color: var(--c-muted);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+    .streak-card.frozen { background: var(--c-acc-run-soft); }
+    .streak-card.zero .streak-num { color: var(--c-muted-soft); }
+    .streak-rest-pill {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--c-deep);
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      padding: 2px 6px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ═══ 인바디형 트렌드 대시보드 ═══ */
+    .trend-board {
+      margin-top: var(--sp-3);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--sp-2);
+    }
+    .trend-card {
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-2) var(--sp-2) 14px;
+      display: flex;
+      flex-direction: column;
+      min-height: 168px;
+    }
+    .trend-card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--sp-1);
+      margin-bottom: 6px;
+    }
+    .trend-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-muted);
+      letter-spacing: 0.2px;
+      text-transform: none;
+    }
+    .trend-card-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--c-fg);
+      letter-spacing: -0.5px;
+    }
+    .trend-card-value .trend-unit {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--c-muted);
+      margin-left: 3px;
+    }
+    .trend-card-delta {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--r-sm);
+      letter-spacing: 0.2px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .trend-card-delta.up { color: var(--c-deep); background: var(--c-acc-run-soft); }
+    .trend-card-delta.down { color: var(--c-acc-cf-h); background: var(--c-acc-cf-soft); }
+    .trend-card-delta.flat { color: var(--c-muted); background: var(--c-bg); }
+    .trend-card-svg {
+      flex: 1;
+      min-height: 84px;
+      margin-top: 4px;
+    }
+    .trend-card-empty {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-muted-soft);
+      font-size: 12px;
+      text-align: center;
+      padding: var(--sp-2) 0;
+      line-height: 1.5;
+    }
+    .trend-card-foot {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--c-muted-soft);
+      margin-top: 6px;
+    }
+    .trend-board-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: var(--sp-3);
+      margin-bottom: 6px;
+    }
+    .trend-board-title h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--c-fg);
+      letter-spacing: -0.3px;
+    }
+    .trend-board-title .trend-board-hint {
+      font-size: 12px;
+      color: var(--c-muted);
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -1220,6 +1468,15 @@
       <p class="greeting">오늘도 수고했어요</p>
     </div>
 
+    <div class="streak-card zero" id="streak-card" role="status" aria-live="polite">
+      <div class="streak-num" id="streak-num">0</div>
+      <div class="streak-meta">
+        <div class="streak-label" id="streak-label">아직 시작 전</div>
+        <div class="streak-hint" id="streak-hint">한 번 기록하면 시작돼요</div>
+      </div>
+      <div class="streak-rest-pill hidden" id="streak-rest-pill" title="이번 주 쉬는 날 카운트">REST 1</div>
+    </div>
+
     <div class="sidebar-calendar">
       <div class="cal-nav">
         <button class="nav-btn" onclick="changeMonth(-1)" aria-label="이전 달">&#8249;</button>
@@ -1292,6 +1549,12 @@
             <div class="stat-value" id="stats-crossfit">0<span class="stat-unit">회</span></div>
           </div>
         </div>
+
+        <div class="trend-board-title">
+          <h2>꾸준함 추이</h2>
+          <span class="trend-board-hint">최근 12주 · 최근 6개월</span>
+        </div>
+        <div class="trend-board" id="trend-board"></div>
 
         <div class="view-title second"><h2>최근 기록</h2></div>
         <div class="log-list" id="recent-list"></div>
@@ -1477,8 +1740,8 @@
     const prev = sessionStorage.getItem(key + '_prev');
     if (!prev) { showToast('복원할 스냅샷이 없어요'); return false; }
     if (!safeSetItem(key, prev)) return false;
-    if (key === 'sportslogs') { renderCalendar(); renderLogs(); }
-    else if (key === 'prdata') renderPRView();
+    if (key === 'sportslogs') { renderCalendar(); renderLogs(); renderStreak(); renderTrendBoard(); }
+    else if (key === 'prdata') { renderPRView(); renderTrendBoard(); }
     return true;
   }
 
@@ -1674,8 +1937,14 @@
   (function setDailyQuote() {
     const dayIndex = Math.floor(Date.now() / 86400000);
     const q = QUOTES[dayIndex % QUOTES.length];
-    document.getElementById('daily-quote').innerHTML =
-      `"${q.text}" <em>— ${q.author}</em>`;
+    const el = document.getElementById('daily-quote');
+    el.textContent = '';
+    const text = document.createElement('span');
+    text.textContent = `"${q.text}" `;
+    const em = document.createElement('em');
+    em.textContent = `— ${q.author}`;
+    el.appendChild(text);
+    el.appendChild(em);
   })();
 
   const today = new Date();
@@ -1724,7 +1993,7 @@
     });
 
     if (view === 'pr') renderPRView();
-    if (view === 'dashboard') { renderStats(); renderRecentList(); }
+    if (view === 'dashboard') { renderStats(); renderRecentList(); renderTrendBoard(); renderStreak(); }
     if (view === 'running') { renderRecent('running'); updateEditBadge('running'); }
     if (view === 'crossfit') { renderRecent('crossfit'); updateEditBadge('crossfit'); }
 
@@ -2171,8 +2440,10 @@
     renderRecent('running');
     renderRecent('crossfit');
     renderRecentList();
+    renderStreak();
+    renderTrendBoard();
     updateBackupReminder();
-    showToast(isEdit ? '기록을 수정했어요' : '기록을 저장했어요');
+    showToast(isEdit ? '기록을 저장했어요 · 오늘도 한 줄' : '오늘도 기록했어요');
   }
 
   function deleteLog(id) {
@@ -2181,6 +2452,8 @@
     safeSetItem('sportslogs', JSON.stringify(getLogs().filter(l => l.id !== id)));
     renderCalendar();
     renderLogs();
+    renderStreak();
+    renderTrendBoard();
     showToast('기록을 삭제했어요', {
       action: { label: '되돌리기', onClick: () => {
         if (restoreFromSnapshot('sportslogs')) showToast('되돌렸어요');
@@ -2207,7 +2480,16 @@
     const list = document.getElementById('log-list');
     if (!list) return;
     if (logs.length === 0) {
-      list.innerHTML = '<div class="empty">이 날은 기록이 없어요.<br>위 탭에서 바로 작성해보세요.</div>';
+      const isToday = activeDate === todayStr;
+      const headline = isToday ? '오늘은 아직 비어 있어요' : '이 날은 기록이 없어요';
+      list.innerHTML = `
+        <div class="empty">
+          <div class="empty-headline">${headline}</div>
+          <div class="empty-actions">
+            <button type="button" class="empty-cta run" onclick="showView('running')">러닝 쓰기</button>
+            <button type="button" class="empty-cta cf" onclick="showView('crossfit')">크로스핏 쓰기</button>
+          </div>
+        </div>`;
       return;
     }
     list.innerHTML = logs.map(logToHtml).join('');
@@ -2218,7 +2500,8 @@
     if (!el) return;
     const logs = getLogs().filter(l => l.type === type).slice(0, 5);
     if (logs.length === 0) {
-      el.innerHTML = '<div class="empty">아직 기록이 없어요.</div>';
+      const label = type === 'running' ? '첫 러닝' : '첫 크로스핏';
+      el.innerHTML = `<div class="empty"><div class="empty-headline">${label}을 시작해볼까요?</div><div class="empty-sub">위 폼에 채워 저장하면 여기 모여요</div></div>`;
       return;
     }
     el.innerHTML = logs.map(logToHtml).join('');
@@ -2229,7 +2512,15 @@
     if (!el) return;
     const logs = getLogs().slice(0, 8);
     if (logs.length === 0) {
-      el.innerHTML = '<div class="empty">아직 기록이 없어요.<br>위 탭에서 바로 작성해보세요.</div>';
+      el.innerHTML = `
+        <div class="empty">
+          <div class="empty-headline">오늘부터 한 줄씩 쌓아봐요</div>
+          <div class="empty-sub">러닝 거리·시간이나 WOD 한 줄이면 충분해요</div>
+          <div class="empty-actions">
+            <button type="button" class="empty-cta run" onclick="showView('running')">러닝 쓰기</button>
+            <button type="button" class="empty-cta cf" onclick="showView('crossfit')">크로스핏 쓰기</button>
+          </div>
+        </div>`;
       return;
     }
     el.innerHTML = logs.map(logToHtml).join('');
@@ -2616,10 +2907,22 @@
       movement.records.push({ id: Date.now(), date, weight, unit, type, note });
     }
     movement.records.sort((a, b) => a.date.localeCompare(b.date));
+    // PR 자동 감지 (kg 환산 누적 max 비교, 0.5% threshold)
+    const allKg = movement.records.map(r => toKg(parseFloat(r.weight) || 0, r.unit || 'kg'));
+    const newKg = toKg(weight, unit);
+    const beforeMax = isEdit
+      ? Math.max(...allKg.filter((_, i) => movement.records[i].id !== editingRecordId), 0)
+      : Math.max(...allKg.filter(k => k !== newKg), 0);
+    const isPR = !isEdit && allKg.length > 1 && newKg > beforeMax * 1.005;
     savePRDataStore(data);
     closePRRecordModal();
     renderPRView();
-    showToast(isEdit ? 'PR 기록을 수정했어요' : 'PR 기록을 저장했어요');
+    renderTrendBoard();
+    if (isPR) {
+      showToast(`새 PR! ${fmtWeight(weight, unit)} (이전 ${beforeMax.toFixed(1)}kg)`, { duration: 5000 });
+    } else {
+      showToast(isEdit ? 'PR 기록을 수정했어요' : 'PR 기록을 저장했어요');
+    }
   }
 
   function deleteRecord(movementId, recordId) {
@@ -2643,7 +2946,14 @@
     const data = getPRData();
     const list = document.getElementById('pr-list');
     if (data.movements.length === 0) {
-      list.innerHTML = '<div class="empty">관리할 종목이 없어요.<br>위의 <strong>+ 종목 추가</strong> 버튼으로 시작하세요.</div>';
+      list.innerHTML = `
+        <div class="empty">
+          <div class="empty-headline">아직 관리 중인 종목이 없어요</div>
+          <div class="empty-sub">Back Squat, Clean &amp; Jerk처럼 추적할 종목을 추가해보세요</div>
+          <div class="empty-actions">
+            <button type="button" class="empty-cta cf" onclick="openAddMovementModal()">+ 종목 추가</button>
+          </div>
+        </div>`;
       return;
     }
 
@@ -2763,6 +3073,347 @@
     if (e.key === 'Escape') closeAllOpenModals();
   });
 
+  // ══════════════════════════════
+  //  Streak (연속 운동일) — Duolingo 모델 변형
+  //  - rest pass: 주 1회 자동 충전, 보유 1개
+  //  - 회복일(미스 1일)은 자동 소모, streak 유지
+  // ══════════════════════════════
+  function dateKey(d) {
+    return d.toISOString().slice(0, 10);
+  }
+  function diffDays(a, b) {
+    return Math.round((Date.parse(a) - Date.parse(b)) / 86400000);
+  }
+  function getActiveDays() {
+    const set = new Set();
+    getLogs().forEach(l => { if (l && l.date) set.add(l.date); });
+    return [...set].sort();
+  }
+  function getRestPassState() {
+    const raw = localStorage.getItem('restPassState');
+    if (!raw) return { count: 1, lastGrant: dateKey(new Date()), used: [] };
+    try { return JSON.parse(raw); }
+    catch { return { count: 1, lastGrant: dateKey(new Date()), used: [] }; }
+  }
+  function saveRestPassState(s) { safeSetItem('restPassState', JSON.stringify(s)); }
+  function refillRestPass(state) {
+    // 마지막 발급으로부터 7일+ 경과 시 1개 충전 (보유 한도 1)
+    const today = dateKey(new Date());
+    const since = diffDays(today, state.lastGrant);
+    if (since >= 7 && state.count < 1) {
+      state.count = 1;
+      state.lastGrant = today;
+      saveRestPassState(state);
+    }
+    return state;
+  }
+  function calcStreak() {
+    const state = refillRestPass(getRestPassState());
+    const active = getActiveDays();
+    if (active.length === 0) return { count: 0, restCount: state.count, frozen: false };
+
+    const todayKey = dateKey(new Date());
+    const yesterdayKey = dateKey(new Date(Date.now() - 86400000));
+    const lastActive = active[active.length - 1];
+
+    // 마지막 운동이 어제·오늘이 아니면 streak 끊김 (1일 갭은 rest pass 자동 소모)
+    let frozen = false;
+    if (lastActive !== todayKey && lastActive !== yesterdayKey) {
+      const gap = diffDays(todayKey, lastActive);
+      if (gap === 2 && state.count > 0 && !state.used.includes(yesterdayKey)) {
+        // 어제 1일 미스 → rest pass 자동 소모해서 streak 보존
+        state.count -= 1;
+        state.used = [...(state.used || []), yesterdayKey].slice(-30);
+        saveRestPassState(state);
+        frozen = true;
+      } else {
+        return { count: 0, restCount: state.count, frozen: false };
+      }
+    }
+
+    // 연속 active 일수 카운트 (rest pass 사용 일자도 chain에 포함)
+    let count = 0;
+    let cursor = (lastActive === todayKey) ? new Date() : new Date(Date.now() - 86400000);
+    const activeSet = new Set(active);
+    const usedSet = new Set(state.used || []);
+    while (activeSet.has(dateKey(cursor)) || usedSet.has(dateKey(cursor))) {
+      count += 1;
+      cursor = new Date(cursor.getTime() - 86400000);
+    }
+    return { count, restCount: state.count, frozen };
+  }
+  function renderStreak() {
+    const card = document.getElementById('streak-card');
+    if (!card) return;
+    const { count, restCount, frozen } = calcStreak();
+    const numEl = document.getElementById('streak-num');
+    const lblEl = document.getElementById('streak-label');
+    const hintEl = document.getElementById('streak-hint');
+    const restPill = document.getElementById('streak-rest-pill');
+    numEl.textContent = String(count);
+    if (count === 0) {
+      card.classList.add('zero');
+      card.classList.remove('frozen');
+      lblEl.textContent = '아직 시작 전';
+      hintEl.textContent = '오늘 한 번 기록하면 시작돼요';
+    } else {
+      card.classList.remove('zero');
+      card.classList.toggle('frozen', frozen);
+      lblEl.textContent = frozen ? `연속 ${count}일 · 휴일 패스 사용` : `연속 ${count}일`;
+      hintEl.textContent = frozen
+        ? '어제 쉬어도 1회 자동으로 이어줬어요'
+        : (count === 1 ? '내일도 한 줄 더 쌓아봐요' : '잘 이어가고 있어요');
+    }
+    if (restPill) {
+      restPill.classList.toggle('hidden', restCount === 0);
+      restPill.textContent = `REST ${restCount}`;
+    }
+  }
+
+  // ══════════════════════════════
+  //  인바디형 트렌드 대시보드 (5 SVG 꺾은선)
+  //   1. 주간 운동 횟수 (12주)
+  //   2. 월간 러닝 km (6개월)
+  //   3. 월간 크로스핏 횟수 (6개월)
+  //   4. 평균 1RM 변화 (6개월)
+  //   5. 주간 러닝 페이스 분/km (12주)
+  // ══════════════════════════════
+  function getISOWeekKey(d) {
+    const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dayNum = dt.getUTCDay() || 7;
+    dt.setUTCDate(dt.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil((((dt - yearStart) / 86400000) + 1) / 7);
+    return `${dt.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+  }
+  function buildWeeklyBuckets(weeks) {
+    const out = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dow = today.getDay() || 7;
+    const monday = new Date(today.getTime() - (dow - 1) * 86400000);
+    for (let i = weeks - 1; i >= 0; i--) {
+      const start = new Date(monday.getTime() - i * 7 * 86400000);
+      out.push({ key: getISOWeekKey(start), start, label: `${start.getMonth() + 1}/${start.getDate()}` });
+    }
+    return out;
+  }
+  function buildMonthlyBuckets(months) {
+    const out = [];
+    const today = new Date();
+    for (let i = months - 1; i >= 0; i--) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      out.push({
+        key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`,
+        label: `${d.getMonth() + 1}월`
+      });
+    }
+    return out;
+  }
+  function logKey(log, granularity) {
+    const d = new Date(log.date);
+    if (granularity === 'week') return getISOWeekKey(d);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  }
+  function trendSvg(values, accentVar) {
+    if (!values || values.length === 0) return '';
+    const W = 280, H = 84;
+    const padL = 6, padR = 6, padT = 8, padB = 8;
+    const chartW = W - padL - padR;
+    const chartH = H - padT - padB;
+    const minV = Math.min(...values);
+    const maxV = Math.max(...values);
+    const range = (maxV - minV) || 1;
+    const xOf = (i) => padL + (values.length === 1 ? chartW / 2 : (i / (values.length - 1)) * chartW);
+    const yOf = (v) => padT + chartH - ((v - minV) / range) * chartH;
+    const pts = values.map((v, i) => `${xOf(i)},${yOf(v)}`).join(' ');
+    const areaD = `M ${xOf(0)},${yOf(values[0])} ` +
+      values.slice(1).map((v, i) => `L ${xOf(i + 1)},${yOf(v)}`).join(' ') +
+      ` L ${xOf(values.length - 1)},${padT + chartH} L ${xOf(0)},${padT + chartH} Z`;
+    const lastX = xOf(values.length - 1);
+    const lastY = yOf(values[values.length - 1]);
+    const id = 'trendGrad-' + Math.random().toString(36).slice(2, 8);
+    return `
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:100%;display:block;overflow:visible">
+        <defs>
+          <linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(${accentVar})" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="var(${accentVar})" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="${areaD}" fill="url(#${id})"/>
+        <polyline points="${pts}" fill="none" stroke="var(${accentVar})" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="${lastX}" cy="${lastY}" r="3.5" fill="var(${accentVar})" stroke="#fff" stroke-width="1.5"/>
+      </svg>`;
+  }
+  function deltaBadge(curr, prev, suffix, isInverse) {
+    if (prev == null || prev === 0) {
+      if (!curr) return '';
+      return `<span class="trend-card-delta up">첫 ${suffix}</span>`;
+    }
+    const d = curr - prev;
+    if (Math.abs(d) < 0.05) return `<span class="trend-card-delta flat">변동 없음</span>`;
+    const positive = isInverse ? d < 0 : d > 0;
+    const cls = positive ? 'up' : 'down';
+    const sign = d > 0 ? '+' : '';
+    const fmt = Number.isInteger(d) ? d : d.toFixed(1);
+    return `<span class="trend-card-delta ${cls}">${sign}${fmt}${suffix}</span>`;
+  }
+  function renderTrendCard(opts) {
+    const { title, value, unit, delta, values, accent, foot, emptyText } = opts;
+    const hasData = values && values.some(v => v > 0);
+    const body = hasData
+      ? `<div class="trend-card-svg">${trendSvg(values, accent)}</div>`
+      : `<div class="trend-card-empty">${emptyText}</div>`;
+    return `
+      <div class="trend-card">
+        <div class="trend-card-head">
+          <span class="trend-card-title">${title}</span>
+          ${delta || ''}
+        </div>
+        <div class="trend-card-value">${value}<span class="trend-unit">${unit}</span></div>
+        ${body}
+        <div class="trend-card-foot">
+          <span>${foot.left}</span>
+          <span>${foot.right}</span>
+        </div>
+      </div>`;
+  }
+  function renderTrendBoard() {
+    const root = document.getElementById('trend-board');
+    if (!root) return;
+    const logs = getLogs();
+    const wkBuckets = buildWeeklyBuckets(12);
+    const moBuckets = buildMonthlyBuckets(6);
+
+    // 1. 주간 운동 횟수
+    const wkCount = wkBuckets.map(b => 0);
+    logs.forEach(l => {
+      const k = logKey(l, 'week');
+      const idx = wkBuckets.findIndex(b => b.key === k);
+      if (idx >= 0) wkCount[idx] += 1;
+    });
+    const lastWk = wkCount[wkCount.length - 1];
+    const prevWk = wkCount[wkCount.length - 2] || 0;
+    const card1 = renderTrendCard({
+      title: '주간 운동 횟수',
+      value: lastWk,
+      unit: '회',
+      delta: deltaBadge(lastWk, prevWk, '회', false),
+      values: wkCount,
+      accent: '--c-deep',
+      foot: { left: `${wkBuckets[0].label}~`, right: '이번 주' },
+      emptyText: '아직 주간 데이터가 없어요'
+    });
+
+    // 2. 월간 러닝 km
+    const runMo = moBuckets.map(() => 0);
+    logs.filter(l => l.type === 'running').forEach(l => {
+      const k = logKey(l, 'month');
+      const idx = moBuckets.findIndex(b => b.key === k);
+      if (idx >= 0) runMo[idx] += parseFloat(l.distance) || 0;
+    });
+    const lastRunKm = runMo[runMo.length - 1];
+    const prevRunKm = runMo[runMo.length - 2] || 0;
+    const card2 = renderTrendCard({
+      title: '월간 러닝',
+      value: lastRunKm.toFixed(1),
+      unit: 'km',
+      delta: deltaBadge(lastRunKm, prevRunKm, 'km', false),
+      values: runMo,
+      accent: '--c-acc-run',
+      foot: { left: `${moBuckets[0].label}~`, right: '이번 달' },
+      emptyText: '러닝 거리를 기록하면 보여요'
+    });
+
+    // 3. 월간 크로스핏 횟수
+    const cfMo = moBuckets.map(() => 0);
+    logs.filter(l => l.type === 'crossfit').forEach(l => {
+      const k = logKey(l, 'month');
+      const idx = moBuckets.findIndex(b => b.key === k);
+      if (idx >= 0) cfMo[idx] += 1;
+    });
+    const lastCf = cfMo[cfMo.length - 1];
+    const prevCf = cfMo[cfMo.length - 2] || 0;
+    const card3 = renderTrendCard({
+      title: '월간 크로스핏',
+      value: lastCf,
+      unit: '회',
+      delta: deltaBadge(lastCf, prevCf, '회', false),
+      values: cfMo,
+      accent: '--c-acc-cf',
+      foot: { left: `${moBuckets[0].label}~`, right: '이번 달' },
+      emptyText: '크로스핏을 기록하면 보여요'
+    });
+
+    // 4. 평균 1RM 변화 (PR 종목별 월간 max 평균)
+    const pr = getPRData();
+    const prMoAvg = moBuckets.map(() => null);
+    if (pr.movements && pr.movements.length) {
+      moBuckets.forEach((bucket, idx) => {
+        const monthValues = [];
+        pr.movements.forEach(mov => {
+          // 해당 월까지의 누적 best (kg 환산)
+          const inRange = mov.records
+            .filter(r => r.date.slice(0, 7) <= bucket.key)
+            .map(r => toKg(parseFloat(r.weight) || 0, r.unit || 'kg'));
+          if (inRange.length) monthValues.push(Math.max(...inRange));
+        });
+        prMoAvg[idx] = monthValues.length
+          ? Math.round((monthValues.reduce((a, b) => a + b, 0) / monthValues.length) * 10) / 10
+          : 0;
+      });
+    }
+    const lastPr = prMoAvg[prMoAvg.length - 1] || 0;
+    const prevPr = prMoAvg[prMoAvg.length - 2] || 0;
+    const card4 = renderTrendCard({
+      title: '평균 1RM',
+      value: lastPr.toFixed(1),
+      unit: 'kg',
+      delta: deltaBadge(lastPr, prevPr, 'kg', false),
+      values: prMoAvg.map(v => v || 0),
+      accent: '--c-deep',
+      foot: { left: `종목 ${pr.movements ? pr.movements.length : 0}개 평균`, right: '누적 베스트' },
+      emptyText: 'PR 종목과 기록을 추가해보세요'
+    });
+
+    // 5. 주간 러닝 페이스 (분/km)
+    const wkPace = wkBuckets.map(() => null);
+    logs.filter(l => l.type === 'running').forEach(l => {
+      const km = parseFloat(l.distance);
+      const min = parseFloat(l.time);
+      if (!km || !min || km <= 0) return;
+      const k = logKey(l, 'week');
+      const idx = wkBuckets.findIndex(b => b.key === k);
+      if (idx < 0) return;
+      const pace = min / km;
+      if (wkPace[idx] == null) wkPace[idx] = { sum: 0, n: 0 };
+      wkPace[idx].sum += pace;
+      wkPace[idx].n += 1;
+    });
+    const paceVals = wkPace.map(o => (o ? o.sum / o.n : 0));
+    const lastPace = paceVals[paceVals.length - 1];
+    const prevPace = paceVals[paceVals.length - 2];
+    const fmtPace = (m) => {
+      if (!m) return '0';
+      const mm = Math.floor(m);
+      const ss = Math.round((m - mm) * 60);
+      return `${mm}:${String(ss).padStart(2, '0')}`;
+    };
+    const card5 = renderTrendCard({
+      title: '주간 평균 페이스',
+      value: fmtPace(lastPace),
+      unit: '/km',
+      delta: deltaBadge(lastPace, prevPace, '분', true),
+      values: paceVals,
+      accent: '--c-acc-run',
+      foot: { left: `${wkBuckets[0].label}~`, right: '이번 주' },
+      emptyText: '러닝 시간·거리를 함께 기록하면 보여요'
+    });
+
+    root.innerHTML = card1 + card2 + card3 + card4 + card5;
+  }
+
   // 초기 인라인 에디터 상태
   resetRunningForm();
   resetCrossfitForm();
@@ -2772,6 +3423,8 @@
   renderRecentList();
   renderRecent('running');
   renderRecent('crossfit');
+  renderStreak();
+  renderTrendBoard();
   updateBackupReminder();
   showView('dashboard');
 
