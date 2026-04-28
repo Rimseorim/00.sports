@@ -265,6 +265,173 @@
     .profile-btn svg { display: block; }
     .profile-btn { display: flex; align-items: center; justify-content: center; }
 
+    /* 30일+ 백업 알림 배너 */
+    .alert-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-2);
+      background: var(--c-acc-cf-soft);
+      border-left: 3px solid var(--c-acc-cf);
+      border-radius: var(--r-md);
+      padding: 12px 16px;
+      margin-bottom: var(--sp-2);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--c-fg);
+    }
+    .alert-banner strong {
+      display: block;
+      color: var(--c-acc-cf-h);
+      margin-bottom: 2px;
+      font-size: 13px;
+    }
+    .alert-banner .alert-action {
+      flex-shrink: 0;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--c-card);
+      border: 1px solid var(--c-acc-cf);
+      border-radius: var(--r-sm);
+      color: var(--c-acc-cf-h);
+      cursor: pointer;
+    }
+
+    /* 월간 목표 진행률 */
+    .goal-progress {
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      padding: 12px 16px;
+      margin-bottom: var(--sp-2);
+    }
+    .goal-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .goal-label { font-size: 12px; font-weight: 700; color: var(--c-muted); }
+    .goal-value { font-size: 14px; font-weight: 700; color: var(--c-fg); letter-spacing: -0.3px; }
+    .goal-bar {
+      height: 8px;
+      background: var(--c-bg-page);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+    }
+    .goal-bar-fill {
+      height: 100%;
+      background: var(--c-acc-run);
+      transition: width 0.3s ease;
+      border-radius: var(--r-sm);
+    }
+    .goal-bar-fill.complete { background: var(--c-deep); }
+
+    /* 명명 WOD 벤치마크 힌트 */
+    .wod-benchmark-hint {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: var(--c-acc-run-soft);
+      border-left: 3px solid var(--c-acc-run);
+      border-radius: var(--r-sm);
+      font-size: 12px;
+      color: var(--c-fg);
+      line-height: 1.6;
+    }
+    .wod-benchmark-hint.show { display: block; }
+    .wod-benchmark-hint strong { color: var(--c-deep); }
+    .wod-benchmark-hint table {
+      width: 100%;
+      margin-top: 6px;
+      font-size: 11px;
+      border-collapse: collapse;
+    }
+    .wod-benchmark-hint th,
+    .wod-benchmark-hint td {
+      padding: 3px 6px;
+      text-align: center;
+      color: var(--c-fg);
+    }
+    .wod-benchmark-hint th {
+      color: var(--c-muted);
+      font-weight: 700;
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    /* DOTS 점수 배지 (PR 카드) */
+    .dots-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-deep);
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      padding: 2px 8px;
+      margin-left: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    /* 수정 중 배지 강조 (어떤 날짜·종류 기록인지) */
+    .edit-mode-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--c-acc-cf-h);
+      background: var(--c-acc-cf-soft);
+      border: 1px solid var(--c-acc-cf);
+      border-radius: var(--r-sm);
+      padding: 4px 10px;
+      letter-spacing: -0.2px;
+    }
+
+    /* 캘린더 cal-day 키보드 포커스 */
+    .cal-day[role="button"] {
+      cursor: pointer;
+    }
+    .cal-day[role="button"]:focus-visible {
+      outline: 2px solid var(--c-deep);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* details summary 스타일 */
+    details.run-meta-details {
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      padding: 0 12px;
+      background: var(--c-bg);
+    }
+    details.run-meta-details[open] { padding-bottom: 8px; }
+    details.run-meta-details summary { list-style: none; padding: 8px 0 !important; }
+    details.run-meta-details summary::-webkit-details-marker { display: none; }
+    details.run-meta-details summary::after {
+      content: "+";
+      float: right;
+      color: var(--c-muted);
+      font-weight: 700;
+      transition: transform 0.15s;
+    }
+    details.run-meta-details[open] summary::after { content: "−"; }
+
+    /* WOD record type select wrapper */
+    .wod-record-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .wod-record-row select {
+      width: 90px;
+      flex-shrink: 0;
+      padding: 8px 8px;
+      font-size: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+    }
+
     /* ═══ Streak 카운터 (사이드바) ═══ */
     .streak-card {
       margin: var(--sp-2) 14px 0;
@@ -1688,8 +1855,23 @@
 
       <!-- ── 대시보드 ── -->
       <section id="view-dashboard" class="view">
+        <div class="alert-banner hidden" id="backup-alert-banner" role="status">
+          <div>
+            <strong>백업 권장</strong>
+            <span id="backup-alert-text">30일 넘게 백업이 없어요. 분실 위험을 줄이려면 지금 한 번 내려받아 두세요.</span>
+          </div>
+          <button type="button" class="alert-action" onclick="exportBackup()">지금 백업</button>
+        </div>
         <div class="view-title">
           <h2 id="dashboard-title">이번달 요약</h2>
+          <button type="button" class="outline-btn" style="padding:5px 10px;font-size:12px;" onclick="openMonthlyGoalModal()">월간 목표 설정</button>
+        </div>
+        <div class="goal-progress hidden" id="goal-progress" aria-live="polite">
+          <div class="goal-row">
+            <span class="goal-label">이번달 러닝 목표</span>
+            <span class="goal-value" id="goal-value">0 / 0 km</span>
+          </div>
+          <div class="goal-bar"><div class="goal-bar-fill" id="goal-bar-fill"></div></div>
         </div>
         <div class="dash-stats" id="stats-card">
           <div class="stat-item">
@@ -1743,10 +1925,49 @@
             </div>
           </div>
           <div class="field">
+            <label>훈련 종류 <span style="font-weight:400;color:var(--c-muted-soft);">(선택)</span></label>
+            <select id="run-type">
+              <option value="">- 선택 안 함 -</option>
+              <option value="easy">이지런 (편안한 페이스)</option>
+              <option value="tempo">템포런 (지속주)</option>
+              <option value="interval">인터벌 (트랙·랩)</option>
+              <option value="lsd">LSD (장거리)</option>
+              <option value="recovery">회복런</option>
+              <option value="race">레이스 페이스</option>
+            </select>
+          </div>
+          <div class="field">
             <label>장소</label>
             <input type="text" id="run-place" placeholder="예: 한강공원" list="place-list" autocomplete="off">
             <datalist id="place-list"></datalist>
           </div>
+          <details class="run-meta-details" style="margin-bottom:var(--sp-2);">
+            <summary style="cursor:pointer;font-size:13px;font-weight:700;color:var(--c-deep);padding:6px 0;">상세 정보 추가 (신발 · 날씨 · RPE)</summary>
+            <div class="field" style="margin-top:8px;">
+              <label>신발 <span style="font-weight:400;color:var(--c-muted-soft);">(선택)</span></label>
+              <input type="text" id="run-shoes" placeholder="예: 나이키 알파플라이" list="shoes-list" autocomplete="off">
+              <datalist id="shoes-list"></datalist>
+            </div>
+            <div class="field row-2">
+              <div>
+                <label>날씨 <span style="font-weight:400;color:var(--c-muted-soft);">(선택)</span></label>
+                <select id="run-weather">
+                  <option value="">-</option>
+                  <option value="sunny">맑음</option>
+                  <option value="cloudy">흐림</option>
+                  <option value="rain">비</option>
+                  <option value="snow">눈</option>
+                  <option value="hot">더움</option>
+                  <option value="cold">추움</option>
+                  <option value="wind">바람</option>
+                </select>
+              </div>
+              <div>
+                <label>체감 강도 RPE <span style="font-weight:400;color:var(--c-muted-soft);">(1~10)</span></label>
+                <input type="number" id="run-rpe" min="1" max="10" step="1" inputmode="numeric" placeholder="예: 6">
+              </div>
+            </div>
+          </details>
           <div class="field">
             <label>일기</label>
             <textarea id="run-diary" placeholder="오늘 러닝은 어땠나요?"></textarea>
@@ -1778,7 +1999,13 @@
             <datalist id="cf-title-list"></datalist>
           </div>
           <div id="wod-list"></div>
-          <button type="button" class="add-wod-btn" onclick="addWod()">+ WOD 추가</button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+            <button type="button" class="add-wod-btn" onclick="addWod()">+ WOD 추가</button>
+            <button type="button" class="outline-btn" style="padding:6px 12px;font-size:12px;" onclick="addWodTemplate('amrap')">AMRAP 템플릿</button>
+            <button type="button" class="outline-btn" style="padding:6px 12px;font-size:12px;" onclick="addWodTemplate('emom')">EMOM 템플릿</button>
+            <button type="button" class="outline-btn" style="padding:6px 12px;font-size:12px;" onclick="addWodTemplate('forTime')">For Time 템플릿</button>
+          </div>
+          <div id="wod-benchmark-hint" class="wod-benchmark-hint" aria-live="polite"></div>
           <div class="field">
             <label>일기</label>
             <textarea id="cf-diary" placeholder="오늘 운동은 어땠나요?"></textarea>
@@ -1825,6 +2052,36 @@
 
     </div>
   </main>
+</div>
+
+<!-- 월간 목표·체중 설정 모달 -->
+<div class="modal-bg" id="profile-settings-modal-bg" role="dialog" aria-modal="true" aria-labelledby="profile-settings-title">
+  <div class="modal pr-modal">
+    <div class="modal-header">
+      <h2 id="profile-settings-title">개인 설정</h2>
+      <button class="close-btn" onclick="closeMonthlyGoalModal()" aria-label="모달 닫기">&times;</button>
+    </div>
+    <div class="field">
+      <label>이번 달 러닝 목표 (km) <span style="font-weight:400;color:var(--c-muted-soft);">(선택)</span></label>
+      <input type="number" id="goal-km-input" min="0" step="1" inputmode="decimal" placeholder="예: 100">
+    </div>
+    <div class="field row-2">
+      <div>
+        <label>체중 (kg) <span style="font-weight:400;color:var(--c-muted-soft);">(DOTS 보정용)</span></label>
+        <input type="number" id="bw-input" min="0" step="0.1" inputmode="decimal" placeholder="예: 70.5">
+      </div>
+      <div>
+        <label>성별</label>
+        <select id="sex-input">
+          <option value="">-</option>
+          <option value="male">남성</option>
+          <option value="female">여성</option>
+        </select>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--c-muted);line-height:1.4;margin-top:4px;">체중·성별은 PR/1RM 카드의 DOTS 점수 계산에만 쓰여요. 외부에 전송되지 않습니다.</p>
+    <button class="save-btn dark" onclick="saveProfileSettings()">저장하기</button>
+  </div>
 </div>
 
 <!-- 백업 복원 선택 모달 (병합 / 덮어쓰기 / 취소 명시) -->
@@ -2213,7 +2470,7 @@
     });
 
     if (view === 'pr') renderPRView();
-    if (view === 'dashboard') { renderStats(); renderRecentList(); renderTrendBoard(); renderStreak(); }
+    if (view === 'dashboard') { renderStats(); renderRecentList(); renderTrendBoard(); renderStreak(); updateBackupAlert(); renderGoalProgress(); }
     if (view === 'running') { renderRecent('running'); updateEditBadge('running'); clearFormError('run-form-error'); }
     if (view === 'crossfit') { renderRecent('crossfit'); updateEditBadge('crossfit'); clearFormError('cf-form-error'); }
     if (view === 'history') renderHistory();
@@ -2225,8 +2482,15 @@
   function updateEditBadge(type) {
     const badge = document.getElementById(type + '-edit-badge');
     if (!badge) return;
-    const isEditing = editingId !== null && getLogs().find(l => l.id === editingId && l.type === type);
-    badge.classList.toggle('hidden', !isEditing);
+    const log = editingId !== null ? getLogs().find(l => l.id === editingId && l.type === type) : null;
+    if (log) {
+      const label = type === 'running' ? '러닝' : '크로스핏';
+      badge.textContent = `수정 중 · ${formatDate(log.date)} ${label}`;
+      badge.classList.remove('hidden');
+    } else {
+      badge.textContent = '수정 중';
+      badge.classList.add('hidden');
+    }
   }
 
   // 폼 초기화
@@ -2239,6 +2503,10 @@
     if (tMin) tMin.value = '';
     if (tSec) tSec.value = '';
     updateRunPaceHint();
+    ['run-type','run-shoes','run-weather','run-rpe'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
     document.getElementById('run-place').value = '';
     document.getElementById('run-diary').value = '';
     updateEditBadge('running');
@@ -2319,7 +2587,10 @@
         ? `<div class="dots">${[...types].map(t => `<div class="dot ${t}"></div>`).join('')}</div>`
         : '';
 
-      html += `<div class="${cls}" onclick="selectDate('${dateStr}')">
+      const aria = `${viewYear}년 ${viewMonth + 1}월 ${d}일${types ? ', 운동 기록 있음' : ''}${isToday ? ', 오늘' : ''}`;
+      html += `<div class="${cls}" role="button" tabindex="0" aria-label="${aria}"
+        onclick="selectDate('${dateStr}')"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectDate('${dateStr}')}">
         <div class="day-num-wrap"><div class="day-num" ${numStyle}>${d}</div></div>
         ${dotsHtml}
       </div>`;
@@ -2465,15 +2736,22 @@
       const all = [...new Set([...titles, ...presets])];
       titleList.innerHTML = all.map(t => `<option value="${escapeAttr(t)}">`).join('');
     }
-    // 동작명 datalist
+    // 동작명 datalist (사용자 등록 + 200 프리셋)
     let movList = document.getElementById('movement-list');
     if (!movList) {
       movList = document.createElement('datalist');
       movList.id = 'movement-list';
       document.body.appendChild(movList);
     }
-    const movs = getAllMovements(true);
-    movList.innerHTML = movs.map(m => `<option value="${escapeAttr(m)}">`).join('');
+    const userMovs = getAllMovements(true);
+    const allMovs = [...new Set([...userMovs, ...MOVEMENT_PRESETS])];
+    movList.innerHTML = allMovs.map(m => `<option value="${escapeAttr(m)}">`).join('');
+    // 신발 datalist (사용자 등록)
+    const shoesList = document.getElementById('shoes-list');
+    if (shoesList) {
+      const shoes = [...new Set(logs.filter(l => l.type === 'running' && l.shoes).map(l => l.shoes))];
+      shoesList.innerHTML = shoes.map(s => `<option value="${escapeAttr(s)}">`).join('');
+    }
   }
 
   // ══════════════════════════════
@@ -2504,9 +2782,17 @@
         <span class="wod-block-label">WOD ${idx}</span>
         ${idx > 1 ? `<button type="button" class="remove-wod-btn" onclick="removeWod(${idx})" aria-label="WOD 삭제">✕</button>` : ''}
       </div>
-      <textarea id="cf-wod-${idx}" style="min-height:90px;width:100%;padding:10px 13px;border:1px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;resize:vertical;margin-bottom:8px;" placeholder="예: Fran 21-15-9&#10;Thruster 43kg&#10;Pull-up 바디웨이트">${escapeHtml(text || '')}</textarea>
+      <textarea id="cf-wod-${idx}" style="min-height:90px;width:100%;padding:10px 13px;border:1px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;resize:vertical;margin-bottom:8px;" placeholder="예: 오늘 WOD&#10;스쿼트 20개 3세트&#10;케틀벨 스윙 24kg" oninput="updateWodBenchmark()">${escapeHtml(text || '')}</textarea>
       <label style="font-size:12px;font-weight:700;color:#888;display:block;margin-bottom:4px;">기록</label>
-      <input type="text" id="cf-record-${idx}" value="${escapeAttr(record || '')}" style="width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;" placeholder="예: 7분 32초 · 5라운드 · 규정중량(Rx)">
+      <div class="wod-record-row">
+        <select id="cf-record-type-${idx}" aria-label="기록 형식" title="기록 형식">
+          <option value="">자유</option>
+          <option value="time">시간</option>
+          <option value="rounds">라운드</option>
+          <option value="weight">무게</option>
+        </select>
+        <input type="text" id="cf-record-${idx}" value="${escapeAttr(record || '')}" style="flex:1;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;" placeholder="예: 7:32 · 5라운드 + 12회 · Rx">
+      </div>
       <div class="weight-section">
         <div class="weight-section-label">무게 기록 <span style="font-weight:400;color:#bbb;">(비우면 텍스트에서 자동 감지)</span></div>
         <div id="weight-list-${idx}"></div>
@@ -2579,6 +2865,10 @@
       document.getElementById('run-time-min').value = m != null ? m : '';
       document.getElementById('run-time-sec').value = s != null ? s : '';
       updateRunPaceHint();
+      const rt = document.getElementById('run-type'); if (rt) rt.value = log.runType || '';
+      const rs = document.getElementById('run-shoes'); if (rs) rs.value = log.shoes || '';
+      const rw = document.getElementById('run-weather'); if (rw) rw.value = log.weather || '';
+      const rr = document.getElementById('run-rpe'); if (rr) rr.value = log.rpe || '';
       document.getElementById('run-place').value = log.place || '';
       document.getElementById('run-diary').value = log.diary || '';
       showView('running');
@@ -2744,7 +3034,11 @@
       const totalMin = min + sec / 60;
       const time = totalMin > 0 ? +totalMin.toFixed(2) : '';
       const runType = (document.getElementById('run-type') || {}).value || '';
+      const shoes = (document.getElementById('run-shoes') || {}).value || '';
+      const weather = (document.getElementById('run-weather') || {}).value || '';
+      const rpe = parseFloat((document.getElementById('run-rpe') || {}).value) || null;
       entry = { ...entry, date, distance, time, timeMin: min, timeSec: sec, runType,
+        shoes: shoes.trim(), weather, rpe,
         place: document.getElementById('run-place').value.trim(),
         diary: document.getElementById('run-diary').value.trim() };
     } else {
@@ -3367,6 +3661,10 @@
       // 미니 차트는 kg 환산값으로
       const miniChart = sorted.length >= 2 ? renderMiniChart(sortedKg) : '';
       const bestDisplay = bestKg !== null ? `최고 ${bestKg.toFixed(1)}kg` : '';
+      // DOTS 점수 (체중·성별 입력된 경우만)
+      const settings = getProfileSettings();
+      const dots = (bestKg && settings.bw && settings.sex) ? dotsScore(bestKg, settings.bw, settings.sex) : null;
+      const dotsHtml = dots ? `<span class="dots-badge" title="DOTS 점수 (체급 보정)">DOTS ${dots}</span>` : '';
 
       return `
         <div class="pr-card">
@@ -3374,6 +3672,7 @@
             <div class="pr-card-title">
               <span class="pr-card-name">${escapeHtml(mov.name)}</span>
               ${bestDisplay ? `<span class="pr-best-badge">${escapeHtml(bestDisplay)}</span>` : ''}
+              ${dotsHtml}
             </div>
             <div class="pr-card-actions">
               <span class="pr-card-meta">${records.length}회</span>
@@ -3444,7 +3743,7 @@
   //  전역 키보드 / 초기화
   // ══════════════════════════════
   function closeAllOpenModals() {
-    ['trend-modal-bg', 'pr-movement-modal-bg', 'pr-record-modal-bg', 'restore-modal-bg'].forEach(id => {
+    ['trend-modal-bg', 'pr-movement-modal-bg', 'pr-record-modal-bg', 'restore-modal-bg', 'profile-settings-modal-bg'].forEach(id => {
       const el = document.getElementById(id);
       if (el && el.classList.contains('open')) el.classList.remove('open');
     });
@@ -3536,6 +3835,171 @@
   function togglePRCalc(movId) {
     const el = document.getElementById(`pr-calc-${movId}`);
     if (el) el.classList.toggle('hidden');
+  }
+
+  // ── 명명 WOD 벤치마크 (Girls / Hero) ──
+  const NAMED_WODS = {
+    'fran': { name: 'Fran', desc: '21-15-9 Thruster 43kg + Pull-up', times: { elite: '<2:30', adv: '<3:30', int: '<5:00', begin: '<8:00' } },
+    'helen': { name: 'Helen', desc: '3R: 400m run + 21 KB swing 24kg + 12 pull-up', times: { elite: '<8:00', adv: '<10:00', int: '<13:00', begin: '<18:00' } },
+    'cindy': { name: 'Cindy', desc: '20분 AMRAP: 5 pull-up + 10 push-up + 15 squat', times: { elite: '>25R', adv: '>20R', int: '>15R', begin: '>10R' } },
+    'grace': { name: 'Grace', desc: '30 Clean & Jerk 60kg', times: { elite: '<2:00', adv: '<3:00', int: '<5:00', begin: '<8:00' } },
+    'murph': { name: 'Murph (Hero)', desc: '1mi run + 100 pull-up + 200 push-up + 300 squat + 1mi run', times: { elite: '<35:00', adv: '<45:00', int: '<55:00', begin: '<70:00' } },
+    'diane': { name: 'Diane', desc: '21-15-9 Deadlift 102kg + HSPU', times: { elite: '<3:00', adv: '<5:00', int: '<8:00', begin: '<12:00' } },
+    'angie': { name: 'Angie', desc: '100 pull-up + 100 push-up + 100 sit-up + 100 squat', times: { elite: '<12:00', adv: '<17:00', int: '<22:00', begin: '<30:00' } },
+    'isabel': { name: 'Isabel', desc: '30 Snatch 60kg', times: { elite: '<2:00', adv: '<3:30', int: '<6:00', begin: '<10:00' } },
+    'karen': { name: 'Karen', desc: '150 wall ball 9kg', times: { elite: '<6:00', adv: '<8:00', int: '<11:00', begin: '<15:00' } }
+  };
+  function detectNamedWod(text) {
+    if (!text) return null;
+    const lower = text.toLowerCase();
+    for (const key of Object.keys(NAMED_WODS)) {
+      if (lower.includes(key)) return NAMED_WODS[key];
+    }
+    return null;
+  }
+  function updateWodBenchmark() {
+    const hint = document.getElementById('wod-benchmark-hint');
+    if (!hint) return;
+    const cfTitle = document.getElementById('cf-title').value;
+    const wods = document.querySelectorAll('#wod-list textarea');
+    let found = detectNamedWod(cfTitle);
+    if (!found) {
+      wods.forEach(ta => { if (!found) found = detectNamedWod(ta.value); });
+    }
+    if (found) {
+      hint.classList.add('show');
+      hint.innerHTML = `<strong>${escapeHtml(found.name)}</strong> 벤치마크 · ${escapeHtml(found.desc)}<table><thead><tr><th>Elite</th><th>Adv</th><th>Int</th><th>Begin</th></tr></thead><tbody><tr><td>${found.times.elite}</td><td>${found.times.adv}</td><td>${found.times.int}</td><td>${found.times.begin}</td></tr></tbody></table>`;
+    } else {
+      hint.classList.remove('show');
+      hint.innerHTML = '';
+    }
+  }
+
+  // ── WOD 템플릿 (AMRAP / EMOM / For Time) ──
+  function addWodTemplate(kind) {
+    const templates = {
+      amrap: '20분 AMRAP\n10 pull-up\n15 push-up\n20 squat',
+      emom: 'EMOM 12분\n홀수: 5 thruster 43kg\n짝수: 10 box jump',
+      forTime: 'For Time\n50 wall ball 9kg\n40 burpee\n30 pull-up\n20 thruster 43kg\n10 muscle-up'
+    };
+    addWod(templates[kind] || '', '', []);
+    updateWodBenchmark();
+  }
+
+  // ── 종목 200 프리셋 (동작 datalist 보강) ──
+  const MOVEMENT_PRESETS = [
+    'Back Squat','Front Squat','Overhead Squat','Box Squat','Goblet Squat','Pistol Squat',
+    'Deadlift','Sumo Deadlift','Romanian Deadlift','Snatch Deadlift','Clean Deadlift','Stiff-Leg Deadlift',
+    'Snatch','Power Snatch','Squat Snatch','Hang Snatch','Hang Power Snatch','Snatch Pull','Snatch Balance','Muscle Snatch',
+    'Clean','Power Clean','Squat Clean','Hang Clean','Hang Power Clean','Clean Pull','Clean & Jerk',
+    'Jerk','Push Jerk','Split Jerk','Push Press','Strict Press','Press',
+    'Bench Press','Close-Grip Bench','Incline Bench','DB Bench Press',
+    'Pull-up','Strict Pull-up','Chest-to-Bar','Bar Muscle-up','Ring Muscle-up','Toes-to-Bar','Knees-to-Elbows',
+    'Push-up','HSPU','Strict HSPU','Ring Dip','Bar Dip','Handstand Walk',
+    'Burpee','Bar-facing Burpee','Burpee Box Jump','Burpee Pull-up','Burpee Muscle-up',
+    'Box Jump','Box Jump Over','Step-up','Lunge','Walking Lunge','Reverse Lunge','Bulgarian Split Squat',
+    'Wall Ball','Thruster','KB Swing','American KB Swing','Russian KB Swing','KB Snatch','KB Clean','TGU',
+    'Row','C2 Row','Bike Erg','Ski Erg','Run','Sprint','Sled Push','Sled Pull','Yoke Carry','Farmer Carry','Sandbag Carry',
+    'Double Under','Single Under','Triple Under','Rope Climb','Legless Rope Climb','Pegboard',
+    'GHD Sit-up','V-Up','Hollow Hold','Plank','Hollow Rock','L-Sit','Toes-to-Rings',
+    'Atlas Stone','Log Lift','Axle Press','Tire Flip','Stone-to-Shoulder',
+    'Good Morning','Hip Thrust','Glute Bridge','Nordic Curl','Reverse Hyper',
+    'Bicep Curl','Hammer Curl','Tricep Extension','Skull Crusher','Lateral Raise','Front Raise','Rear Delt Fly',
+    'Pendlay Row','Bent-over Row','DB Row','Inverted Row','Face Pull','Pull-down',
+    'Sit-up','Crunch','Russian Twist','Hanging Leg Raise','V-Sit',
+    'Calf Raise','Seated Calf Raise','Standing Calf Raise',
+    'Snatch Grip Push Press','Behind-the-Neck Push Press','Z-Press','Floor Press',
+    '백스쿼트','프론트스쿼트','오버헤드스쿼트','데드리프트','스내치','클린','저크','스러스터','케틀벨 스윙','풀업','푸시업','윗몸일으키기','버피','박스점프','런지','머슬업','벤치프레스','오버헤드프레스','벤트오버 로우','글루트브릿지','플랭크','월볼','로프 클라임','핸드스탠드 푸시업','체인업','데드행','로잉','바이크 에르그','스키 에르그','HSPU','턴블링'
+  ];
+
+  // ── 월간 목표 / 체중 / 성별 ──
+  function getProfileSettings() {
+    try { return JSON.parse(localStorage.getItem('profileSettings') || '{}'); }
+    catch { return {}; }
+  }
+  function saveProfileSettings() {
+    const goalKm = parseFloat(document.getElementById('goal-km-input').value) || 0;
+    const bw = parseFloat(document.getElementById('bw-input').value) || 0;
+    const sex = document.getElementById('sex-input').value || '';
+    safeSetItem('profileSettings', JSON.stringify({ goalKm, bw, sex }));
+    closeMonthlyGoalModal();
+    renderGoalProgress();
+    if (typeof renderPRView === 'function') renderPRView();
+    showToast('설정을 저장했어요');
+  }
+  function openMonthlyGoalModal() {
+    const s = getProfileSettings();
+    document.getElementById('goal-km-input').value = s.goalKm || '';
+    document.getElementById('bw-input').value = s.bw || '';
+    document.getElementById('sex-input').value = s.sex || '';
+    document.getElementById('profile-settings-modal-bg').classList.add('open');
+    setTimeout(() => document.getElementById('goal-km-input').focus(), 80);
+  }
+  function closeMonthlyGoalModal() {
+    document.getElementById('profile-settings-modal-bg').classList.remove('open');
+  }
+  function renderGoalProgress() {
+    const s = getProfileSettings();
+    const wrap = document.getElementById('goal-progress');
+    if (!wrap) return;
+    if (!s.goalKm || s.goalKm <= 0) { wrap.classList.add('hidden'); return; }
+    const logs = getLogs();
+    const km = logs.filter(l => l.type === 'running' && l.date.startsWith(`${viewYear}-${String(viewMonth+1).padStart(2,'0')}`))
+      .reduce((sum, l) => sum + (parseFloat(l.distance) || 0), 0);
+    const pct = Math.min(100, (km / s.goalKm) * 100);
+    document.getElementById('goal-value').textContent = `${km.toFixed(1)} / ${s.goalKm} km (${pct.toFixed(0)}%)`;
+    const fill = document.getElementById('goal-bar-fill');
+    fill.style.width = `${pct}%`;
+    fill.classList.toggle('complete', pct >= 100);
+    wrap.classList.remove('hidden');
+  }
+
+  // ── DOTS 점수 계산 (대회 표준) ──
+  function dotsScore(weightKg, bodyKg, sex) {
+    if (!weightKg || !bodyKg || !sex) return null;
+    const M_COEFS = [-0.0000010930, 0.0007391293, -0.1918759221, 24.0900756, -307.75076];
+    const F_COEFS = [-0.0000010706, 0.0005158568, -0.1126655495, 13.6175032, -57.96288];
+    const c = sex === 'female' ? F_COEFS : M_COEFS;
+    const bw = Math.max(40, Math.min(210, bodyKg));
+    const denom = c[0]*Math.pow(bw,4) + c[1]*Math.pow(bw,3) + c[2]*Math.pow(bw,2) + c[3]*bw + c[4];
+    if (denom <= 0) return null;
+    return Math.round(weightKg * 500 / denom * 10) / 10;
+  }
+
+  // ── 30일+ 백업 안 함 → 알림 배너 ──
+  function updateBackupAlert() {
+    const banner = document.getElementById('backup-alert-banner');
+    if (!banner) return;
+    const last = localStorage.getItem('lastBackupAt');
+    const logs = JSON.parse(localStorage.getItem('sportslogs') || '[]');
+    if (logs.length < 5) { banner.classList.add('hidden'); return; }
+    const days = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : 999;
+    if (days >= 30) {
+      const text = last ? `마지막 백업 ${days}일 전. 분실 위험을 줄이려면 지금 한 번 내려받아 두세요.`
+        : `백업한 적이 없어요. 기록 ${logs.length}건이 이 브라우저에만 있어요.`;
+      document.getElementById('backup-alert-text').textContent = text;
+      banner.classList.remove('hidden');
+    } else {
+      banner.classList.add('hidden');
+    }
+  }
+
+  // ── 모달 focus trap (Tab 순환) ──
+  function trapFocus(modalEl) {
+    const focusable = modalEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    modalEl.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
   }
 
   // ── 전체 기록 (검색·필터·페이지네이션) ──
@@ -3952,6 +4416,11 @@
   updateBackupReminder();
   applyGreeting();
   refreshDatalists();
+  updateBackupAlert();
+  renderGoalProgress();
+  // cf-title 입력 시 명명 WOD 감지
+  const cfTitleEl = document.getElementById('cf-title');
+  if (cfTitleEl) cfTitleEl.addEventListener('input', updateWodBenchmark);
   showView('dashboard');
 
   // 페이스 인라인 hint 리스너
