@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>운동 일기</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -114,6 +114,15 @@
     .empty .empty-cta.run:hover { filter: brightness(0.97); }
     .empty .empty-cta.cf:hover { filter: brightness(0.97); }
 
+    /* iOS safe-area — sticky 저장 버튼이 홈 인디케이터에 가리지 않도록 */
+    .save-btn,
+    .editor-actions {
+      padding-bottom: max(env(safe-area-inset-bottom, 0px), 0px);
+    }
+    @supports (padding: env(safe-area-inset-bottom)) {
+      .main-body { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    }
+
     /* ═══ Streak 카운터 (사이드바) ═══ */
     .streak-card {
       margin: var(--sp-2) 14px 0;
@@ -143,10 +152,10 @@
       letter-spacing: -0.2px;
     }
     .streak-card .streak-hint {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--c-muted);
-      margin-top: 2px;
-      line-height: 1.4;
+      margin-top: 3px;
+      line-height: 1.45;
     }
     .streak-card.frozen { background: var(--c-acc-run-soft); }
     .streak-card.zero .streak-num { color: var(--c-muted-soft); }
@@ -235,9 +244,9 @@
     .trend-card-foot {
       display: flex;
       justify-content: space-between;
-      font-size: 11px;
-      color: var(--c-muted-soft);
-      margin-top: 6px;
+      font-size: 12px;
+      color: var(--c-muted);
+      margin-top: 8px;
     }
     .trend-board-title {
       display: flex;
@@ -1474,7 +1483,7 @@
         <div class="streak-label" id="streak-label">아직 시작 전</div>
         <div class="streak-hint" id="streak-hint">한 번 기록하면 시작돼요</div>
       </div>
-      <div class="streak-rest-pill hidden" id="streak-rest-pill" title="이번 주 쉬는 날 카운트">REST 1</div>
+      <div class="streak-rest-pill hidden" id="streak-rest-pill" title="7일마다 1회 자동 충전 · 하루 빠져도 연속 기록 유지">휴식 1</div>
     </div>
 
     <div class="sidebar-calendar">
@@ -1510,7 +1519,7 @@
           <button class="tab active" data-view="dashboard" onclick="showView('dashboard')" role="tab">대시보드</button>
           <button class="tab" data-view="running" onclick="showView('running')" role="tab">러닝 쓰기</button>
           <button class="tab" data-view="crossfit" onclick="showView('crossfit')" role="tab">크로스핏 쓰기</button>
-          <button class="tab" data-view="pr" onclick="showView('pr')" role="tab">PR / 1RM</button>
+          <button class="tab" data-view="pr" onclick="showView('pr')" role="tab" aria-label="최고 기록 (1RM)">최고 기록</button>
         </nav>
       </div>
       <div class="header-right">
@@ -1573,16 +1582,23 @@
           <div class="field row-2">
             <div>
               <label>거리 (km)</label>
-              <input type="number" id="run-distance" placeholder="예: 5.3" step="0.1" min="0">
+              <input type="number" id="run-distance" placeholder="예: 5.3" step="0.1" min="0" inputmode="decimal">
             </div>
             <div>
-              <label>시간 (분)</label>
-              <input type="number" id="run-time" placeholder="예: 32" min="0">
+              <label>시간</label>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <input type="number" id="run-time-min" placeholder="32" min="0" max="999" inputmode="numeric" style="flex:1;">
+                <span style="font-size:13px;color:var(--c-muted);">분</span>
+                <input type="number" id="run-time-sec" placeholder="0" min="0" max="59" inputmode="numeric" style="flex:1;">
+                <span style="font-size:13px;color:var(--c-muted);">초</span>
+              </div>
+              <div id="run-pace-hint" class="pace-hint" aria-live="polite" style="font-size:12px;color:var(--c-muted);margin-top:4px;min-height:16px;"></div>
             </div>
           </div>
           <div class="field">
             <label>장소</label>
-            <input type="text" id="run-place" placeholder="예: 한강공원">
+            <input type="text" id="run-place" placeholder="예: 한강공원" list="place-list" autocomplete="off">
+            <datalist id="place-list"></datalist>
           </div>
           <div class="field">
             <label>일기</label>
@@ -1610,7 +1626,8 @@
           </div>
           <div class="field">
             <label>운동 종류</label>
-            <input type="text" id="cf-title" placeholder="예: CrossFit, Hyrox, 올림픽리프팅">
+            <input type="text" id="cf-title" placeholder="예: 크로스핏, 코어 운동, 스트레칭, 올림픽 리프팅" list="cf-title-list" autocomplete="off">
+            <datalist id="cf-title-list"></datalist>
           </div>
           <div id="wod-list"></div>
           <button type="button" class="add-wod-btn" onclick="addWod()">+ WOD 추가</button>
@@ -1631,7 +1648,7 @@
       <!-- ── PR / 1RM ── -->
       <section id="view-pr" class="view hidden">
         <div class="view-title">
-          <h2>PR / 1RM</h2>
+          <h2>최고 기록 <span style="font-size:13px;color:var(--c-muted);font-weight:400;">(1RM·3RM 등)</span></h2>
           <button class="add-btn" onclick="openAddMovementModal()">+ 종목 추가</button>
         </div>
         <div class="pr-list" id="pr-list"></div>
@@ -1642,10 +1659,10 @@
 </div>
 
 <!-- 무게 추이 모달 -->
-<div class="modal-bg" id="trend-modal-bg" onclick="closeTrendModalBg(event)">
+<div class="modal-bg" id="trend-modal-bg" onclick="closeTrendModalBg(event)" role="dialog" aria-modal="true" aria-labelledby="trend-modal-title">
   <div class="modal trend-modal">
     <div class="modal-header">
-      <h2>무게 추이</h2>
+      <h2 id="trend-modal-title">무게 추이</h2>
       <button class="close-btn" onclick="closeTrendModal()" aria-label="무게 추이 모달 닫기">✕</button>
     </div>
     <div id="trend-content"></div>
@@ -1653,7 +1670,7 @@
 </div>
 
 <!-- PR 종목 추가 모달 -->
-<div class="modal-bg" id="pr-movement-modal-bg" onclick="closePRMovementModalBg(event)">
+<div class="modal-bg" id="pr-movement-modal-bg" onclick="closePRMovementModalBg(event)" role="dialog" aria-modal="true" aria-labelledby="pr-movement-modal-title">
   <div class="modal pr-modal">
     <div class="modal-header">
       <h2 id="pr-movement-modal-title">종목 추가</h2>
@@ -1668,7 +1685,7 @@
 </div>
 
 <!-- PR 기록 추가 모달 -->
-<div class="modal-bg" id="pr-record-modal-bg" onclick="closePRRecordModalBg(event)">
+<div class="modal-bg" id="pr-record-modal-bg" onclick="closePRRecordModalBg(event)" role="dialog" aria-modal="true" aria-labelledby="pr-record-modal-title">
   <div class="modal pr-modal">
     <div class="modal-header">
       <h2 id="pr-record-modal-title">기록 추가</h2>
@@ -1681,7 +1698,7 @@
     <div class="field" style="display:grid;grid-template-columns:1fr 70px 1fr;gap:8px;">
       <div>
         <label>무게</label>
-        <input type="number" id="pr-record-weight" placeholder="예: 80" min="0" step="0.5">
+        <input type="number" id="pr-record-weight" placeholder="예: 80" min="0" step="0.5" inputmode="decimal">
       </div>
       <div>
         <label>단위</label>
@@ -1770,7 +1787,8 @@
     }
     container.appendChild(toast);
     requestAnimationFrame(() => toast.classList.add('show'));
-    timer = setTimeout(dismiss, action ? Math.max(duration, 5000) : duration);
+    // action 토스트는 최소 10s (시니어 페르소나 합의)
+    timer = setTimeout(dismiss, action ? Math.max(duration, 10000) : duration);
   }
 
   // localStorage 쓰기 안전 래퍼 (할당량 초과 시 경고)
@@ -2013,7 +2031,11 @@
     editingId = null;
     document.getElementById('run-date').value = selectedDate || todayStr;
     document.getElementById('run-distance').value = '';
-    document.getElementById('run-time').value = '';
+    const tMin = document.getElementById('run-time-min');
+    const tSec = document.getElementById('run-time-sec');
+    if (tMin) tMin.value = '';
+    if (tSec) tSec.value = '';
+    updateRunPaceHint();
     document.getElementById('run-place').value = '';
     document.getElementById('run-diary').value = '';
     updateEditBadge('running');
@@ -2172,8 +2194,67 @@
 
   function selectDate(dateStr) {
     selectedDate = dateStr;
+    // 폼 날짜 자동 동기 (페르소나 합의)
+    const r = document.getElementById('run-date');
+    const c = document.getElementById('cf-date');
+    if (r && !editingId) r.value = dateStr;
+    if (c && !editingId) c.value = dateStr;
     renderCalendar();
     renderLogs();
+  }
+
+  // 러닝 페이스 인라인 힌트 (입력 시 즉시)
+  function updateRunPaceHint() {
+    const hint = document.getElementById('run-pace-hint');
+    if (!hint) return;
+    const km = parseFloat(document.getElementById('run-distance').value);
+    const m = parseFloat(document.getElementById('run-time-min').value) || 0;
+    const s = parseFloat(document.getElementById('run-time-sec').value) || 0;
+    const totalMin = m + s / 60;
+    if (km > 0 && totalMin > 0) {
+      hint.textContent = `페이스 ${formatPace(totalMin / km)}/km`;
+    } else {
+      hint.textContent = '';
+    }
+  }
+
+  // 시간대별 인사말
+  function getGreetingByHour() {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 11) return '오늘도 좋은 아침이에요';
+    if (h >= 11 && h < 17) return '오늘 운동 어떠셨어요?';
+    if (h >= 17 && h < 23) return '오늘도 수고했어요';
+    return '오늘도 고생했어요';
+  }
+  function applyGreeting() {
+    const el = document.querySelector('.sidebar-title .greeting');
+    if (el) el.textContent = getGreetingByHour();
+  }
+
+  // datalist 자동 충전 (장소·운동 종류)
+  function refreshDatalists() {
+    const logs = getLogs();
+    const places = [...new Set(logs.filter(l => l.type === 'running' && l.place).map(l => l.place))];
+    const titles = [...new Set(logs.filter(l => l.type === 'crossfit' && l.title).map(l => l.title))];
+    const placeList = document.getElementById('place-list');
+    const titleList = document.getElementById('cf-title-list');
+    if (placeList) {
+      placeList.innerHTML = places.map(p => `<option value="${escapeAttr(p)}">`).join('');
+    }
+    if (titleList) {
+      const presets = ['크로스핏', '코어 운동', '스트레칭', '걷기', '올림픽 리프팅'];
+      const all = [...new Set([...titles, ...presets])];
+      titleList.innerHTML = all.map(t => `<option value="${escapeAttr(t)}">`).join('');
+    }
+    // 동작명 datalist
+    let movList = document.getElementById('movement-list');
+    if (!movList) {
+      movList = document.createElement('datalist');
+      movList.id = 'movement-list';
+      document.body.appendChild(movList);
+    }
+    const movs = getAllMovements(true);
+    movList.innerHTML = movs.map(m => `<option value="${escapeAttr(m)}">`).join('');
   }
 
   // ══════════════════════════════
@@ -2206,7 +2287,7 @@
       </div>
       <textarea id="cf-wod-${idx}" style="min-height:90px;width:100%;padding:10px 13px;border:1px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;resize:vertical;margin-bottom:8px;" placeholder="예: Fran 21-15-9&#10;Thruster 43kg&#10;Pull-up 바디웨이트">${escapeHtml(text || '')}</textarea>
       <label style="font-size:12px;font-weight:700;color:#888;display:block;margin-bottom:4px;">기록</label>
-      <input type="text" id="cf-record-${idx}" value="${escapeAttr(record || '')}" style="width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;" placeholder="예: 7분 32초, Rx">
+      <input type="text" id="cf-record-${idx}" value="${escapeAttr(record || '')}" style="width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;" placeholder="예: 7분 32초 · 5라운드 · 규정중량(Rx)">
       <div class="weight-section">
         <div class="weight-section-label">무게 기록 <span style="font-weight:400;color:#bbb;">(비우면 텍스트에서 자동 감지)</span></div>
         <div id="weight-list-${idx}"></div>
@@ -2226,8 +2307,8 @@
     const row = document.createElement('div');
     row.className = 'weight-row';
     row.innerHTML = `
-      <input type="text" placeholder="동작명 (예: Thruster)" value="${escapeAttr(movement || '')}" style="flex:1;padding:7px 10px;font-size:13px;background:#fff;border:1px solid #ddd;border-radius:8px;outline:none;">
-      <input type="number" placeholder="0" value="${escapeAttr(weight || '')}" min="0" step="0.5" style="width:66px;padding:7px 8px;font-size:13px;background:#fff;border:1px solid #ddd;border-radius:8px;outline:none;text-align:right;">
+      <input type="text" placeholder="동작명 (예: 스러스터)" value="${escapeAttr(movement || '')}" list="movement-list" autocomplete="off" style="flex:1;padding:7px 10px;font-size:13px;background:#fff;border:1px solid #ddd;border-radius:8px;outline:none;">
+      <input type="number" placeholder="0" value="${escapeAttr(weight || '')}" min="0" step="0.5" inputmode="decimal" style="width:66px;padding:7px 8px;font-size:13px;background:#fff;border:1px solid #ddd;border-radius:8px;outline:none;text-align:right;">
       <select style="width:58px;padding:6px 4px;font-size:12px;background:#fff;border:1px solid #ddd;border-radius:8px;outline:none;flex-shrink:0;cursor:pointer;">
         <option value="kg" ${u === 'kg' ? 'selected' : ''}>kg</option>
         <option value="lbs" ${u === 'lbs' ? 'selected' : ''}>lbs</option>
@@ -2270,7 +2351,15 @@
     if (log.type === 'running') {
       document.getElementById('run-date').value = log.date;
       document.getElementById('run-distance').value = log.distance || '';
-      document.getElementById('run-time').value = log.time || '';
+      let m = log.timeMin, s = log.timeSec;
+      if (m == null && s == null && log.time != null && log.time !== '') {
+        const t = parseFloat(log.time) || 0;
+        m = Math.floor(t);
+        s = Math.round((t - m) * 60);
+      }
+      document.getElementById('run-time-min').value = m != null ? m : '';
+      document.getElementById('run-time-sec').value = s != null ? s : '';
+      updateRunPaceHint();
       document.getElementById('run-place').value = log.place || '';
       document.getElementById('run-diary').value = log.diary || '';
       showView('running');
@@ -2411,12 +2500,20 @@
       if (!isValidDateStr(date)) { alert('올바른 날짜를 입력해주세요.'); return; }
       if (isFutureDate(date) && !confirm('미래 날짜입니다. 이대로 저장할까요?')) return;
       const distance = document.getElementById('run-distance').value;
-      const time = document.getElementById('run-time').value;
+      const minStr = document.getElementById('run-time-min').value;
+      const secStr = document.getElementById('run-time-sec').value;
       const distErr = validatePositiveNumber(distance, '거리');
-      const timeErr = validatePositiveNumber(time, '시간');
+      const minErr = validatePositiveNumber(minStr, '시간(분)');
+      const secErr = validatePositiveNumber(secStr, '시간(초)');
       if (distErr) { alert(distErr); return; }
-      if (timeErr) { alert(timeErr); return; }
-      entry = { ...entry, date, distance, time,
+      if (minErr) { alert(minErr); return; }
+      if (secErr) { alert(secErr); return; }
+      const min = parseFloat(minStr) || 0;
+      const sec = parseFloat(secStr) || 0;
+      if (sec >= 60) { alert('초는 0~59 사이로 입력해주세요.'); return; }
+      const totalMin = min + sec / 60;
+      const time = totalMin > 0 ? +totalMin.toFixed(2) : '';
+      entry = { ...entry, date, distance, time, timeMin: min, timeSec: sec,
         place: document.getElementById('run-place').value.trim(),
         diary: document.getElementById('run-diary').value.trim() };
     } else {
@@ -2442,8 +2539,18 @@
     renderRecentList();
     renderStreak();
     renderTrendBoard();
+    refreshDatalists();
     updateBackupReminder();
-    showToast(isEdit ? '기록을 저장했어요 · 오늘도 한 줄' : '오늘도 기록했어요');
+    // 페이스 자동 표시 (러닝 신규)
+    let toastMsg = isEdit ? '기록을 수정했어요' : '오늘도 기록했어요';
+    if (!isEdit && type === 'running') {
+      const km = parseFloat(entry.distance);
+      const tm = parseFloat(entry.time);
+      if (km > 0 && tm > 0) {
+        toastMsg = `오늘도 기록했어요 · 페이스 ${formatPace(tm / km)}/km`;
+      }
+    }
+    showToast(toastMsg);
   }
 
   function deleteLog(id) {
@@ -2454,7 +2561,9 @@
     renderLogs();
     renderStreak();
     renderTrendBoard();
+    refreshDatalists();
     showToast('기록을 삭제했어요', {
+      duration: 10000,
       action: { label: '되돌리기', onClick: () => {
         if (restoreFromSnapshot('sportslogs')) showToast('되돌렸어요');
       }}
@@ -2526,11 +2635,35 @@
     el.innerHTML = logs.map(logToHtml).join('');
   }
 
+  function formatPace(min) {
+    if (!min || min <= 0) return null;
+    const mm = Math.floor(min);
+    const ss = Math.round((min - mm) * 60);
+    return `${mm}:${String(ss).padStart(2, '0')}`;
+  }
+  function formatRunTime(log) {
+    if (log.timeMin != null || log.timeSec != null) {
+      const m = log.timeMin || 0;
+      const s = log.timeSec || 0;
+      if (m && s) return `${m}분 ${s}초`;
+      if (m) return `${m}분`;
+      if (s) return `${s}초`;
+    }
+    if (log.time) return `${log.time}분`;
+    return '';
+  }
   function logToHtml(log) {
     if (log.type === 'running') {
         const stats = [];
         if (log.distance) stats.push(`거리 <span>${escapeHtml(log.distance)}km</span>`);
-        if (log.time) stats.push(`시간 <span>${escapeHtml(log.time)}분</span>`);
+        const timeText = formatRunTime(log);
+        if (timeText) stats.push(`시간 <span>${escapeHtml(timeText)}</span>`);
+        if (log.distance && log.time) {
+          const km = parseFloat(log.distance);
+          const min = parseFloat(log.time);
+          const pace = (km > 0 && min > 0) ? formatPace(min / km) : null;
+          if (pace) stats.push(`페이스 <span>${pace}/km</span>`);
+        }
         if (log.place) stats.push(`장소 <span>${escapeHtml(log.place)}</span>`);
         return `
           <div class="log-item" onclick="openEditModal(${log.id})">
@@ -2984,7 +3117,7 @@
 
         return `
           <div class="pr-record-row">
-            <span class="pr-record-date">${escapeHtml(rec.date.slice(5).replace('-', '/'))}</span>
+            <span class="pr-record-date">${escapeHtml(rec.date.slice(2).replace(/-/g, '/'))}</span>
             <span class="pr-record-weight">${escapeHtml(weightDisplay)} ${kgHint}</span>
             <span style="font-size:12px;color:#aaa;background:#f5f5f0;padding:2px 8px;border-radius:12px;">${escapeHtml(rec.type)}</span>
             ${allBest ? '<span class="pr-badge">최고</span>' : ''}
@@ -3154,8 +3287,15 @@
     if (count === 0) {
       card.classList.add('zero');
       card.classList.remove('frozen');
-      lblEl.textContent = '아직 시작 전';
-      hintEl.textContent = '오늘 한 번 기록하면 시작돼요';
+      // 과거 기록이 있는데 streak가 끊긴 경우와 첫 진입 분기
+      const hasHistory = getActiveDays().length > 0;
+      if (hasHistory) {
+        lblEl.textContent = '잠깐 쉬었어요';
+        hintEl.textContent = '오늘 다시 시작해볼까요?';
+      } else {
+        lblEl.textContent = '아직 시작 전';
+        hintEl.textContent = '오늘 한 번 기록하면 시작돼요';
+      }
     } else {
       card.classList.remove('zero');
       card.classList.toggle('frozen', frozen);
@@ -3166,7 +3306,7 @@
     }
     if (restPill) {
       restPill.classList.toggle('hidden', restCount === 0);
-      restPill.textContent = `REST ${restCount}`;
+      restPill.textContent = `휴식 ${restCount}`;
     }
   }
 
@@ -3215,7 +3355,7 @@
     if (granularity === 'week') return getISOWeekKey(d);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
   }
-  function trendSvg(values, accentVar) {
+  function trendSvg(values, accentVar, ariaLabel) {
     if (!values || values.length === 0) return '';
     const W = 280, H = 84;
     const padL = 6, padR = 6, padT = 8, padB = 8;
@@ -3234,7 +3374,8 @@
     const lastY = yOf(values[values.length - 1]);
     const id = 'trendGrad-' + Math.random().toString(36).slice(2, 8);
     return `
-      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:100%;display:block;overflow:visible">
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttr(ariaLabel || '추이 차트')}" style="width:100%;height:100%;display:block;overflow:visible">
+        <title>${escapeHtml(ariaLabel || '추이 차트')}</title>
         <defs>
           <linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="var(${accentVar})" stop-opacity="0.18"/>
@@ -3262,8 +3403,9 @@
   function renderTrendCard(opts) {
     const { title, value, unit, delta, values, accent, foot, emptyText } = opts;
     const hasData = values && values.some(v => v > 0);
+    const aria = `${title} 추이, 최근 ${value}${unit}`;
     const body = hasData
-      ? `<div class="trend-card-svg">${trendSvg(values, accent)}</div>`
+      ? `<div class="trend-card-svg">${trendSvg(values, accent, aria)}</div>`
       : `<div class="trend-card-empty">${emptyText}</div>`;
     return `
       <div class="trend-card">
@@ -3346,35 +3488,41 @@
       emptyText: '크로스핏을 기록하면 보여요'
     });
 
-    // 4. 평균 1RM 변화 (PR 종목별 월간 max 평균)
+    // 4. 대표 종목 PR 추이 (가장 최근 갱신된 종목 1개) — 페르소나 P2·P4 합의로 평균 폐기
     const pr = getPRData();
-    const prMoAvg = moBuckets.map(() => null);
+    let topMov = null;
+    let topPrSeries = moBuckets.map(() => 0);
+    let topName = '';
     if (pr.movements && pr.movements.length) {
-      moBuckets.forEach((bucket, idx) => {
-        const monthValues = [];
-        pr.movements.forEach(mov => {
-          // 해당 월까지의 누적 best (kg 환산)
-          const inRange = mov.records
+      // 마지막 기록 날짜 기준 가장 최근 갱신 종목 선택
+      const sortedMov = [...pr.movements].filter(m => m.records && m.records.length)
+        .sort((a, b) => {
+          const ad = a.records[a.records.length - 1].date;
+          const bd = b.records[b.records.length - 1].date;
+          return bd.localeCompare(ad);
+        });
+      topMov = sortedMov[0];
+      if (topMov) {
+        topName = topMov.name;
+        moBuckets.forEach((bucket, idx) => {
+          const inRange = topMov.records
             .filter(r => r.date.slice(0, 7) <= bucket.key)
             .map(r => toKg(parseFloat(r.weight) || 0, r.unit || 'kg'));
-          if (inRange.length) monthValues.push(Math.max(...inRange));
+          topPrSeries[idx] = inRange.length ? Math.max(...inRange) : 0;
         });
-        prMoAvg[idx] = monthValues.length
-          ? Math.round((monthValues.reduce((a, b) => a + b, 0) / monthValues.length) * 10) / 10
-          : 0;
-      });
+      }
     }
-    const lastPr = prMoAvg[prMoAvg.length - 1] || 0;
-    const prevPr = prMoAvg[prMoAvg.length - 2] || 0;
+    const lastPr = topPrSeries[topPrSeries.length - 1] || 0;
+    const prevPr = topPrSeries[topPrSeries.length - 2] || 0;
     const card4 = renderTrendCard({
-      title: '평균 1RM',
-      value: lastPr.toFixed(1),
+      title: topName ? `${topName} 1RM` : '대표 종목 1RM',
+      value: lastPr ? lastPr.toFixed(1) : '0',
       unit: 'kg',
       delta: deltaBadge(lastPr, prevPr, 'kg', false),
-      values: prMoAvg.map(v => v || 0),
+      values: topPrSeries,
       accent: '--c-deep',
-      foot: { left: `종목 ${pr.movements ? pr.movements.length : 0}개 평균`, right: '누적 베스트' },
-      emptyText: 'PR 종목과 기록을 추가해보세요'
+      foot: { left: '누적 베스트', right: topName ? '최근 갱신' : '종목을 추가해보세요' },
+      emptyText: '최고 기록 탭에서 종목을 추가하면 추이가 보여요'
     });
 
     // 5. 주간 러닝 페이스 (분/km)
@@ -3426,7 +3574,15 @@
   renderStreak();
   renderTrendBoard();
   updateBackupReminder();
+  applyGreeting();
+  refreshDatalists();
   showView('dashboard');
+
+  // 페이스 인라인 hint 리스너
+  ['run-distance', 'run-time-min', 'run-time-sec'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateRunPaceHint);
+  });
 
   window.addEventListener('resize', renderCalendar);
 </script>
