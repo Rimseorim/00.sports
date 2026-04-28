@@ -114,6 +114,33 @@
     .empty .empty-cta.run:hover { filter: brightness(0.97); }
     .empty .empty-cta.cf:hover { filter: brightness(0.97); }
 
+    /* 사이드바 좌하단 명언 */
+    .sidebar-quote {
+      margin: auto var(--sp-2) var(--sp-2);
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--c-muted);
+      line-height: 1.55;
+      border-top: 1px solid var(--c-border);
+      padding-top: 14px;
+      letter-spacing: -0.1px;
+    }
+    .sidebar-quote em {
+      font-style: normal;
+      color: var(--c-muted-soft);
+      font-size: 11px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* 페이지 스크롤 제거 — 모든 영역은 자체 영역 안에서 처리, 외부 스크롤 X */
+    html, body { height: 100%; overflow: hidden; }
+    .app-grid { height: 100vh; overflow: hidden; }
+    .main { overflow: hidden; min-height: 0; }
+    .main-body { overflow: auto; min-height: 0; -webkit-overflow-scrolling: touch; }
+    .sidebar { overflow: hidden; min-height: 0; display: flex; flex-direction: column; }
+    .sidebar-daylist { overflow: auto; min-height: 0; flex: 1; }
+
     /* iOS safe-area — sticky 저장 버튼이 홈 인디케이터에 가리지 않도록 */
     .save-btn,
     .editor-actions {
@@ -479,21 +506,27 @@
       letter-spacing: 0.3px;
     }
 
-    /* ═══ 인바디형 트렌드 대시보드 ═══ */
+    /* ═══ 인바디형 트렌드 대시보드 — row 형식 (가로 한 줄 5카드, 카드 안 [숫자 위 / 꺾은선 아래]) ═══ */
     .trend-board {
-      margin-top: var(--sp-3);
+      margin-top: var(--sp-2);
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--sp-2);
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 1100px) {
+      .trend-board { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px) {
+      .trend-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     .trend-card {
       background: var(--c-card);
       border: 1px solid var(--c-border);
-      border-radius: var(--r-lg);
-      padding: var(--sp-2) var(--sp-2) 14px;
+      border-radius: var(--r-md);
+      padding: 10px 12px 8px;
       display: flex;
       flex-direction: column;
-      min-height: 168px;
+      min-height: 130px;
     }
     .trend-card-head {
       display: flex;
@@ -503,14 +536,17 @@
       margin-bottom: 6px;
     }
     .trend-card-title {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--c-muted);
       letter-spacing: 0.2px;
       text-transform: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .trend-card-value {
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--c-fg);
       letter-spacing: -0.5px;
@@ -536,8 +572,8 @@
     .trend-card-delta.flat { color: var(--c-muted); background: var(--c-bg); }
     .trend-card-svg {
       flex: 1;
-      min-height: 84px;
-      margin-top: 4px;
+      min-height: 56px;
+      margin-top: 6px;
     }
     .trend-card-empty {
       flex: 1;
@@ -1817,6 +1853,8 @@
       </div>
       <div class="log-list" id="log-list"></div>
     </div>
+
+    <div class="sidebar-quote" id="daily-quote" aria-label="오늘의 명언"></div>
   </aside>
 
   <!-- ═════ 메인 ═════ -->
@@ -1833,7 +1871,6 @@
         </nav>
       </div>
       <div class="header-right">
-        <span class="quote-strip collapsed" id="daily-quote" title="클릭하여 펼치기" onclick="this.classList.toggle('collapsed')"></span>
         <div class="profile-wrap">
           <button class="profile-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정과 백업 메뉴 열기" aria-haspopup="true" title="설정 · 백업">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
