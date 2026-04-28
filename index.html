@@ -191,15 +191,15 @@
       z-index: 10;
     }
 
-    /* 사이드바 타이틀 — 중앙정렬 + 대시보드 진입 버튼 */
-    .sidebar-title { text-align: center; padding-top: var(--sp-2); }
+    /* 사이드바 타이틀 — 중앙정렬 + 대시보드 진입 버튼 (컴팩트) */
+    .sidebar-title { text-align: center; padding: 10px 14px 0; }
     .sidebar-title .title-link {
       display: block;
       width: 100%;
       background: var(--c-bg);
       border: 1px solid var(--c-border);
       border-radius: var(--r-md);
-      padding: 14px 12px;
+      padding: 8px 10px 10px;
       cursor: pointer;
       transition: background 0.12s, border-color 0.12s;
       text-align: center;
@@ -209,26 +209,26 @@
       border-color: var(--c-acc-run);
     }
     .sidebar-title .title-link h1 {
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--c-fg);
       letter-spacing: -0.5px;
       margin: 0;
     }
     .sidebar-title .title-link .greeting {
-      font-size: 13px;
+      font-size: 11px;
       color: var(--c-muted);
-      margin: 2px 0 6px;
+      margin: 1px 0 5px;
     }
     .sidebar-title .title-link .title-cta {
       display: inline-block;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       color: var(--c-deep);
       background: var(--c-card);
       border: 1px solid var(--c-border);
       border-radius: var(--r-pill, 999px);
-      padding: 3px 10px;
+      padding: 2px 8px;
       letter-spacing: 0.3px;
     }
     .sidebar-title .title-link:hover .title-cta {
@@ -236,6 +236,66 @@
       color: var(--c-card);
       border-color: var(--c-deep);
     }
+    .sidebar-clock {
+      font-size: 11px;
+      color: var(--c-muted);
+      margin-top: 6px;
+      letter-spacing: 0.2px;
+      font-variant-numeric: tabular-nums;
+    }
+    /* 사이드바 목표 설정 버튼 */
+    .sidebar-goal-btn {
+      display: block;
+      width: calc(100% - 28px);
+      margin: 6px 14px 0;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-deep);
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      letter-spacing: -0.1px;
+    }
+    .sidebar-goal-btn:hover { background: var(--c-acc-run-soft); border-color: var(--c-acc-run); }
+
+    /* Streak 카드 컴팩트 */
+    .streak-card { padding: 8px 12px; margin: 8px 14px 0; gap: 8px; }
+    .streak-card .streak-num { font-size: 22px; }
+    .streak-card .streak-label { font-size: 11px; }
+    .streak-card .streak-hint { font-size: 10px; line-height: 1.35; }
+    .streak-rest-pill { font-size: 9px; padding: 1px 5px; }
+
+    /* 사이드바 캘린더 컴팩트 */
+    .sidebar-calendar { padding: 8px 12px !important; margin: 8px 14px 0 !important; }
+    .sidebar-calendar .cal-nav { margin-bottom: 4px !important; }
+    .sidebar-calendar .cal-nav h2 { font-size: 13px !important; }
+    .sidebar-calendar .nav-btn { width: 22px !important; height: 22px !important; font-size: 14px !important; }
+    .sidebar-calendar .cal-grid { gap: 1px !important; }
+    .sidebar-calendar .cal-day { min-height: 26px !important; padding: 1px !important; }
+    .sidebar-calendar .day-num { font-size: 11px !important; }
+    .sidebar-calendar .cal-dow { font-size: 10px !important; padding: 2px 0 !important; }
+    .sidebar-calendar .legend { padding: 4px 0 0 !important; font-size: 10px !important; }
+    .sidebar-calendar .today-pill { font-size: 10px !important; padding: 2px 8px !important; }
+
+    /* 사이드바 액션 패널 컴팩트 */
+    .sidebar-actions { gap: 4px; margin: 8px 14px 0; }
+    .side-action { padding: 7px 6px; font-size: 12px; min-height: 32px; }
+
+    /* 사이드바 daylist 컴팩트 — 헤더만 표시, log-list는 짧게 */
+    .sidebar-daylist { padding: 0 14px !important; margin-top: 6px !important; }
+    .sidebar-daylist .section-header h2 { font-size: 12px !important; padding: 0 !important; margin: 4px 0 4px !important; }
+    .sidebar-daylist .empty { font-size: 11px !important; padding: 4px 0 !important; }
+    .sidebar-daylist .empty-headline { font-size: 12px !important; margin-bottom: 2px !important; }
+    .sidebar-daylist .empty-actions { gap: 4px !important; margin-top: 4px !important; }
+    .sidebar-daylist .empty-cta { padding: 5px 10px; font-size: 11px; min-height: 26px; }
+
+    /* 사이드바 하단 + 명언 컴팩트 */
+    .sidebar-bottom { margin: 4px 14px 0; padding-top: 6px; }
+    .side-settings-btn { padding: 6px; font-size: 11px; }
+    .sidebar-quote { padding: 8px 14px 10px; font-size: 11px; line-height: 1.45; margin: 6px 0 0; padding-top: 8px; }
+    .sidebar-quote em { font-size: 10px; margin-top: 2px; }
 
     /* 대시보드 view 폭 1550px 강제 */
     #view-dashboard {
@@ -813,6 +873,26 @@
     .trend-card-delta.up { color: var(--c-deep); background: var(--c-acc-run-soft); }
     .trend-card-delta.down { color: var(--c-acc-cf-h); background: var(--c-acc-cf-soft); }
     .trend-card-delta.flat { color: var(--c-muted); background: var(--c-bg); }
+
+    /* 달성률 pill (5 트렌드 카드 안) */
+    .trend-card-goal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      margin-top: 4px;
+      gap: 6px;
+    }
+    .trend-card-goal .goal-text { color: var(--c-muted); }
+    .trend-card-goal .goal-pct {
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: var(--r-sm);
+      letter-spacing: 0.2px;
+    }
+    .trend-card-goal .goal-pct.below { color: var(--c-deep); background: var(--c-bg); }
+    .trend-card-goal .goal-pct.near { color: var(--c-deep); background: var(--c-acc-run-soft); }
+    .trend-card-goal .goal-pct.done { color: #fff; background: var(--c-deep); }
     .trend-card-svg {
       flex: 1;
       min-height: 56px;
@@ -2065,8 +2145,12 @@
         <h1>운동 일기</h1>
         <p class="greeting">오늘도 수고했어요</p>
         <span class="title-cta">대시보드 보기 &rsaquo;</span>
+        <div class="sidebar-clock" id="sidebar-clock">한국시간 —</div>
       </button>
     </div>
+    <button type="button" class="sidebar-goal-btn" onclick="openMonthlyGoalModal()" aria-label="월간 목표·체중 설정">
+      목표 5종 · 체중 설정 &rsaquo;
+    </button>
 
     <div class="streak-card zero" id="streak-card" role="status" aria-live="polite">
       <div class="streak-num" id="streak-num">0</div>
@@ -2142,7 +2226,6 @@
         </div>
         <div class="view-title">
           <h2 id="dashboard-title">이번달 요약</h2>
-          <button type="button" class="outline-btn" style="padding:5px 10px;font-size:12px;" onclick="openMonthlyGoalModal()">월간 목표 설정</button>
         </div>
         <div class="goal-progress hidden" id="goal-progress" aria-live="polite">
           <div class="goal-row">
@@ -2335,18 +2418,39 @@
   </main>
 </div>
 
-<!-- 월간 목표·체중 설정 모달 -->
+<!-- 월간 목표 5종 + 체중 설정 모달 -->
 <div class="modal-bg" id="profile-settings-modal-bg" role="dialog" aria-modal="true" aria-labelledby="profile-settings-title">
-  <div class="modal pr-modal">
+  <div class="modal pr-modal" style="max-width:520px;">
     <div class="modal-header">
-      <h2 id="profile-settings-title">개인 설정</h2>
+      <h2 id="profile-settings-title">목표 5종 · 체중 설정</h2>
       <button class="close-btn" onclick="closeMonthlyGoalModal()" aria-label="모달 닫기">&times;</button>
     </div>
-    <div class="field">
-      <label>이번 달 러닝 목표 (km) <span style="font-weight:400;color:var(--c-muted-soft);">(선택)</span></label>
-      <input type="number" id="goal-km-input" min="0" step="1" inputmode="decimal" placeholder="예: 100">
+    <p style="font-size:12px;color:var(--c-muted);line-height:1.5;margin-bottom:10px;">설정한 값은 꾸준함 추이 차트에 점선 목표선과 % 달성률로 표시돼요.</p>
+    <div class="field row-2">
+      <div>
+        <label>주간 운동 횟수 (회)</label>
+        <input type="number" id="goal-weekly-count" min="0" step="1" inputmode="numeric" placeholder="예: 5">
+      </div>
+      <div>
+        <label>월간 러닝 (km)</label>
+        <input type="number" id="goal-km-input" min="0" step="1" inputmode="decimal" placeholder="예: 100">
+      </div>
     </div>
     <div class="field row-2">
+      <div>
+        <label>월간 크로스핏 (회)</label>
+        <input type="number" id="goal-monthly-cf" min="0" step="1" inputmode="numeric" placeholder="예: 12">
+      </div>
+      <div>
+        <label>대표 종목 1RM (kg)</label>
+        <input type="number" id="goal-top-1rm" min="0" step="1" inputmode="decimal" placeholder="예: 140">
+      </div>
+    </div>
+    <div class="field">
+      <label>주간 평균 페이스 (분/km, 예: 5:00)</label>
+      <input type="text" id="goal-pace" inputmode="decimal" placeholder="예: 5:00 또는 5.0">
+    </div>
+    <div class="field row-2" style="border-top:1px solid var(--c-border);padding-top:var(--sp-2);margin-top:var(--sp-2);">
       <div>
         <label>체중 (kg) <span style="font-weight:400;color:var(--c-muted-soft);">(DOTS 보정용)</span></label>
         <input type="number" id="bw-input" min="0" step="0.1" inputmode="decimal" placeholder="예: 70.5">
@@ -2360,7 +2464,7 @@
         </select>
       </div>
     </div>
-    <p style="font-size:12px;color:var(--c-muted);line-height:1.4;margin-top:4px;">체중·성별은 PR/1RM 카드의 DOTS 점수 계산에만 쓰여요. 외부에 전송되지 않습니다.</p>
+    <p style="font-size:11px;color:var(--c-muted);line-height:1.4;margin-top:6px;">체중·성별은 PR/1RM 카드의 DOTS 점수 계산에만 쓰여요. 외부에 전송되지 않습니다.</p>
     <button class="save-btn dark" onclick="saveProfileSettings()">저장하기</button>
   </div>
 </div>
@@ -2690,11 +2794,15 @@
     el.appendChild(em);
   })();
 
-  const today = new Date();
+  // 한국 시간(KST) 기준 오늘
+  function todayKSTStr() {
+    return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
+  }
+  const todayStr = todayKSTStr();
+  const today = new Date(todayStr + 'T00:00:00+09:00');
   let viewYear = today.getFullYear();
   let viewMonth = today.getMonth();
   let selectedDate = null;
-  const todayStr = today.toISOString().split('T')[0];
 
   document.getElementById('run-date').value = todayStr;
   document.getElementById('cf-date').value = todayStr;
@@ -4200,21 +4308,32 @@
   }
   function saveProfileSettings() {
     const goalKm = parseFloat(document.getElementById('goal-km-input').value) || 0;
+    const goalWeeklyCount = parseFloat(document.getElementById('goal-weekly-count').value) || 0;
+    const goalMonthlyCf = parseFloat(document.getElementById('goal-monthly-cf').value) || 0;
+    const goalTop1RM = parseFloat(document.getElementById('goal-top-1rm').value) || 0;
+    const goalPace = document.getElementById('goal-pace').value.trim();
     const bw = parseFloat(document.getElementById('bw-input').value) || 0;
     const sex = document.getElementById('sex-input').value || '';
-    safeSetItem('profileSettings', JSON.stringify({ goalKm, bw, sex }));
+    safeSetItem('profileSettings', JSON.stringify({
+      goalKm, goalWeeklyCount, goalMonthlyCf, goalTop1RM, goalPace, bw, sex
+    }));
     closeMonthlyGoalModal();
     renderGoalProgress();
+    renderTrendBoard();
     if (typeof renderPRView === 'function') renderPRView();
-    showToast('설정을 저장했어요');
+    showToast('목표를 저장했어요. 차트에 점선과 % 달성률이 반영됐어요');
   }
   function openMonthlyGoalModal() {
     const s = getProfileSettings();
     document.getElementById('goal-km-input').value = s.goalKm || '';
+    document.getElementById('goal-weekly-count').value = s.goalWeeklyCount || '';
+    document.getElementById('goal-monthly-cf').value = s.goalMonthlyCf || '';
+    document.getElementById('goal-top-1rm').value = s.goalTop1RM || '';
+    document.getElementById('goal-pace').value = s.goalPace || '';
     document.getElementById('bw-input').value = s.bw || '';
     document.getElementById('sex-input').value = s.sex || '';
     document.getElementById('profile-settings-modal-bg').classList.add('open');
-    setTimeout(() => document.getElementById('goal-km-input').focus(), 80);
+    setTimeout(() => document.getElementById('goal-weekly-count').focus(), 80);
   }
   function closeMonthlyGoalModal() {
     document.getElementById('profile-settings-modal-bg').classList.remove('open');
@@ -4476,17 +4595,20 @@
     if (granularity === 'week') return getISOWeekKey(d);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
   }
-  function trendSvg(values, accentVar, ariaLabel) {
+  function trendSvg(values, accentVar, ariaLabel, goalValue) {
     if (!values || values.length === 0) return '';
     const W = 280, H = 84;
     const padL = 6, padR = 6, padT = 8, padB = 8;
     const chartW = W - padL - padR;
     const chartH = H - padT - padB;
-    const minV = Math.min(...values);
-    const maxV = Math.max(...values);
+    const minV = Math.min(...values, goalValue || Infinity);
+    const maxV = Math.max(...values, goalValue || 0);
     const range = (maxV - minV) || 1;
     const xOf = (i) => padL + (values.length === 1 ? chartW / 2 : (i / (values.length - 1)) * chartW);
     const yOf = (v) => padT + chartH - ((v - minV) / range) * chartH;
+    const goalLineSvg = (goalValue && goalValue > 0)
+      ? `<line x1="${padL}" y1="${yOf(goalValue)}" x2="${W - padR}" y2="${yOf(goalValue)}" stroke="var(${accentVar})" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.5"/>`
+      : '';
     const pts = values.map((v, i) => `${xOf(i)},${yOf(v)}`).join(' ');
     const areaD = `M ${xOf(0)},${yOf(values[0])} ` +
       values.slice(1).map((v, i) => `L ${xOf(i + 1)},${yOf(v)}`).join(' ') +
@@ -4504,6 +4626,7 @@
           </linearGradient>
         </defs>
         <path d="${areaD}" fill="url(#${id})"/>
+        ${goalLineSvg}
         <polyline points="${pts}" fill="none" stroke="var(${accentVar})" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
         <circle cx="${lastX}" cy="${lastY}" r="3.5" fill="var(${accentVar})" stroke="#fff" stroke-width="1.5"/>
       </svg>`;
@@ -4522,12 +4645,18 @@
     return `<span class="trend-card-delta ${cls}">${sign}${fmt}${suffix}</span>`;
   }
   function renderTrendCard(opts) {
-    const { title, value, unit, delta, values, accent, foot, emptyText } = opts;
+    const { title, value, unit, delta, values, accent, foot, emptyText, goal, achieved, isInverse } = opts;
     const hasData = values && values.some(v => v > 0);
     const aria = `${title} 추이, 최근 ${value}${unit}`;
     const body = hasData
-      ? `<div class="trend-card-svg">${trendSvg(values, accent, aria)}</div>`
+      ? `<div class="trend-card-svg">${trendSvg(values, accent, aria, goal)}</div>`
       : `<div class="trend-card-empty">${emptyText}</div>`;
+    let goalRow = '';
+    if (goal && goal > 0) {
+      const cls = achieved >= 100 ? 'done' : achieved >= 80 ? 'near' : 'below';
+      const goalLabel = isInverse ? `${goal} 이내` : `${goal}${unit}`;
+      goalRow = `<div class="trend-card-goal"><span class="goal-text">목표 ${goalLabel}</span><span class="goal-pct ${cls}">${Math.round(achieved)}%</span></div>`;
+    }
     return `
       <div class="trend-card">
         <div class="trend-card-head">
@@ -4536,6 +4665,7 @@
         </div>
         <div class="trend-card-value">${value}<span class="trend-unit">${unit}</span></div>
         ${body}
+        ${goalRow}
         <div class="trend-card-foot">
           <span>${foot.left}</span>
           <span>${foot.right}</span>
@@ -4548,6 +4678,10 @@
     const logs = getLogs();
     const wkBuckets = buildWeeklyBuckets(12);
     const moBuckets = buildMonthlyBuckets(6);
+    const goals = getProfileSettings();
+    const goalPaceMin = parseGoalPace(goals.goalPace);
+    const fmtMonthRange = `${moBuckets[0].label}~${moBuckets[moBuckets.length-1].label}`;
+    const fmtWeekRange = `${wkBuckets[0].label}~${wkBuckets[wkBuckets.length-1].label}`;
 
     // 1. 주간 운동 횟수
     const wkCount = wkBuckets.map(b => 0);
@@ -4565,8 +4699,10 @@
       delta: deltaBadge(lastWk, prevWk, '회', false),
       values: wkCount,
       accent: '--c-deep',
-      foot: { left: `${wkBuckets[0].label}~`, right: '이번 주' },
-      emptyText: '아직 주간 데이터가 없어요'
+      foot: { left: fmtWeekRange, right: '이번 주' },
+      emptyText: '아직 주간 데이터가 없어요',
+      goal: goals.goalWeeklyCount,
+      achieved: goals.goalWeeklyCount ? (lastWk / goals.goalWeeklyCount) * 100 : 0
     });
 
     // 2. 월간 러닝 km
@@ -4585,8 +4721,10 @@
       delta: deltaBadge(lastRunKm, prevRunKm, 'km', false),
       values: runMo,
       accent: '--c-acc-run',
-      foot: { left: `${moBuckets[0].label}~`, right: '이번 달' },
-      emptyText: '러닝 거리를 기록하면 보여요'
+      foot: { left: fmtMonthRange, right: '이번 달' },
+      emptyText: '러닝 거리를 기록하면 보여요',
+      goal: goals.goalKm,
+      achieved: goals.goalKm ? (lastRunKm / goals.goalKm) * 100 : 0
     });
 
     // 3. 월간 크로스핏 횟수
@@ -4605,8 +4743,10 @@
       delta: deltaBadge(lastCf, prevCf, '회', false),
       values: cfMo,
       accent: '--c-acc-cf',
-      foot: { left: `${moBuckets[0].label}~`, right: '이번 달' },
-      emptyText: '크로스핏을 기록하면 보여요'
+      foot: { left: fmtMonthRange, right: '이번 달' },
+      emptyText: '크로스핏을 기록하면 보여요',
+      goal: goals.goalMonthlyCf,
+      achieved: goals.goalMonthlyCf ? (lastCf / goals.goalMonthlyCf) * 100 : 0
     });
 
     // 4. 대표 종목 PR 추이 (가장 최근 갱신된 종목 1개) — 페르소나 P2·P4 합의로 평균 폐기
@@ -4643,7 +4783,9 @@
       values: topPrSeries,
       accent: '--c-deep',
       foot: { left: '누적 베스트', right: topName ? '최근 갱신' : '종목을 추가해보세요' },
-      emptyText: '최고 기록 탭에서 종목을 추가하면 추이가 보여요'
+      emptyText: '최고 기록 탭에서 종목을 추가하면 추이가 보여요',
+      goal: goals.goalTop1RM,
+      achieved: goals.goalTop1RM ? (lastPr / goals.goalTop1RM) * 100 : 0
     });
 
     // 5. 주간 러닝 페이스 (분/km)
@@ -4676,11 +4818,43 @@
       delta: deltaBadge(lastPace, prevPace, '분', true),
       values: paceVals,
       accent: '--c-acc-run',
-      foot: { left: `${wkBuckets[0].label}~`, right: '이번 주' },
-      emptyText: '러닝 시간·거리를 함께 기록하면 보여요'
+      foot: { left: fmtWeekRange, right: '이번 주' },
+      emptyText: '러닝 시간·거리를 함께 기록하면 보여요',
+      goal: goalPaceMin,
+      isInverse: true,
+      achieved: (goalPaceMin && lastPace) ? (goalPaceMin / lastPace) * 100 : 0
     });
 
     root.innerHTML = card1 + card2 + card3 + card4 + card5;
+  }
+
+  // 한국 시간 (KST) 헬퍼 + 시계
+  function nowKST() {
+    const fmt = new Intl.DateTimeFormat('ko-KR', {
+      timeZone: 'Asia/Seoul',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false
+    });
+    return fmt.format(new Date());
+  }
+  function startSidebarClock() {
+    const el = document.getElementById('sidebar-clock');
+    if (!el) return;
+    const tick = () => { el.textContent = `한국시간 ${nowKST()}`; };
+    tick();
+    setInterval(tick, 30000);
+  }
+  // 페이스 목표 입력 파싱 ("5:00" or "5.0" → 5.0 분)
+  function parseGoalPace(raw) {
+    if (!raw) return null;
+    const s = String(raw).trim();
+    if (s.includes(':')) {
+      const [m, sec] = s.split(':').map(Number);
+      if (isNaN(m) || isNaN(sec)) return null;
+      return m + sec / 60;
+    }
+    const v = parseFloat(s);
+    return isNaN(v) ? null : v;
   }
 
   // 월별 추이 — 3 시리즈 통합 꺾은선 (단일 SVG, 정규화 0~100, 라벨에 절대값)
@@ -4803,6 +4977,7 @@
   renderTrendBoard();
   updateBackupReminder();
   applyGreeting();
+  startSidebarClock();
   refreshDatalists();
   updateBackupAlert();
   renderGoalProgress();
