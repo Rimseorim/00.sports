@@ -114,6 +114,146 @@
     .empty .empty-cta.run:hover { filter: brightness(0.97); }
     .empty .empty-cta.cf:hover { filter: brightness(0.97); }
 
+    /* 사이드바 빠른 액션 4 패널 (row 형식, 캘린더 밑) */
+    .sidebar-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin: var(--sp-2) 14px 0;
+    }
+    .side-action {
+      padding: 10px 8px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      background: var(--c-card);
+      color: var(--c-fg);
+      cursor: pointer;
+      letter-spacing: -0.2px;
+      transition: background 0.12s, border-color 0.12s;
+      min-height: 38px;
+    }
+    .side-action:hover { background: var(--c-bg); }
+    .side-action.run {
+      border-color: var(--c-acc-run);
+      color: var(--c-deep);
+      background: var(--c-acc-run-soft);
+    }
+    .side-action.cf {
+      border-color: var(--c-acc-cf);
+      color: var(--c-acc-cf-h);
+      background: var(--c-acc-cf-soft);
+    }
+    .side-action.pr {
+      border-color: var(--c-deep);
+      color: var(--c-card);
+      background: var(--c-deep);
+    }
+    .side-action.history {
+      border-color: var(--c-border);
+      color: var(--c-fg);
+    }
+
+    /* 사이드바 하단 — 설정 버튼 (드롭다운 위로 펼침) */
+    .sidebar-bottom {
+      position: relative;
+      margin: 0 14px;
+      border-top: 1px solid var(--c-border);
+      padding-top: 10px;
+    }
+    .side-settings-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px;
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-muted);
+      cursor: pointer;
+    }
+    .side-settings-btn:hover { background: var(--c-bg); }
+    .sidebar-bottom .profile-menu {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      padding: 6px;
+      box-shadow: 0 -2px 8px rgba(44, 31, 20, 0.08);
+      z-index: 10;
+    }
+
+    /* 운동 일기 타이틀 클릭 → 대시보드 */
+    .title-link { cursor: pointer; }
+    .title-link:hover { color: var(--c-deep); }
+
+    /* 메인 헤더 제거 후 본문 패딩 보정 */
+    .main { padding: 0; }
+    .main-body { padding-top: var(--sp-3); }
+
+    /* 월별 추이 패널 (3 row 꺾은선) */
+    .monthly-board {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: var(--sp-1);
+    }
+    .monthly-row {
+      display: grid;
+      grid-template-columns: 110px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+    }
+    .monthly-row .m-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-muted);
+      letter-spacing: 0.2px;
+    }
+    .monthly-row .m-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--c-fg);
+      letter-spacing: -0.3px;
+      margin-top: 2px;
+    }
+    .monthly-row .m-value .m-unit {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--c-muted);
+      margin-left: 2px;
+    }
+    .monthly-row .m-svg {
+      height: 56px;
+      min-width: 0;
+    }
+    .monthly-row .m-svg svg { width: 100%; height: 56px; display: block; }
+    .monthly-row .m-foot {
+      font-size: 11px;
+      color: var(--c-muted-soft);
+      text-align: right;
+      white-space: nowrap;
+    }
+    @media (max-width: 720px) {
+      .monthly-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      .monthly-row .m-foot { text-align: left; }
+    }
+
     /* 사이드바 좌하단 명언 */
     .sidebar-quote {
       margin: auto var(--sp-2) var(--sp-2);
@@ -1817,8 +1957,8 @@
   <!-- ═════ 사이드패널 ═════ -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">
-      <button class="drawer-close" onclick="toggleSidebar()" aria-label="사이드바 닫기">✕</button>
-      <h1>운동 일기</h1>
+      <button class="drawer-close" onclick="toggleSidebar()" aria-label="사이드바 닫기">&times;</button>
+      <h1 class="title-link" onclick="showView('dashboard')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showView('dashboard')}" title="대시보드로">운동 일기</h1>
       <p class="greeting">오늘도 수고했어요</p>
     </div>
 
@@ -1847,6 +1987,13 @@
       </div>
     </div>
 
+    <nav class="sidebar-actions" aria-label="빠른 액션">
+      <button type="button" class="side-action run" onclick="showView('running')">러닝 쓰기</button>
+      <button type="button" class="side-action cf" onclick="showView('crossfit')">크로스핏 쓰기</button>
+      <button type="button" class="side-action pr" onclick="showView('pr')">기록 적기</button>
+      <button type="button" class="side-action history" onclick="showView('history')">전체 기록</button>
+    </nav>
+
     <div class="sidebar-daylist">
       <div class="section-header">
         <h2 id="log-title">오늘 기록</h2>
@@ -1854,40 +2001,28 @@
       <div class="log-list" id="log-list"></div>
     </div>
 
+    <div class="sidebar-bottom">
+      <button class="side-settings-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정과 백업 메뉴 열기" aria-haspopup="true" title="설정 · 백업">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>설정 · 백업</span>
+      </button>
+      <div class="profile-menu hidden" id="profile-menu" role="menu">
+        <button class="menu-item" onclick="exportBackup(); closeProfileMenu();" role="menuitem">JSON 백업 내보내기</button>
+        <button class="menu-item" onclick="exportCSV(); closeProfileMenu();" role="menuitem">CSV로 내보내기</button>
+        <button class="menu-item" onclick="restoreBackup(); closeProfileMenu();" role="menuitem">백업 불러오기</button>
+        <button class="menu-item" onclick="openTrendModal(); closeProfileMenu();" role="menuitem">무게 추이 보기</button>
+        <button class="menu-item" onclick="openMonthlyGoalModal(); closeProfileMenu();" role="menuitem">월간 목표 · 체중</button>
+        <div class="menu-divider"></div>
+        <div class="menu-hint" style="font-size:11px;color:var(--c-muted);line-height:1.4;padding:6px 12px;">기록은 이 브라우저에만 저장돼요.<br>정기 백업을 권장드려요.</div>
+        <div class="menu-hint" id="backup-reminder-menu">백업 정보 없음</div>
+      </div>
+    </div>
+
     <div class="sidebar-quote" id="daily-quote" aria-label="오늘의 명언"></div>
   </aside>
 
   <!-- ═════ 메인 ═════ -->
   <main class="main">
-    <header class="main-header">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <button class="drawer-open" onclick="toggleSidebar()" aria-label="사이드바 열기">&#9776;</button>
-        <nav class="tabs" role="tablist">
-          <button class="tab" data-view="running" onclick="showView('running')" role="tab">러닝 쓰기</button>
-          <button class="tab" data-view="crossfit" onclick="showView('crossfit')" role="tab">크로스핏 쓰기</button>
-          <button class="tab active" data-view="dashboard" onclick="showView('dashboard')" role="tab">대시보드</button>
-          <button class="tab" data-view="history" onclick="showView('history')" role="tab">전체 기록</button>
-          <button class="tab" data-view="pr" onclick="showView('pr')" role="tab" aria-label="최고 기록 (1RM)">최고 기록</button>
-        </nav>
-      </div>
-      <div class="header-right">
-        <div class="profile-wrap">
-          <button class="profile-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정과 백업 메뉴 열기" aria-haspopup="true" title="설정 · 백업">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          </button>
-          <div class="profile-menu hidden" id="profile-menu" role="menu">
-            <button class="menu-item" onclick="exportBackup(); closeProfileMenu();" role="menuitem">JSON 백업 내보내기</button>
-            <button class="menu-item" onclick="exportCSV(); closeProfileMenu();" role="menuitem">CSV로 내보내기</button>
-            <button class="menu-item" onclick="restoreBackup(); closeProfileMenu();" role="menuitem">백업 불러오기</button>
-            <button class="menu-item" onclick="openTrendModal(); closeProfileMenu();" role="menuitem">무게 추이 보기</button>
-            <div class="menu-divider"></div>
-            <div class="menu-hint" style="font-size:11px;color:var(--c-muted);line-height:1.4;padding:6px 12px;">기록은 이 브라우저에만 저장돼요.<br>정기 백업을 권장드려요.</div>
-            <div class="menu-hint" id="backup-reminder-menu">백업 정보 없음</div>
-          </div>
-        </div>
-      </div>
-    </header>
-
     <div class="main-body">
 
       <!-- ── 대시보드 ── -->
@@ -1931,8 +2066,11 @@
         </div>
         <div class="trend-board" id="trend-board"></div>
 
-        <div class="view-title second"><h2>최근 기록</h2></div>
-        <div class="log-list" id="recent-list"></div>
+        <div class="view-title second">
+          <h2>월별 추이</h2>
+          <span style="font-size:13px;color:var(--c-muted);">최근 6개월 누적 변화</span>
+        </div>
+        <div class="monthly-board" id="monthly-board" aria-label="월별 운동 추이"></div>
       </section>
 
       <!-- ── 러닝 쓰기 ── -->
@@ -2507,7 +2645,7 @@
     });
 
     if (view === 'pr') renderPRView();
-    if (view === 'dashboard') { renderStats(); renderRecentList(); renderTrendBoard(); renderStreak(); updateBackupAlert(); renderGoalProgress(); }
+    if (view === 'dashboard') { renderStats(); renderRecentList(); renderTrendBoard(); renderMonthlyBoard(); renderStreak(); updateBackupAlert(); renderGoalProgress(); }
     if (view === 'running') { renderRecent('running'); updateEditBadge('running'); clearFormError('run-form-error'); }
     if (view === 'crossfit') { renderRecent('crossfit'); updateEditBadge('crossfit'); clearFormError('cf-form-error'); }
     if (view === 'history') renderHistory();
@@ -4439,6 +4577,58 @@
     root.innerHTML = card1 + card2 + card3 + card4 + card5;
   }
 
+  // 월별 추이 — 3 row 꺾은선 (운동 횟수·러닝km·크로스핏 횟수, 6개월)
+  function renderMonthlyBoard() {
+    const root = document.getElementById('monthly-board');
+    if (!root) return;
+    const logs = getLogs();
+    const buckets = buildMonthlyBuckets(6);
+
+    const totalMo = buckets.map(() => 0);
+    const runKmMo = buckets.map(() => 0);
+    const cfMo = buckets.map(() => 0);
+    logs.forEach(l => {
+      const k = logKey(l, 'month');
+      const idx = buckets.findIndex(b => b.key === k);
+      if (idx < 0) return;
+      totalMo[idx] += 1;
+      if (l.type === 'running') runKmMo[idx] += parseFloat(l.distance) || 0;
+      if (l.type === 'crossfit') cfMo[idx] += 1;
+    });
+
+    const row = (label, values, unit, accent, fmt) => {
+      const last = values[values.length - 1] || 0;
+      const prev = values[values.length - 2] || 0;
+      const lastDisplay = fmt ? fmt(last) : last;
+      const has = values.some(v => v > 0);
+      const svg = has ? trendSvg(values, accent, `${label} 6개월 추이`) : '<span style="color:var(--c-muted-soft);font-size:12px;padding:0 8px;">데이터가 쌓이면 여기 그래프가 그려져요</span>';
+      const delta = (() => {
+        if (!prev && !last) return '';
+        if (!prev) return `<span class="trend-card-delta up">첫 달</span>`;
+        const d = last - prev;
+        if (Math.abs(d) < 0.05) return `<span class="trend-card-delta flat">변동 없음</span>`;
+        const cls = d > 0 ? 'up' : 'down';
+        const sign = d > 0 ? '+' : '';
+        const f = Number.isInteger(d) ? d : d.toFixed(1);
+        return `<span class="trend-card-delta ${cls}">${sign}${f}${unit}</span>`;
+      })();
+      return `
+        <div class="monthly-row">
+          <div>
+            <div class="m-label">${label}</div>
+            <div class="m-value">${lastDisplay}<span class="m-unit">${unit}</span></div>
+          </div>
+          <div class="m-svg">${svg}</div>
+          <div class="m-foot">${buckets[0].label}~${buckets[buckets.length - 1].label} ${delta}</div>
+        </div>`;
+    };
+
+    root.innerHTML =
+      row('월간 운동 횟수', totalMo, '회', '--c-deep') +
+      row('월간 러닝', runKmMo, 'km', '--c-acc-run', v => v.toFixed(1)) +
+      row('월간 크로스핏', cfMo, '회', '--c-acc-cf');
+  }
+
   // 초기 인라인 에디터 상태
   resetRunningForm();
   resetCrossfitForm();
@@ -4455,6 +4645,7 @@
   refreshDatalists();
   updateBackupAlert();
   renderGoalProgress();
+  renderMonthlyBoard();
   // cf-title 입력 시 명명 WOD 감지
   const cfTitleEl = document.getElementById('cf-title');
   if (cfTitleEl) cfTitleEl.addEventListener('input', updateWodBenchmark);
