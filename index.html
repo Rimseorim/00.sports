@@ -451,9 +451,34 @@
     .sidebar-calendar .legend { padding: 4px 0 0 !important; font-size: 10px !important; }
     .sidebar-calendar .today-pill { font-size: 10px !important; padding: 2px 8px !important; }
 
-    /* 사이드바 액션 패널 컴팩트 */
-    .sidebar-actions { gap: 4px; margin: 8px 14px 0; }
-    .side-action { padding: 7px 6px; font-size: 12px; min-height: 32px; }
+    /* 사이드바 액션 4 버튼 — 세로 1열 row 형식, 단색 통일 */
+    .sidebar-actions {
+      display: flex !important;
+      flex-direction: column !important;
+      grid-template-columns: none !important;
+      gap: 4px;
+      margin: 8px 14px 0;
+    }
+    .side-action {
+      padding: 8px 12px;
+      font-size: 12px;
+      min-height: 32px;
+      text-align: left;
+      background: var(--c-card) !important;
+      border: 1px solid var(--c-border) !important;
+      color: var(--c-fg) !important;
+      font-weight: 700;
+    }
+    .side-action:hover {
+      background: var(--c-bg) !important;
+      border-color: var(--c-muted-soft) !important;
+    }
+    .side-action.run::before,
+    .side-action.cf::before,
+    .side-action.pr::before,
+    .side-action.history::before { content: ''; }
+    /* 색상 분기 제거 — 단색 통일 */
+    .side-action.run, .side-action.cf, .side-action.pr, .side-action.history { filter: none !important; }
 
     /* 사이드바 daylist 컴팩트 — 헤더만 표시, log-list는 짧게 */
     .sidebar-daylist { padding: 0 14px !important; margin-top: 6px !important; }
@@ -525,9 +550,9 @@
     .monthly-combined {
       background: var(--c-card);
       border: 1px solid var(--c-border);
-      border-radius: var(--r-lg);
-      padding: 16px 20px 14px;
-      margin-top: var(--sp-1);
+      border-radius: var(--r-md);
+      padding: 10px 14px 8px;
+      margin-top: 6px;
     }
     .monthly-combined-head {
       display: flex;
@@ -562,7 +587,7 @@
     }
     .monthly-svg-wrap {
       width: 100%;
-      height: 260px;
+      height: 170px;
       position: relative;
     }
     .monthly-svg-wrap svg { width: 100%; height: 100%; display: block; overflow: visible; }
@@ -576,9 +601,93 @@
       text-align: center;
     }
 
-    /* 메인 헤더 제거 후 본문 패딩 보정 */
+    /* 메인 헤더 제거 후 본문 패딩 보정 — 컴팩트 */
     .main { padding: 0; }
-    .main-body { padding-top: var(--sp-3); }
+    .main-body { padding-top: 14px; padding-bottom: 14px; }
+
+    /* 러닝/크로스핏 쓰기 — 좌우 2열 분할 (좌: 폼 / 우: 최근 표) */
+    .record-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .record-split { grid-template-columns: 1fr; }
+    }
+    .record-left { min-width: 0; }
+    .record-right { min-width: 0; }
+    .record-right .view-title { margin-top: 0 !important; margin-bottom: 6px !important; }
+
+    /* 최근 기록 표 형식 (row 단위, 한 줄에 정보 압축) */
+    .log-table {
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+    .log-row {
+      display: grid;
+      grid-template-columns: 90px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--c-border);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .log-row:last-child { border-bottom: none; }
+    .log-row:hover { background: var(--c-bg); }
+    .log-row .log-row-date {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-muted);
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+    }
+    .log-row .log-row-main {
+      font-size: 13px;
+      color: var(--c-fg);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      letter-spacing: -0.2px;
+    }
+    .log-row .log-row-main strong {
+      font-weight: 700;
+      margin-right: 6px;
+    }
+    .log-row .log-row-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .log-row .log-row-actions button {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      font-size: 12px;
+      border: 1px solid var(--c-border);
+      background: var(--c-card);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      color: var(--c-muted);
+    }
+    .log-row .log-row-actions button:hover {
+      background: var(--c-bg);
+      color: var(--c-fg);
+    }
+    .log-table .empty {
+      padding: 20px 14px;
+    }
+    /* view-title 컴팩트 */
+    #view-dashboard .view-title { margin-top: 0 !important; margin-bottom: 6px !important; }
+    #view-dashboard .view-title.second { margin-top: 14px !important; }
+    #view-dashboard .trend-board-title { margin-top: 14px !important; margin-bottom: 4px !important; }
+    /* dash-stats 카드 컴팩트 */
+    #view-dashboard .dash-stats { padding: 14px 20px !important; margin-bottom: 6px !important; }
+    /* goal-progress 컴팩트 */
+    #view-dashboard .goal-progress { padding: 8px 14px !important; margin-bottom: 6px !important; }
 
     /* 월별 추이 패널 (3 row 꺾은선) */
     .monthly-board {
@@ -1044,10 +1153,10 @@
       background: var(--c-card);
       border: 1px solid var(--c-border);
       border-radius: var(--r-md);
-      padding: 10px 12px 8px;
+      padding: 8px 10px 6px;
       display: flex;
       flex-direction: column;
-      min-height: 130px;
+      min-height: 108px;
     }
     .trend-card-head {
       display: flex;
@@ -1113,8 +1222,8 @@
     .trend-card-goal .goal-pct.done { color: #fff; background: var(--c-deep); }
     .trend-card-svg {
       flex: 1;
-      min-height: 56px;
-      margin-top: 6px;
+      min-height: 40px;
+      margin-top: 4px;
     }
     .trend-card-empty {
       flex: 1;
@@ -2419,7 +2528,6 @@
       <button type="button" class="side-action run" onclick="showView('running')">러닝 쓰기</button>
       <button type="button" class="side-action cf" onclick="showView('crossfit')">크로스핏 쓰기</button>
       <button type="button" class="side-action pr" onclick="showView('pr')">기록 적기</button>
-      <button type="button" class="side-action history" onclick="showView('history')">전체 기록</button>
     </nav>
 
     <div class="sidebar-daylist">
@@ -2502,6 +2610,8 @@
 
       <!-- ── 러닝 쓰기 ── -->
       <section id="view-running" class="view hidden">
+        <div class="record-split">
+        <div class="record-left">
         <div class="view-title">
           <h2 id="running-editor-title">러닝 기록 쓰기</h2>
         </div>
@@ -2581,12 +2691,18 @@
             <button class="save-btn running" onclick="save('running')">저장하기</button>
           </div>
         </div>
-        <div class="view-title second"><h2>최근 러닝</h2></div>
-        <div class="log-list" id="running-recent"></div>
+        </div>
+        <div class="record-right">
+          <div class="view-title"><h2>최근 러닝</h2></div>
+          <div class="log-table" id="running-recent"></div>
+        </div>
+        </div>
       </section>
 
       <!-- ── 크로스핏 쓰기 ── -->
       <section id="view-crossfit" class="view hidden">
+        <div class="record-split">
+        <div class="record-left">
         <div class="view-title">
           <h2 id="crossfit-editor-title">크로스핏 기록 쓰기</h2>
         </div>
@@ -2619,8 +2735,12 @@
             <button class="save-btn crossfit" onclick="save('crossfit')">저장하기</button>
           </div>
         </div>
-        <div class="view-title second"><h2>최근 크로스핏</h2></div>
-        <div class="log-list" id="crossfit-recent"></div>
+        </div>
+        <div class="record-right">
+          <div class="view-title"><h2>최근 크로스핏</h2></div>
+          <div class="log-table" id="crossfit-recent"></div>
+        </div>
+        </div>
       </section>
 
       <!-- ── 전체 기록 (검색·필터·페이지네이션) ── -->
@@ -3801,13 +3921,45 @@
   function renderRecent(type) {
     const el = document.getElementById(type + '-recent');
     if (!el) return;
-    const logs = getLogs().filter(l => l.type === type).slice(0, 5);
+    const logs = getLogs().filter(l => l.type === type).slice(0, 12);
     if (logs.length === 0) {
       const label = type === 'running' ? '첫 러닝' : '첫 크로스핏';
-      el.innerHTML = `<div class="empty"><div class="empty-headline">${label}을 시작해볼까요?</div><div class="empty-sub">위 폼에 채워 저장하면 여기 모여요</div></div>`;
+      el.innerHTML = `<div class="empty"><div class="empty-headline">${label}을 시작해볼까요?</div><div class="empty-sub">왼쪽 폼에 채워 저장하면 여기 모여요</div></div>`;
       return;
     }
-    el.innerHTML = logs.map(logToHtml).join('');
+    el.innerHTML = logs.map(logToRow).join('');
+  }
+
+  // 표 형식 row (러닝·크로스핏 우측 패널 — 한 줄 압축)
+  function logToRow(log) {
+    const dateShort = log.date.slice(5).replace('-', '/'); // "04/29"
+    let main = '';
+    if (log.type === 'running') {
+      const km = parseFloat(log.distance);
+      const tm = parseFloat(log.time);
+      const pace = (km > 0 && tm > 0) ? formatPace(tm / km) : null;
+      const parts = [];
+      if (log.distance) parts.push(`<strong>${escapeHtml(log.distance)}km</strong>`);
+      const timeText = formatRunTime(log);
+      if (timeText) parts.push(escapeHtml(timeText));
+      if (pace) parts.push(`<span style="color:var(--c-muted);">${pace}/km</span>`);
+      if (log.place) parts.push(`<span style="color:var(--c-muted);">${escapeHtml(log.place)}</span>`);
+      main = parts.join(' · ');
+    } else {
+      const wodCount = (log.wods || []).length;
+      const title = log.title ? escapeHtml(log.title) : '크로스핏';
+      const wodPreview = (log.wods || [])[0]?.content?.split('\n')[0] || '';
+      main = `<strong>${title}</strong>${wodCount > 0 ? `<span style="color:var(--c-muted);">WOD ${wodCount}개</span>` : ''}${wodPreview ? ` · <span style="color:var(--c-muted);">${escapeHtml(wodPreview).slice(0, 40)}</span>` : ''}`;
+    }
+    return `
+      <div class="log-row" onclick="openEditModal(${log.id})">
+        <span class="log-row-date">${escapeHtml(dateShort)}</span>
+        <span class="log-row-main">${main}</span>
+        <span class="log-row-actions">
+          <button type="button" onclick="event.stopPropagation(); cloneLog(${log.id})" aria-label="오늘로 복제" title="오늘로 복제">⎘</button>
+          <button type="button" onclick="event.stopPropagation(); deleteLog(${log.id})" aria-label="삭제" title="삭제">&times;</button>
+        </span>
+      </div>`;
   }
 
   function renderRecentList() {
