@@ -191,11 +191,13 @@
       z-index: 10;
     }
 
-    /* 로그인 — 전체 가림막 (currentUser 없으면 표시) */
+    /* 로그인 — 풀페이지 (currentUser 없으면 메인 통째로 가림) */
+    body.no-user .app-grid { display: none !important; }
+    body.no-user { overflow: hidden; }
     .login-shield {
       position: fixed;
       inset: 0;
-      background: rgba(44, 31, 20, 0.55);
+      background: var(--c-bg-page);
       display: none;
       align-items: center;
       justify-content: center;
@@ -203,27 +205,50 @@
       padding: var(--sp-2);
     }
     .login-shield.show { display: flex; }
+    .login-shield::before {
+      content: '운동 일기';
+      position: fixed;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--c-deep);
+      letter-spacing: -1px;
+    }
+    .login-shield::after {
+      content: '오늘도 한 줄, 꾸준히';
+      position: fixed;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 13px;
+      color: var(--c-muted);
+      letter-spacing: -0.2px;
+    }
     .login-card {
-      background: var(--c-bg);
+      background: var(--c-card);
       border: 1px solid var(--c-border);
       border-radius: var(--r-xl);
-      padding: var(--sp-3);
-      max-width: 440px;
+      padding: var(--sp-4);
+      max-width: 460px;
       width: 100%;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 18px rgba(44, 31, 20, 0.08);
     }
     .login-card h2 {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       color: var(--c-fg);
       letter-spacing: -0.5px;
       margin-bottom: 6px;
+      text-align: center;
     }
     .login-card .login-sub {
       font-size: 12px;
       color: var(--c-muted);
-      line-height: 1.5;
-      margin-bottom: var(--sp-2);
+      line-height: 1.55;
+      margin-bottom: var(--sp-3);
+      text-align: center;
     }
     .login-list {
       display: flex;
@@ -5207,6 +5232,7 @@
   function showLoginShield() {
     const shield = document.getElementById('login-shield');
     if (!shield) return;
+    document.body.classList.add('no-user');
     shield.classList.add('show');
     // 기존 사용자 목록
     const list = document.getElementById('login-list');
