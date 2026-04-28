@@ -1,0 +1,84 @@
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - generic [ref=e4]:
+      - heading "운동 일기" [level=1] [ref=e5]
+      - paragraph [ref=e6]: 오늘도 수고했어요
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - button "이전 달" [ref=e9] [cursor=pointer]: ‹
+        - heading "2026년 4월" [level=2] [ref=e11]
+        - button "다음 달" [ref=e12] [cursor=pointer]: ›
+      - generic [ref=e13]:
+        - generic [ref=e14]: 일
+        - generic [ref=e15]: 월
+        - generic [ref=e16]: 화
+        - generic [ref=e17]: 수
+        - generic [ref=e18]: 목
+        - generic [ref=e19]: 금
+        - generic [ref=e20]: 토
+        - generic [ref=e26] [cursor=pointer]: "1"
+        - generic [ref=e29] [cursor=pointer]: "2"
+        - generic [ref=e32] [cursor=pointer]: "3"
+        - generic [ref=e35] [cursor=pointer]: "4"
+        - generic [ref=e38] [cursor=pointer]: "5"
+        - generic [ref=e41] [cursor=pointer]: "6"
+        - generic [ref=e44] [cursor=pointer]: "7"
+        - generic [ref=e47] [cursor=pointer]: "8"
+        - generic [ref=e50] [cursor=pointer]: "9"
+        - generic [ref=e53] [cursor=pointer]: "10"
+        - generic [ref=e56] [cursor=pointer]: "11"
+        - generic [ref=e59] [cursor=pointer]: "12"
+        - generic [ref=e62] [cursor=pointer]: "13"
+        - generic [ref=e65] [cursor=pointer]: "14"
+        - generic [ref=e68] [cursor=pointer]: "15"
+        - generic [ref=e71] [cursor=pointer]: "16"
+        - generic [ref=e74] [cursor=pointer]: "17"
+        - generic [ref=e77] [cursor=pointer]: "18"
+        - generic [ref=e80] [cursor=pointer]: "19"
+        - generic [ref=e83] [cursor=pointer]: "20"
+        - generic [ref=e86] [cursor=pointer]: "21"
+        - generic [ref=e89] [cursor=pointer]: "22"
+        - generic [ref=e92] [cursor=pointer]: "23"
+        - generic [ref=e95] [cursor=pointer]: "24"
+        - generic [ref=e98] [cursor=pointer]: "25"
+        - generic [ref=e101] [cursor=pointer]: "26"
+        - generic [ref=e104] [cursor=pointer]: "27"
+        - generic [ref=e107] [cursor=pointer]: "28"
+        - generic [ref=e110] [cursor=pointer]: "29"
+        - generic [ref=e113] [cursor=pointer]: "30"
+      - generic [ref=e114]:
+        - generic [ref=e115]: 러닝
+        - generic [ref=e117]: 크로스핏
+    - generic [ref=e119]:
+      - heading "2026년 04월 28일 기록" [level=2] [ref=e121]
+      - generic [ref=e123]:
+        - text: 이 날은 기록이 없어요.
+        - text: 위 탭에서 바로 작성해보세요.
+  - main [ref=e124]:
+    - generic [ref=e125]:
+      - tablist [ref=e127]:
+        - tab "대시보드" [ref=e128] [cursor=pointer]
+        - tab "러닝 쓰기" [ref=e129] [cursor=pointer]
+        - tab "크로스핏 쓰기" [ref=e130] [cursor=pointer]
+        - tab "PR / 1RM" [ref=e131] [cursor=pointer]
+      - generic [ref=e132]:
+        - generic "클릭하여 펼치기" [ref=e133] [cursor=pointer]:
+          - text: "\"나는 자고 싶을 때마다 이렇게 말한다. 쉬어도 된다. 죽으면 영원히 쉴 수 있으니까.\""
+          - emphasis [ref=e134]: — 아놀드 슈워제네거 (올림픽 보디빌딩 챔피언·배우)
+        - button "설정 메뉴" [ref=e136] [cursor=pointer]: P
+    - generic [ref=e138]:
+      - heading "이번달 요약" [level=2] [ref=e140]
+      - generic [ref=e141]:
+        - generic [ref=e142]:
+          - generic [ref=e143]: 이번달 운동
+          - generic [ref=e144]: 0회
+        - generic [ref=e145]:
+          - generic [ref=e146]: 총 러닝
+          - generic [ref=e147]: 0.0km
+        - generic [ref=e148]:
+          - generic [ref=e149]: 크로스핏
+          - generic [ref=e150]: 0회
+      - heading "최근 기록" [level=2] [ref=e152]
+      - generic [ref=e154]:
+        - text: 아직 기록이 없어요.
+        - text: 위 탭에서 바로 작성해보세요.
