@@ -863,6 +863,220 @@
       border-color: var(--c-deep);
     }
 
+    /* 기록 적기 (PR) 화면 — 재디자인 */
+    .pr-title-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 10px !important; }
+    .pr-title-row h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.4px; }
+    .pr-title-row .pr-sub { font-size: 12px; color: var(--c-muted); margin-top: 2px; }
+    .pr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 12px;
+    }
+
+    /* PR 카드 — 단정한 흰 카드 */
+    .pr-card {
+      background: var(--c-card);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .pr-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .pr-card-header:hover { background: var(--c-bg); }
+    .pr-card-title { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
+    .pr-card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--c-fg);
+      letter-spacing: -0.3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pr-best-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-deep);
+      background: var(--c-bg);
+      border-radius: var(--r-sm);
+      padding: 2px 7px;
+      letter-spacing: -0.1px;
+    }
+    .dots-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--c-muted);
+      background: var(--c-bg-page);
+      border: none;
+      border-radius: var(--r-sm);
+      padding: 2px 6px;
+      letter-spacing: 0.2px;
+      margin-left: 0;
+    }
+    .pr-card-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .pr-card-meta {
+      font-size: 11px;
+      color: var(--c-muted);
+      font-weight: 700;
+      letter-spacing: -0.1px;
+    }
+    .pr-icon-btn {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      font-size: 12px;
+      border: 1px solid var(--c-border);
+      background: var(--c-card);
+      border-radius: var(--r-sm);
+      color: var(--c-muted);
+      cursor: pointer;
+    }
+    .pr-icon-btn:hover { background: var(--c-bg); color: var(--c-fg); }
+
+    /* PR 카드 본문 */
+    .pr-card-body {
+      padding: 8px 14px 12px;
+    }
+    .pr-mini-chart { margin: 6px 0 4px; }
+    .pr-mini-chart svg { width: 100%; height: 38px; display: block; }
+
+    /* % 계산기 토글 */
+    .pr-calc-toggle {
+      font-size: 11px;
+      color: var(--c-muted);
+      background: none;
+      border: none;
+      padding: 2px 0;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .pr-calc-toggle:hover { color: var(--c-deep); }
+    .pr-calc-wrap {
+      margin-top: 6px;
+      padding: 8px 10px;
+      background: var(--c-bg-page);
+      border-radius: var(--r-sm);
+    }
+    .pr-calc-wrap.hidden { display: none; }
+    .pr-calc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    .pr-calc-table th, .pr-calc-table td { padding: 3px 6px; text-align: right; }
+    .pr-calc-table th { font-weight: 700; color: var(--c-muted); border-bottom: 1px solid var(--c-border); }
+
+    /* PR 기록 행 — 표 row 일관 */
+    .pr-record-list { display: flex; flex-direction: column; }
+    .pr-record-row {
+      display: grid;
+      grid-template-columns: 70px 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px dashed var(--c-border);
+    }
+    .pr-record-row:last-child { border-bottom: none; }
+    .pr-record-date {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-muted);
+      letter-spacing: -0.1px;
+      white-space: nowrap;
+    }
+    .pr-record-weight {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--c-fg);
+      letter-spacing: -0.3px;
+    }
+    .pr-record-weight .kg-hint {
+      font-size: 10px;
+      color: var(--c-muted);
+      font-weight: 400;
+      margin-left: 4px;
+    }
+    .pr-type-chip {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--c-muted);
+      background: var(--c-bg);
+      padding: 2px 7px;
+      border-radius: var(--r-sm);
+      letter-spacing: 0.2px;
+    }
+    .pr-record-row .pr-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--c-deep);
+      padding: 2px 7px;
+      border-radius: var(--r-sm);
+      letter-spacing: 0.2px;
+    }
+    .pr-record-row .pr-diff {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--r-sm);
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+    .pr-record-row .pr-diff.up { color: var(--c-deep); background: var(--c-acc-run-soft); }
+    .pr-record-row .pr-diff.down { color: var(--c-acc-cf-h); background: var(--c-acc-cf-soft); }
+    .pr-record-row .pr-pct { font-size: 10px; color: var(--c-muted); margin-left: 3px; font-weight: 400; }
+    .pr-record-note {
+      grid-column: 1 / -1;
+      font-size: 11px;
+      color: var(--c-muted);
+      padding-left: 0;
+      margin-top: 2px;
+      font-style: italic;
+    }
+    .pr-record-note::before { content: '“'; margin-right: 2px; }
+    .pr-record-note::after { content: '”'; margin-left: 2px; }
+    .pr-record-note:empty { display: none; }
+    .pr-record-delete {
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      font-size: 12px;
+      color: var(--c-muted-soft);
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--r-sm);
+    }
+    .pr-record-delete:hover { color: var(--c-acc-cf-h); background: var(--c-acc-cf-soft); }
+
+    .add-record-btn {
+      margin-top: 8px;
+      width: 100%;
+      padding: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-deep);
+      background: var(--c-card);
+      border: 1px dashed var(--c-border);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+    }
+    .add-record-btn:hover { background: var(--c-bg); border-color: var(--c-acc-run); }
+
+    /* 기존 PR 카드 스타일 덮어쓰기 — 더 작은 폰트 */
+    .pr-card-name { font-size: 14px !important; }
+
     /* 1RM % 계산기 표 (PR 카드 토글) */
     .pr-calc-wrap {
       margin-top: var(--sp-1);
@@ -2785,13 +2999,16 @@
         </div>
       </section>
 
-      <!-- ── PR / 1RM ── -->
+      <!-- ── 기록 적기 (PR / 1RM) ── -->
       <section id="view-pr" class="view hidden">
-        <div class="view-title">
-          <h2>최고 기록 <span style="font-size:13px;color:var(--c-muted);font-weight:400;">(1RM·3RM 등)</span></h2>
+        <div class="view-title pr-title-row">
+          <div>
+            <h2>기록 적기</h2>
+            <p class="pr-sub">종목별 최고 무게·1RM·변화율을 한눈에</p>
+          </div>
           <button class="add-btn" onclick="openAddMovementModal()">+ 종목 추가</button>
         </div>
-        <div class="pr-list" id="pr-list"></div>
+        <div class="pr-list pr-grid" id="pr-list"></div>
       </section>
 
     </div>
@@ -4480,28 +4697,33 @@
         if (diff !== null && Math.abs(diff) >= 0.05 && prevKg > 0) {
           const cls = diff > 0 ? 'up' : 'down';
           const pct = (diff / prevKg) * 100;
-          diffBadge = `<span class="pr-diff ${cls}">${diff > 0 ? '+' : ''}${diff.toFixed(1)}kg<span class="pr-pct">(${pct > 0 ? '+' : ''}${pct.toFixed(1)}%)</span></span>`;
+          diffBadge = `<span class="pr-diff ${cls}">${diff > 0 ? '+' : ''}${diff.toFixed(1)}kg<span class="pr-pct">${pct > 0 ? '+' : ''}${pct.toFixed(1)}%</span></span>`;
         }
 
         const weightDisplay = fmtWeight(rec.weight, rec.unit || 'kg');
         const kgHint = (rec.unit === 'lbs')
-          ? `<span style="font-size:11px;color:#aaa;font-weight:400;">(${recKg.toFixed(1)}kg)</span>`
+          ? `<span class="kg-hint">(${recKg.toFixed(1)}kg)</span>`
           : '';
+
+        // 날짜: YYYY-MM-DD → "26.04.15"
+        const dateDisplay = rec.date.slice(2).replace(/-/g, '.');
 
         return `
           <div class="pr-record-row">
-            <span class="pr-record-date">${escapeHtml(rec.date.slice(2).replace(/-/g, '/'))}</span>
-            <span class="pr-record-weight">${escapeHtml(weightDisplay)} ${kgHint}</span>
-            <span style="font-size:12px;color:#aaa;background:#f5f5f0;padding:2px 8px;border-radius:12px;">${escapeHtml(rec.type)}</span>
-            ${allBest ? '<span class="pr-badge">최고</span>' : ''}
-            ${diffBadge}
+            <span class="pr-record-date">${escapeHtml(dateDisplay)}</span>
+            <span class="pr-record-weight">${escapeHtml(weightDisplay)}${kgHint}</span>
+            <span class="pr-type-chip">${escapeHtml(rec.type)}</span>
+            <span style="display:flex;gap:4px;align-items:center;">
+              ${allBest ? '<span class="pr-badge">최고</span>' : ''}
+              ${diffBadge}
+              <button class="pr-record-delete" onclick="event.stopPropagation(); deleteRecord(${mov.id}, ${rec.id})" aria-label="PR 기록 삭제">&times;</button>
+            </span>
             ${rec.note ? `<span class="pr-record-note">${escapeHtml(rec.note)}</span>` : ''}
-            <button class="pr-record-delete" onclick="event.stopPropagation(); deleteRecord(${mov.id}, ${rec.id})" aria-label="PR 기록 삭제">✕</button>
           </div>`;
       }).join('');
 
-      // 미니 차트는 kg 환산값으로
-      const miniChart = sorted.length >= 2 ? renderMiniChart(sortedKg) : '';
+      // 미니 차트는 3개 이상 데이터일 때만 (2점 직선은 의미 없음)
+      const miniChart = sorted.length >= 3 ? renderMiniChart(sortedKg) : '';
       const bestDisplay = bestKg !== null ? `최고 ${bestKg.toFixed(1)}kg` : '';
       // DOTS 점수 (체중·성별 입력된 경우만)
       const settings = getProfileSettings();
@@ -4523,7 +4745,7 @@
           </div>
           <div class="pr-card-body" id="pr-body-${mov.id}">
             ${miniChart ? `<div class="pr-mini-chart">${miniChart}</div>` : ''}
-            ${bestKg ? `<button type="button" class="pr-calc-toggle" onclick="event.stopPropagation(); togglePRCalc(${mov.id})" aria-expanded="false">% 계산기 보기 (1RM ${bestKg.toFixed(1)}kg 기준)</button>
+            ${bestKg ? `<button type="button" class="pr-calc-toggle" onclick="event.stopPropagation(); togglePRCalc(${mov.id})" aria-expanded="false">% 계산기 (${bestKg.toFixed(1)}kg 기준) &rsaquo;</button>
             <div class="pr-calc-wrap hidden" id="pr-calc-${mov.id}">
               <table class="pr-calc-table">
                 <thead><tr><th>%</th><th>무게(kg)</th><th>%</th><th>무게(kg)</th></tr></thead>
