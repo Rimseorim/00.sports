@@ -123,6 +123,148 @@
       .main-body { padding-bottom: env(safe-area-inset-bottom, 0px); }
     }
 
+    /* 인라인 폼 에러 (alert 대체) */
+    .form-error {
+      min-height: 0;
+      font-size: 13px;
+      color: var(--c-acc-cf-h);
+      background: var(--c-acc-cf-soft);
+      border-left: 3px solid var(--c-acc-cf);
+      padding: 0;
+      margin: 0;
+      border-radius: var(--r-sm);
+      line-height: 1.5;
+      transition: padding 0.12s ease;
+      overflow: hidden;
+    }
+    .form-error.show {
+      padding: 8px 12px;
+      margin: var(--sp-1) 0;
+    }
+    .form-error:empty { display: none; }
+
+    /* 전체 기록 검색·필터 */
+    .history-controls {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-1);
+      margin-bottom: var(--sp-2);
+    }
+    .history-controls input[type="search"] {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 14px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--r-md);
+      background: var(--c-card);
+      font-family: inherit;
+      outline: none;
+      color: var(--c-fg);
+    }
+    .history-controls input[type="search"]:focus { border-color: var(--c-acc-run); }
+    .history-filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .history-filter {
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-pill, 999px);
+      background: var(--c-card);
+      color: var(--c-muted);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+    }
+    .history-filter.active {
+      background: var(--c-deep);
+      color: #fff;
+      border-color: var(--c-deep);
+    }
+
+    /* 1RM % 계산기 표 (PR 카드 토글) */
+    .pr-calc-wrap {
+      margin-top: var(--sp-1);
+      padding: 10px 12px;
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+    }
+    .pr-calc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .pr-calc-table th,
+    .pr-calc-table td {
+      padding: 4px 6px;
+      text-align: right;
+      color: var(--c-fg);
+    }
+    .pr-calc-table th {
+      font-weight: 700;
+      color: var(--c-muted);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .pr-calc-table tr:hover td { background: var(--c-acc-run-soft); }
+    .pr-calc-toggle {
+      font-size: 12px;
+      color: var(--c-deep);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 700;
+    }
+
+    /* 직전 기록 복제 버튼 */
+    .clone-btn {
+      position: absolute;
+      top: 6px;
+      right: 36px;
+      width: 26px;
+      height: 26px;
+      border: 1px solid var(--c-border);
+      background: var(--c-card);
+      border-radius: var(--r-sm);
+      color: var(--c-muted);
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.12s, color 0.12s;
+    }
+    .clone-btn:hover {
+      background: var(--c-acc-run-soft);
+      color: var(--c-deep);
+    }
+
+    /* PR 변화율 % */
+    .pr-pct {
+      font-size: 11px;
+      color: var(--c-muted);
+      margin-left: 4px;
+      font-weight: 400;
+    }
+
+    /* 빈 통계 카드 격려 */
+    .stats-encourage {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 13px;
+      padding: 4px 0 0;
+      letter-spacing: 0.2px;
+    }
+
+    /* 프로필 SVG 아이콘 정렬 */
+    .profile-btn svg { display: block; }
+    .profile-btn { display: flex; align-items: center; justify-content: center; }
+
     /* ═══ Streak 카운터 (사이드바) ═══ */
     .streak-card {
       margin: var(--sp-2) 14px 0;
@@ -1516,21 +1658,26 @@
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="drawer-open" onclick="toggleSidebar()" aria-label="사이드바 열기">&#9776;</button>
         <nav class="tabs" role="tablist">
-          <button class="tab active" data-view="dashboard" onclick="showView('dashboard')" role="tab">대시보드</button>
           <button class="tab" data-view="running" onclick="showView('running')" role="tab">러닝 쓰기</button>
           <button class="tab" data-view="crossfit" onclick="showView('crossfit')" role="tab">크로스핏 쓰기</button>
+          <button class="tab active" data-view="dashboard" onclick="showView('dashboard')" role="tab">대시보드</button>
+          <button class="tab" data-view="history" onclick="showView('history')" role="tab">전체 기록</button>
           <button class="tab" data-view="pr" onclick="showView('pr')" role="tab" aria-label="최고 기록 (1RM)">최고 기록</button>
         </nav>
       </div>
       <div class="header-right">
         <span class="quote-strip collapsed" id="daily-quote" title="클릭하여 펼치기" onclick="this.classList.toggle('collapsed')"></span>
         <div class="profile-wrap">
-          <button class="profile-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정 메뉴" aria-haspopup="true">P</button>
+          <button class="profile-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정과 백업 메뉴 열기" aria-haspopup="true" title="설정 · 백업">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
           <div class="profile-menu hidden" id="profile-menu" role="menu">
-            <button class="menu-item" onclick="exportBackup(); closeProfileMenu();" role="menuitem">백업 내보내기</button>
+            <button class="menu-item" onclick="exportBackup(); closeProfileMenu();" role="menuitem">JSON 백업 내보내기</button>
+            <button class="menu-item" onclick="exportCSV(); closeProfileMenu();" role="menuitem">CSV로 내보내기</button>
             <button class="menu-item" onclick="restoreBackup(); closeProfileMenu();" role="menuitem">백업 불러오기</button>
             <button class="menu-item" onclick="openTrendModal(); closeProfileMenu();" role="menuitem">무게 추이 보기</button>
             <div class="menu-divider"></div>
+            <div class="menu-hint" style="font-size:11px;color:var(--c-muted);line-height:1.4;padding:6px 12px;">기록은 이 브라우저에만 저장돼요.<br>정기 백업을 권장드려요.</div>
             <div class="menu-hint" id="backup-reminder-menu">백업 정보 없음</div>
           </div>
         </div>
@@ -1604,6 +1751,7 @@
             <label>일기</label>
             <textarea id="run-diary" placeholder="오늘 러닝은 어땠나요?"></textarea>
           </div>
+          <div class="form-error" id="run-form-error" role="alert" aria-live="polite"></div>
           <div class="editor-actions">
             <span class="edit-mode-badge hidden" id="running-edit-badge">수정 중</span>
             <button class="outline-btn" onclick="resetRunningForm(); showToast('새로 작성')">새로 쓰기</button>
@@ -1635,6 +1783,7 @@
             <label>일기</label>
             <textarea id="cf-diary" placeholder="오늘 운동은 어땠나요?"></textarea>
           </div>
+          <div class="form-error" id="cf-form-error" role="alert" aria-live="polite"></div>
           <div class="editor-actions">
             <span class="edit-mode-badge hidden" id="crossfit-edit-badge">수정 중</span>
             <button class="outline-btn" onclick="resetCrossfitForm(); showToast('새로 작성')">새로 쓰기</button>
@@ -1643,6 +1792,26 @@
         </div>
         <div class="view-title second"><h2>최근 크로스핏</h2></div>
         <div class="log-list" id="crossfit-recent"></div>
+      </section>
+
+      <!-- ── 전체 기록 (검색·필터·페이지네이션) ── -->
+      <section id="view-history" class="view hidden">
+        <div class="view-title">
+          <h2>전체 기록</h2>
+          <span style="font-size:13px;color:var(--c-muted);" id="history-count">총 0건</span>
+        </div>
+        <div class="history-controls">
+          <input type="search" id="history-search" placeholder="검색: 일기·장소·종목·WOD 텍스트" inputmode="search" autocomplete="off" aria-label="기록 검색">
+          <div class="history-filters" role="tablist" aria-label="기록 유형 필터">
+            <button class="history-filter active" data-filter="all" onclick="setHistoryFilter('all')" role="tab">전체</button>
+            <button class="history-filter" data-filter="running" onclick="setHistoryFilter('running')" role="tab">러닝</button>
+            <button class="history-filter" data-filter="crossfit" onclick="setHistoryFilter('crossfit')" role="tab">크로스핏</button>
+          </div>
+        </div>
+        <div class="log-list" id="history-list"></div>
+        <div style="text-align:center;margin-top:var(--sp-2);">
+          <button type="button" class="outline-btn" id="history-more" onclick="loadMoreHistory()" style="display:none;">더 보기</button>
+        </div>
       </section>
 
       <!-- ── PR / 1RM ── -->
@@ -1656,6 +1825,22 @@
 
     </div>
   </main>
+</div>
+
+<!-- 백업 복원 선택 모달 (병합 / 덮어쓰기 / 취소 명시) -->
+<div class="modal-bg" id="restore-modal-bg" role="dialog" aria-modal="true" aria-labelledby="restore-modal-title">
+  <div class="modal pr-modal">
+    <div class="modal-header">
+      <h2 id="restore-modal-title">백업 불러오기</h2>
+      <button class="close-btn" onclick="closeRestoreModal()" aria-label="모달 닫기">&times;</button>
+    </div>
+    <p style="font-size:13px;color:var(--c-muted);line-height:1.5;margin-bottom:var(--sp-2);" id="restore-modal-desc">현재 기록 0건과 백업 파일 0건을 어떻게 합칠까요?</p>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button class="save-btn dark" id="restore-merge" type="button">병합 (둘 다 남기고 충돌 시 백업 우선)</button>
+      <button class="outline-btn" id="restore-overwrite" type="button" style="border-color:var(--c-acc-cf);color:var(--c-acc-cf-h);">전체 덮어쓰기 (현재 기록 사라짐)</button>
+      <button class="outline-btn" onclick="closeRestoreModal()" type="button">취소</button>
+    </div>
+  </div>
 </div>
 
 <!-- 무게 추이 모달 -->
@@ -1680,6 +1865,7 @@
       <label>종목명</label>
       <input type="text" id="pr-movement-name" placeholder="예: Back Squat, Clean & Jerk, Snatch">
     </div>
+    <div class="form-error" id="pr-movement-error" role="alert" aria-live="polite"></div>
     <button class="save-btn dark" onclick="savePRMovement()">추가하기</button>
   </div>
 </div>
@@ -1720,8 +1906,9 @@
     </div>
     <div class="field">
       <label>메모 <span style="font-weight:400;color:#bbb;">(선택)</span></label>
-      <input type="text" id="pr-record-note" placeholder="예: 벨트 착용, 영상 있음">
+      <input type="text" id="pr-record-note" placeholder="예: 벨트 착용 · 5x5 @ 80% · 영상 있음 · RPE 8">
     </div>
+    <div class="form-error" id="pr-record-error" role="alert" aria-live="polite"></div>
     <button class="save-btn dark" onclick="savePRRecord()">저장하기</button>
   </div>
 </div>
@@ -1991,7 +2178,22 @@
   // ══════════════════════════════
   //  뷰 전환 (신규: dashboard/running/crossfit/pr)
   // ══════════════════════════════
-  const VIEWS = ['dashboard', 'running', 'crossfit', 'pr'];
+  const VIEWS = ['dashboard', 'running', 'crossfit', 'pr', 'history'];
+
+  // 인라인 폼 에러 (alert 대체)
+  function showFormError(elId, message) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    if (message) {
+      el.textContent = message;
+      el.classList.add('show');
+      el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    } else {
+      el.textContent = '';
+      el.classList.remove('show');
+    }
+  }
+  function clearFormError(elId) { showFormError(elId, ''); }
 
   function showView(view) {
     if (!VIEWS.includes(view)) view = 'dashboard';
@@ -2012,8 +2214,9 @@
 
     if (view === 'pr') renderPRView();
     if (view === 'dashboard') { renderStats(); renderRecentList(); renderTrendBoard(); renderStreak(); }
-    if (view === 'running') { renderRecent('running'); updateEditBadge('running'); }
-    if (view === 'crossfit') { renderRecent('crossfit'); updateEditBadge('crossfit'); }
+    if (view === 'running') { renderRecent('running'); updateEditBadge('running'); clearFormError('run-form-error'); }
+    if (view === 'crossfit') { renderRecent('crossfit'); updateEditBadge('crossfit'); clearFormError('cf-form-error'); }
+    if (view === 'history') renderHistory();
 
     document.querySelector('.main').scrollTop = 0;
     closeProfileMenu();
@@ -2181,6 +2384,22 @@
     document.getElementById('stats-total').innerHTML = `${monthLogs.length}<span class="stat-unit">회</span>${deltaInt(monthLogs.length, prev.length)}`;
     document.getElementById('stats-running').innerHTML = `${totalKm.toFixed(1)}<span class="stat-unit">km</span>${deltaKm(totalKm, prevKm)}`;
     document.getElementById('stats-crossfit').innerHTML = `${cfLogs.length}<span class="stat-unit">회</span>${deltaInt(cfLogs.length, prevCf.length)}`;
+
+    // 빈 통계 카드 격려 — 이번달 0회면 카드 하단에 한 줄 추가
+    const card = document.getElementById('stats-card');
+    if (card) {
+      let enc = card.querySelector('.stats-encourage');
+      if (monthLogs.length === 0) {
+        if (!enc) {
+          enc = document.createElement('div');
+          enc.className = 'stats-encourage';
+          card.appendChild(enc);
+        }
+        enc.textContent = '이번 달 첫 기록을 남겨봐요. 오늘 한 줄이면 시작이에요.';
+      } else if (enc) {
+        enc.remove();
+      }
+    }
   }
 
   function changeMonth(dir) {
@@ -2420,38 +2639,48 @@
         if (data.version && data.version > BACKUP_SCHEMA_VERSION) {
           if (!confirm('더 새 버전의 백업 파일입니다. 일부 데이터가 누락될 수 있습니다. 계속할까요?')) return;
         }
-        // 현재 데이터가 있으면 복원 방식 선택
+        // 현재 데이터가 있으면 복원 방식 선택 (커스텀 모달 — confirm 역설 해소)
         const curLogs = JSON.parse(localStorage.getItem('sportslogs') || '[]');
         const curHasData = curLogs.length > 0;
-        let mode = 'overwrite';
-        if (curHasData) {
-          const ans = confirm(`현재 기록 ${curLogs.length}건이 있습니다.\n\n[확인] 병합 (ID 충돌 시 백업 우선)\n[취소] 전체 덮어쓰기`);
-          mode = ans ? 'merge' : 'overwrite';
-        }
-        snapshotBeforeWrite('sportslogs');
-        snapshotBeforeWrite('prdata');
-        try {
-          if (Array.isArray(data.sportslogs)) {
-            let next = data.sportslogs;
-            if (mode === 'merge') {
-              const byId = new Map(curLogs.map(l => [l.id, l]));
-              data.sportslogs.forEach(l => byId.set(l.id, l));
-              next = [...byId.values()].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        const performRestore = (mode) => {
+          snapshotBeforeWrite('sportslogs');
+          snapshotBeforeWrite('prdata');
+          try {
+            if (Array.isArray(data.sportslogs)) {
+              let next = data.sportslogs;
+              if (mode === 'merge') {
+                const byId = new Map(curLogs.map(l => [l.id, l]));
+                data.sportslogs.forEach(l => byId.set(l.id, l));
+                next = [...byId.values()].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+              }
+              if (!safeSetItem('sportslogs', JSON.stringify(next))) return;
             }
-            if (!safeSetItem('sportslogs', JSON.stringify(next))) return;
+            if (data.prdata) {
+              if (!safeSetItem('prdata', JSON.stringify(data.prdata))) return;
+            }
+          } catch {
+            showToast('복원 중 오류가 발생했어요');
+            return;
           }
-          if (data.prdata) {
-            if (!safeSetItem('prdata', JSON.stringify(data.prdata))) return;
-          }
-        } catch {
-          alert('복원 중 오류가 발생했습니다.');
-          return;
+          renderCalendar();
+          renderLogs();
+          renderPRView();
+          renderStreak();
+          renderTrendBoard();
+          refreshDatalists();
+          updateBackupReminder();
+          showToast(`복원 완료 · 기록 ${data.sportslogs?.length || 0}건 불러옴`);
+        };
+        if (curHasData) {
+          openRestoreModal({
+            curCount: curLogs.length,
+            backupCount: (data.sportslogs || []).length,
+            onMerge: () => performRestore('merge'),
+            onOverwrite: () => performRestore('overwrite')
+          });
+        } else {
+          performRestore('overwrite');
         }
-        renderCalendar();
-        renderLogs();
-        renderPRView();
-        updateBackupReminder();
-        showToast(`복원 완료. 기록 ${data.sportslogs?.length || 0}건을 불러왔어요`);
       };
       reader.readAsText(file);
     };
@@ -2496,8 +2725,9 @@
   function save(type) {
     let entry = { type, id: editingId || Date.now() };
     if (type === 'running') {
+      clearFormError('run-form-error');
       const date = document.getElementById('run-date').value;
-      if (!isValidDateStr(date)) { alert('올바른 날짜를 입력해주세요.'); return; }
+      if (!isValidDateStr(date)) { showFormError('run-form-error', '올바른 날짜를 입력해주세요.'); return; }
       if (isFutureDate(date) && !confirm('미래 날짜입니다. 이대로 저장할까요?')) return;
       const distance = document.getElementById('run-distance').value;
       const minStr = document.getElementById('run-time-min').value;
@@ -2505,20 +2735,22 @@
       const distErr = validatePositiveNumber(distance, '거리');
       const minErr = validatePositiveNumber(minStr, '시간(분)');
       const secErr = validatePositiveNumber(secStr, '시간(초)');
-      if (distErr) { alert(distErr); return; }
-      if (minErr) { alert(minErr); return; }
-      if (secErr) { alert(secErr); return; }
+      if (distErr) { showFormError('run-form-error', distErr); return; }
+      if (minErr) { showFormError('run-form-error', minErr); return; }
+      if (secErr) { showFormError('run-form-error', secErr); return; }
       const min = parseFloat(minStr) || 0;
       const sec = parseFloat(secStr) || 0;
-      if (sec >= 60) { alert('초는 0~59 사이로 입력해주세요.'); return; }
+      if (sec >= 60) { showFormError('run-form-error', '초는 0~59 사이로 입력해주세요.'); return; }
       const totalMin = min + sec / 60;
       const time = totalMin > 0 ? +totalMin.toFixed(2) : '';
-      entry = { ...entry, date, distance, time, timeMin: min, timeSec: sec,
+      const runType = (document.getElementById('run-type') || {}).value || '';
+      entry = { ...entry, date, distance, time, timeMin: min, timeSec: sec, runType,
         place: document.getElementById('run-place').value.trim(),
         diary: document.getElementById('run-diary').value.trim() };
     } else {
+      clearFormError('cf-form-error');
       const date = document.getElementById('cf-date').value;
-      if (!isValidDateStr(date)) { alert('올바른 날짜를 입력해주세요.'); return; }
+      if (!isValidDateStr(date)) { showFormError('cf-form-error', '올바른 날짜를 입력해주세요.'); return; }
       if (isFutureDate(date) && !confirm('미래 날짜입니다. 이대로 저장할까요?')) return;
       entry = { ...entry, date,
         title: document.getElementById('cf-title').value.trim(),
@@ -2667,7 +2899,8 @@
         if (log.place) stats.push(`장소 <span>${escapeHtml(log.place)}</span>`);
         return `
           <div class="log-item" onclick="openEditModal(${log.id})">
-            <button class="delete-btn" onclick="event.stopPropagation(); deleteLog(${log.id})" aria-label="기록 삭제">✕</button>
+            <button class="delete-btn" onclick="event.stopPropagation(); deleteLog(${log.id})" aria-label="기록 삭제">&times;</button>
+            <button class="clone-btn" onclick="event.stopPropagation(); cloneLog(${log.id})" aria-label="이 기록을 오늘 기록으로 복제" title="오늘로 복제">⎘</button>
             <div class="log-item-header">
               <span class="badge running">러닝</span>
               <span class="log-date">${formatDate(log.date)}</span>
@@ -2698,7 +2931,8 @@
         }).join('');
         return `
           <div class="log-item crossfit" onclick="openEditModal(${log.id})">
-            <button class="delete-btn" onclick="event.stopPropagation(); deleteLog(${log.id})" aria-label="기록 삭제">✕</button>
+            <button class="delete-btn" onclick="event.stopPropagation(); deleteLog(${log.id})" aria-label="기록 삭제">&times;</button>
+            <button class="clone-btn" onclick="event.stopPropagation(); cloneLog(${log.id})" aria-label="이 기록을 오늘 기록으로 복제" title="오늘로 복제">⎘</button>
             <div class="log-item-header">
               <span class="badge crossfit">크로스핏</span>
               <span class="log-date">${formatDate(log.date)}</span>
@@ -2968,9 +3202,10 @@
   function closePRMovementModalBg(e) { if (e.target === document.getElementById('pr-movement-modal-bg')) closePRMovementModal(); }
 
   function savePRMovement() {
+    clearFormError('pr-movement-error');
     const name = document.getElementById('pr-movement-name').value.trim();
-    if (!name) { alert('종목명을 입력해주세요.'); return; }
-    if (name.length > 80) { alert('종목명은 80자 이내로 입력해주세요.'); return; }
+    if (!name) { showFormError('pr-movement-error', '종목명을 입력해주세요.'); return; }
+    if (name.length > 80) { showFormError('pr-movement-error', '종목명은 80자 이내로 입력해주세요.'); return; }
     const data = getPRData();
     const isEdit = !!editingMovementId;
     if (isEdit) {
@@ -3020,15 +3255,16 @@
   function closePRRecordModalBg(e) { if (e.target === document.getElementById('pr-record-modal-bg')) closePRRecordModal(); }
 
   function savePRRecord() {
+    clearFormError('pr-record-error');
     const date = document.getElementById('pr-record-date').value;
     const weight = parseFloat(document.getElementById('pr-record-weight').value);
     const unit = document.getElementById('pr-record-unit').value;
     const type = document.getElementById('pr-record-type').value;
     const note = document.getElementById('pr-record-note').value.trim();
-    if (!isValidDateStr(date)) { alert('올바른 날짜를 입력해주세요.'); return; }
+    if (!isValidDateStr(date)) { showFormError('pr-record-error', '올바른 날짜를 입력해주세요.'); return; }
     if (isFutureDate(date) && !confirm('미래 날짜입니다. 이대로 저장할까요?')) return;
-    if (isNaN(weight) || weight <= 0) { alert('무게를 숫자로 입력해주세요.'); return; }
-    if (weight > 1000) { alert('무게가 너무 큽니다. 단위를 확인해주세요.'); return; }
+    if (isNaN(weight) || weight <= 0) { showFormError('pr-record-error', '무게를 숫자로 입력해주세요.'); return; }
+    if (weight > 1000) { showFormError('pr-record-error', '무게가 너무 큽니다. 단위를 확인해주세요.'); return; }
     const data = getPRData();
     const movement = data.movements.find(m => m.id === currentPRMovementId);
     if (!movement) return;
@@ -3105,9 +3341,10 @@
         const allBest = Math.abs(recKg - bestKg) < 0.01;
 
         let diffBadge = '';
-        if (diff !== null && Math.abs(diff) >= 0.05) {
+        if (diff !== null && Math.abs(diff) >= 0.05 && prevKg > 0) {
           const cls = diff > 0 ? 'up' : 'down';
-          diffBadge = `<span class="pr-diff ${cls}">${diff > 0 ? '+' : ''}${diff.toFixed(1)}kg</span>`;
+          const pct = (diff / prevKg) * 100;
+          diffBadge = `<span class="pr-diff ${cls}">${diff > 0 ? '+' : ''}${diff.toFixed(1)}kg<span class="pr-pct">(${pct > 0 ? '+' : ''}${pct.toFixed(1)}%)</span></span>`;
         }
 
         const weightDisplay = fmtWeight(rec.weight, rec.unit || 'kg');
@@ -3145,6 +3382,21 @@
           </div>
           <div class="pr-card-body" id="pr-body-${mov.id}">
             ${miniChart ? `<div class="pr-mini-chart">${miniChart}</div>` : ''}
+            ${bestKg ? `<button type="button" class="pr-calc-toggle" onclick="event.stopPropagation(); togglePRCalc(${mov.id})" aria-expanded="false">% 계산기 보기 (1RM ${bestKg.toFixed(1)}kg 기준)</button>
+            <div class="pr-calc-wrap hidden" id="pr-calc-${mov.id}">
+              <table class="pr-calc-table">
+                <thead><tr><th>%</th><th>무게(kg)</th><th>%</th><th>무게(kg)</th></tr></thead>
+                <tbody>${(() => {
+                  const rows = calc1RMPercents(bestKg);
+                  let html = '';
+                  for (let i = 0; i < rows.length; i += 2) {
+                    const a = rows[i], b = rows[i + 1];
+                    html += `<tr><td>${a.pct}%</td><td>${a.weight}</td><td>${b ? b.pct + '%' : ''}</td><td>${b ? b.weight : ''}</td></tr>`;
+                  }
+                  return html;
+                })()}</tbody>
+              </table>
+            </div>` : ''}
             <div class="pr-record-list">${recordsHtml || '<div style="color:#bbb;font-size:13px;padding:8px 0;">기록이 없어요</div>'}</div>
             <button class="add-record-btn" onclick="openAddRecordModal(${mov.id})">+ 기록 추가</button>
           </div>
@@ -3192,7 +3444,7 @@
   //  전역 키보드 / 초기화
   // ══════════════════════════════
   function closeAllOpenModals() {
-    ['trend-modal-bg', 'pr-movement-modal-bg', 'pr-record-modal-bg'].forEach(id => {
+    ['trend-modal-bg', 'pr-movement-modal-bg', 'pr-record-modal-bg', 'restore-modal-bg'].forEach(id => {
       const el = document.getElementById(id);
       if (el && el.classList.contains('open')) el.classList.remove('open');
     });
@@ -3200,6 +3452,130 @@
     const s = document.getElementById('sidebar');
     const o = document.getElementById('drawer-overlay');
     if (s && s.classList.contains('open')) { s.classList.remove('open'); o && o.classList.remove('show'); }
+  }
+
+  // ── 백업 복원 커스텀 모달 (confirm 역설 해소) ──
+  function openRestoreModal({ curCount, backupCount, onMerge, onOverwrite }) {
+    const bg = document.getElementById('restore-modal-bg');
+    const desc = document.getElementById('restore-modal-desc');
+    if (!bg) return;
+    desc.textContent = `현재 기록 ${curCount}건과 백업 파일 ${backupCount}건. 어떻게 합칠까요?`;
+    document.getElementById('restore-merge').onclick = () => { closeRestoreModal(); onMerge(); };
+    document.getElementById('restore-overwrite').onclick = () => {
+      if (confirm(`현재 기록 ${curCount}건이 모두 사라집니다. 정말 덮어쓸까요?`)) {
+        closeRestoreModal();
+        onOverwrite();
+      }
+    };
+    bg.classList.add('open');
+    setTimeout(() => document.getElementById('restore-merge').focus(), 80);
+  }
+  function closeRestoreModal() {
+    const bg = document.getElementById('restore-modal-bg');
+    if (bg) bg.classList.remove('open');
+  }
+
+  // ── 직전 기록 복제 (오늘 날짜로) ──
+  function cloneLog(id) {
+    const log = getLogs().find(l => l.id === id);
+    if (!log) return;
+    editingId = null;
+    if (log.type === 'running') {
+      document.getElementById('run-date').value = todayStr;
+      document.getElementById('run-distance').value = log.distance || '';
+      document.getElementById('run-time-min').value = log.timeMin != null ? log.timeMin : (log.time ? Math.floor(parseFloat(log.time)) : '');
+      document.getElementById('run-time-sec').value = log.timeSec != null ? log.timeSec : '';
+      document.getElementById('run-place').value = log.place || '';
+      document.getElementById('run-diary').value = '';
+      const rt = document.getElementById('run-type');
+      if (rt) rt.value = log.runType || '';
+      updateRunPaceHint();
+      showView('running');
+    } else {
+      document.getElementById('cf-date').value = todayStr;
+      document.getElementById('cf-title').value = log.title || '';
+      renderWodBlocks(log.wods || (log.wod ? [log.wod] : []));
+      document.getElementById('cf-diary').value = '';
+      showView('crossfit');
+    }
+    showToast('어제 기록을 복제했어요. 오늘 기록으로 저장만 하면 돼요');
+  }
+
+  // ── CSV 내보내기 (Excel·Sheets 호환 BOM) ──
+  function exportCSV() {
+    const logs = getLogs();
+    if (!logs.length) { showToast('내보낼 기록이 없어요'); return; }
+    const rows = [['날짜','유형','거리(km)','시간(분)','페이스(분/km)','장소/제목','일기']];
+    logs.forEach(l => {
+      if (l.type === 'running') {
+        const km = parseFloat(l.distance) || 0;
+        const tm = parseFloat(l.time) || 0;
+        const pace = (km > 0 && tm > 0) ? formatPace(tm / km) : '';
+        rows.push([l.date, '러닝', l.distance || '', l.time || '', pace, l.place || '', (l.diary || '').replace(/\n/g, ' ')]);
+      } else {
+        const wodSummary = (l.wods || []).map(w => (w.content || '').replace(/\n/g, ' ').slice(0, 60)).join(' | ');
+        rows.push([l.date, '크로스핏', '', '', '', l.title || '', wodSummary + (l.diary ? ' / ' + l.diary.replace(/\n/g, ' ') : '')]);
+      }
+    });
+    const csv = '﻿' + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sports-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('CSV 파일을 내려받았어요');
+  }
+
+  // ── 1RM % 계산 (Epley + 본인 기록 기반) ──
+  function calc1RMPercents(oneRm) {
+    const pct = [95, 90, 85, 80, 75, 70, 65, 60];
+    return pct.map(p => ({ pct: p, weight: Math.round(oneRm * p / 100 * 10) / 10 }));
+  }
+  function togglePRCalc(movId) {
+    const el = document.getElementById(`pr-calc-${movId}`);
+    if (el) el.classList.toggle('hidden');
+  }
+
+  // ── 전체 기록 (검색·필터·페이지네이션) ──
+  let historyState = { filter: 'all', query: '', limit: 20 };
+  function setHistoryFilter(f) {
+    historyState.filter = f;
+    historyState.limit = 20;
+    document.querySelectorAll('.history-filter').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === f);
+    });
+    renderHistory();
+  }
+  function loadMoreHistory() {
+    historyState.limit += 20;
+    renderHistory();
+  }
+  function renderHistory() {
+    const list = document.getElementById('history-list');
+    const more = document.getElementById('history-more');
+    const count = document.getElementById('history-count');
+    if (!list) return;
+    const q = historyState.query.toLowerCase().trim();
+    const all = getLogs();
+    const filtered = all.filter(l => {
+      if (historyState.filter !== 'all' && l.type !== historyState.filter) return false;
+      if (!q) return true;
+      const hay = [l.date, l.place, l.title, l.diary,
+        ...(l.wods || []).map(w => `${w.content || ''} ${w.record || ''} ${(w.weights || []).map(x => `${x.movement || ''} ${x.weight || ''}`).join(' ')}`)
+      ].join(' ').toLowerCase();
+      return hay.includes(q);
+    });
+    count.textContent = `총 ${filtered.length}건${q ? ` · "${historyState.query}" 검색` : ''}`;
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="empty"><div class="empty-headline">${q ? '검색 결과가 없어요' : '아직 기록이 없어요'}</div><div class="empty-sub">${q ? '다른 단어로 다시 시도해보세요' : '오늘부터 한 줄씩 쌓아봐요'}</div></div>`;
+      more.style.display = 'none';
+      return;
+    }
+    const slice = filtered.slice(0, historyState.limit);
+    list.innerHTML = slice.map(logToHtml).join('');
+    more.style.display = filtered.length > historyState.limit ? '' : 'none';
   }
 
   document.addEventListener('keydown', (e) => {
@@ -3583,6 +3959,21 @@
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', updateRunPaceHint);
   });
+
+  // 전체 기록 검색 (debounce)
+  (function bindHistorySearch() {
+    const el = document.getElementById('history-search');
+    if (!el) return;
+    let t;
+    el.addEventListener('input', (e) => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        historyState.query = e.target.value || '';
+        historyState.limit = 20;
+        renderHistory();
+      }, 200);
+    });
+  })();
 
   window.addEventListener('resize', renderCalendar);
 </script>
