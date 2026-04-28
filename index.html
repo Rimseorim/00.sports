@@ -466,6 +466,35 @@
     /* 사이드바 하단 + 명언 컴팩트 */
     .sidebar-bottom { margin: 4px 14px 0; padding-top: 6px; position: relative; }
     .sidebar-bottom-row { display: flex; gap: 6px; align-items: center; }
+
+    /* 사이드바 백업 알림 (메인 → 사이드 이동) */
+    .side-backup-alert {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 6px 10px;
+      margin-bottom: 6px;
+      background: var(--c-acc-cf-soft);
+      border-left: 3px solid var(--c-acc-cf);
+      border-radius: var(--r-sm);
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--c-acc-cf-h);
+      font-weight: 700;
+    }
+    .side-backup-alert.hidden { display: none !important; }
+    .side-backup-action {
+      flex-shrink: 0;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--c-card);
+      border: 1px solid var(--c-acc-cf);
+      border-radius: var(--r-sm);
+      color: var(--c-acc-cf-h);
+      cursor: pointer;
+    }
     .side-settings-btn { padding: 6px; font-size: 11px; }
     .side-logout-btn {
       padding: 6px 10px;
@@ -2370,15 +2399,6 @@
       목표 5종 · 체중 설정 &rsaquo;
     </button>
 
-    <div class="streak-card zero" id="streak-card" role="status" aria-live="polite">
-      <div class="streak-num" id="streak-num">0</div>
-      <div class="streak-meta">
-        <div class="streak-label" id="streak-label">아직 시작 전</div>
-        <div class="streak-hint" id="streak-hint">한 번 기록하면 시작돼요</div>
-      </div>
-      <div class="streak-rest-pill hidden" id="streak-rest-pill" title="7일마다 1회 자동 충전 · 하루 빠져도 연속 기록 유지">휴식 1</div>
-    </div>
-
     <div class="sidebar-calendar">
       <div class="cal-nav">
         <button class="nav-btn" onclick="changeMonth(-1)" aria-label="이전 달">&#8249;</button>
@@ -2410,6 +2430,10 @@
     </div>
 
     <div class="sidebar-bottom">
+      <div class="side-backup-alert hidden" id="side-backup-alert" role="status" aria-live="polite">
+        <span id="side-backup-text">백업 권장</span>
+        <button type="button" class="side-backup-action" onclick="exportBackup()">지금 백업</button>
+      </div>
       <div class="sidebar-bottom-row">
         <button class="side-settings-btn" id="profile-btn" onclick="toggleProfileMenu()" aria-label="설정과 백업 메뉴 열기" aria-haspopup="true" title="설정 · 백업" style="flex:1;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -2438,13 +2462,6 @@
 
       <!-- ── 대시보드 ── -->
       <section id="view-dashboard" class="view">
-        <div class="alert-banner hidden" id="backup-alert-banner" role="status">
-          <div>
-            <strong>백업 권장</strong>
-            <span id="backup-alert-text">30일 넘게 백업이 없어요. 분실 위험을 줄이려면 지금 한 번 내려받아 두세요.</span>
-          </div>
-          <button type="button" class="alert-action" onclick="exportBackup()">지금 백업</button>
-        </div>
         <div class="view-title">
           <h2 id="dashboard-title">이번달 요약</h2>
         </div>
@@ -4628,21 +4645,20 @@
     return Math.round(weightKg * 500 / denom * 10) / 10;
   }
 
-  // ── 30일+ 백업 안 함 → 알림 배너 ──
+  // ── 30일+ 백업 안 함 → 사이드바 알림 ──
   function updateBackupAlert() {
-    const banner = document.getElementById('backup-alert-banner');
-    if (!banner) return;
+    const sideEl = document.getElementById('side-backup-alert');
+    if (!sideEl) return;
     const last = localStorage.getItem('lastBackupAt');
     const logs = JSON.parse(localStorage.getItem('sportslogs') || '[]');
-    if (logs.length < 5) { banner.classList.add('hidden'); return; }
+    if (logs.length < 5) { sideEl.classList.add('hidden'); return; }
     const days = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : 999;
     if (days >= 30) {
-      const text = last ? `마지막 백업 ${days}일 전. 분실 위험을 줄이려면 지금 한 번 내려받아 두세요.`
-        : `백업한 적이 없어요. 기록 ${logs.length}건이 이 브라우저에만 있어요.`;
-      document.getElementById('backup-alert-text').textContent = text;
-      banner.classList.remove('hidden');
+      const sideText = last ? `백업 ${days}일째 안 함` : `백업 안 함 · ${logs.length}건`;
+      document.getElementById('side-backup-text').textContent = sideText;
+      sideEl.classList.remove('hidden');
     } else {
-      banner.classList.add('hidden');
+      sideEl.classList.add('hidden');
     }
   }
 
@@ -4779,7 +4795,7 @@
   }
   function renderStreak() {
     const card = document.getElementById('streak-card');
-    if (!card) return;
+    if (!card) return; // streak 카드 제거됨 — 조용히 반환
     const { count, restCount, frozen } = calcStreak();
     const numEl = document.getElementById('streak-num');
     const lblEl = document.getElementById('streak-label');
