@@ -612,19 +612,34 @@
     .main { padding: 0; }
     .main-body { padding-top: 14px; padding-bottom: 14px; }
 
-    /* 러닝/크로스핏 쓰기 — 좌우 2열 분할 (좌: 폼 / 우: 최근 표) */
+    /* 러닝/크로스핏 쓰기 — 좌우 2열 분할, 폭·시작점 정확히 대칭 */
     .record-split {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 16px;
       align-items: start;
     }
     @media (max-width: 1024px) {
       .record-split { grid-template-columns: 1fr; }
     }
-    .record-left { min-width: 0; }
-    .record-right { min-width: 0; }
-    .record-right .view-title { margin-top: 0 !important; margin-bottom: 6px !important; }
+    .record-left, .record-right { min-width: 0; }
+    /* 좌우 view-title을 동일 형식으로 — 첫 콘텐츠가 같은 y 에서 시작 */
+    .record-left .view-title,
+    .record-right .view-title {
+      margin: 0 0 8px !important;
+      min-height: 28px;
+      display: flex;
+      align-items: center;
+    }
+    .record-left .view-title h2,
+    .record-right .view-title h2 {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    /* 첫 카드·첫 표 시작점 정확 align */
+    .record-left .editor-card { margin-top: 0; }
+    .record-right .log-table { margin-top: 0; }
 
     /* 최근 기록 표 형식 (row 단위, 한 줄에 정보 압축) */
     .log-table {

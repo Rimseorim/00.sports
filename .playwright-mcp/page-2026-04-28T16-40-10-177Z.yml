@@ -1,0 +1,19 @@
+- generic [active] [ref=e1]:
+  - dialog "사용자 선택" [ref=e2]:
+    - text: 운동 일기
+    - generic [ref=e3]:
+      - heading "사용자 선택" [level=2] [ref=e4]
+      - paragraph [ref=e5]: user1, user2 처럼 이름을 구분하면 데이터가 따로 보관돼요. (내부 테스트 · 비밀번호 없음)
+      - generic [ref=e6]: 또는 새로 시작
+      - generic [ref=e7]:
+        - generic [ref=e8]: 새 사용자 이름
+        - textbox "새 사용자 이름" [ref=e9]:
+          - /placeholder: "예: user1, user2, 본인이름"
+      - button "시작하기" [ref=e10] [cursor=pointer]
+      - generic [ref=e11]:
+        - generic [ref=e12]: "빠른 선택:"
+        - button "user1" [ref=e13] [cursor=pointer]
+        - button "user2" [ref=e14] [cursor=pointer]
+        - button "user3" [ref=e15] [cursor=pointer]
+    - text: 오늘도 한 줄, 꾸준히
+  - text: ◉ +
